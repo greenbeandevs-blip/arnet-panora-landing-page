@@ -121,15 +121,34 @@ nav .btn{padding:.95em 1.6em}
 #portfolio .p2{margin-top:clamp(90px,15vw,240px)}
 #portfolio .p3{margin-top:clamp(30px,5vw,80px)}
 #portfolio .p4{margin-top:clamp(60px,10vw,160px)}
+/* airbnb */
+#airbnb{background:var(--bg);padding-top:clamp(100px,16vh,200px);padding-bottom:clamp(100px,16vh,200px)}
+#airbnb h2{font-size:clamp(48px,10vw,160px);max-width:8ch;color:var(--bk)}
+#airbnb .airbnb-copy{align-self:end;padding-bottom:clamp(0px,3vw,48px)}
+#airbnb .airbnb-visual{position:relative;margin-top:clamp(42px,7vw,110px)}
+#airbnb .airbnb-visual .m{aspect-ratio:16/10}
+#airbnb .airbnb-logo{position:absolute;right:clamp(18px,2vw,32px);bottom:clamp(18px,2vw,32px);display:grid;place-items:center;min-width:clamp(120px,18vw,200px);min-height:clamp(54px,8vw,90px);padding:1.1em 1.4em;background:rgba(255,255,255,.86);border:1px solid rgba(103,61,31,.22);box-shadow:0 16px 42px rgba(32,18,8,.08);font-size:clamp(16px,1.5vw,28px);font-weight:700;letter-spacing:.08em;color:var(--br);text-transform:uppercase}
+#airbnb .airbnb-list{display:grid;gap:var(--gap);margin-top:clamp(26px,4vw,60px)}
+#airbnb .airbnb-list .item{display:flex;flex-direction:column;gap:10px;padding-top:16px;border-top:1px solid rgba(103,61,31,.45)}
+#airbnb .airbnb-list .item strong{font-size:11px;letter-spacing:.18em;text-transform:uppercase;opacity:.75}
+#airbnb .airbnb-list .item p{font-size:clamp(15px,1.15vw,18px);line-height:1.6;max-width:26ch}
 /* tour */
 #tour{min-height:min(100vh,900px);padding-top:clamp(100px,16vh,200px);padding-bottom:clamp(70px,10vh,130px);color:var(--wh);overflow:hidden;isolation:isolate}
-#tour:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.68),rgba(0,0,0,.16) 70%),url('https://picsum.photos/seed/arnet-tour-render/2200/1400') center/cover;z-index:-2;transform:scale(1.04)}
+#tour:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.68),rgba(0,0,0,.16) 70%),url('https://tryinteriorlab.com/_next/image?url=%2Fimages%2Fstyles%2Fmid-century-modern.webp&w=3840&q=75') center/cover;z-index:-2;transform:scale(1.04)}
 #tour:after{content:"";position:absolute;inset:0;background:rgba(42,26,14,.16);z-index:-1}
 #tour .tour-copy{max-width:760px}
 #tour h2{font-size:clamp(46px,9.5vw,150px);max-width:8ch}
 #tour .btn{margin-top:clamp(38px,6vw,90px)}
-#tour .tour-card{align-self:end}
-#tour .tour-card .m{position:relative;aspect-ratio:4/5}
+#tour .tour-card{align-self:end;display:block;text-decoration:none;color:inherit}
+#tour .tour-card-link{position:relative;display:block;text-decoration:none;color:inherit}
+#tour .tour-card-link .m{position:relative;overflow:hidden;aspect-ratio:4/5}
+#tour .tour-card-link .m::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(17,10,6,.06),rgba(17,10,6,.76));opacity:0;transition:opacity .7s ease,transform .7s ease;z-index:1}
+#tour .tour-card-link .tour-overlay{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:clamp(18px,2vw,28px);display:flex;flex-direction:column;align-items:flex-start;gap:8px;opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+#tour .tour-card-link .tour-overlay .eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:rgba(232,220,196,.82)}
+#tour .tour-card-link .tour-overlay .title{font-family:var(--brand);font-weight:300;letter-spacing:-.03em;line-height:.82;font-size:clamp(34px,4vw,64px);text-transform:lowercase;color:var(--wh)}
+#tour .tour-card-link:hover .m::before,#tour .tour-card-link:focus-visible .m::before,#tour .tour-card-link:hover .tour-overlay,#tour .tour-card-link:focus-visible .tour-overlay{opacity:1;transform:translateY(0)}
+#tour .tour-card-link:hover .im,#tour .tour-card-link:focus-visible .im{transform:scale(1.07)}
+#tour .tour-card-link .ring{z-index:3;pointer-events:none}
 #tour .tour-card .cap{margin-top:22px}
 #tour .ring{width:min(14vw,120px)}
 #tour .rooms{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap);margin-top:clamp(40px,7vw,100px)}
@@ -194,11 +213,11 @@ section{overflow-x:clip}
  <div class="g">
   <p class="eb" style="--d:1/5">01 — Estudio</p>
   <h2 class="q z" style="--d:2/13;--m:1/-1;margin-top:clamp(24px,4vw,60px)" data-s="-.03">Fotografiamos lo que aún no existe, <i>y te dejamos recorrerlo.</i></h2>
-  <div style="--d:1/6;--r:3"><div class="fr"><div class="m a" data-s=".08"><div class="im" style="background-image:url('/style/images/85ee97f9-e6f2-4917-b28f-52213fc25eb7.jfif')"></div></div></div><p class="cap" style="margin-top:22px">Fig. 1a — Concepto de montaña</p></div>
+  <div style="--d:1/6;--r:3"><div class="fr"><div class="m a" data-s=".08"><div class="im" style="background-image:url('/style/images/f1094b20-b8b5-42fb-be5c-75fc19d97c40.png')"></div></div></div><p class="cap" style="margin-top:22px">Fig. 1a — Concepto de montaña</p></div>
   <div class="t" style="--d:8/12;--r:3">
    <div class="m ts" data-s=".1"><div class="im" style="background-image:url('/style/images/92fd26bb-d47a-46cb-a61b-e2fb87583d86.jfif')"></div></div>
    <p class="cap" style="margin:18px 0 clamp(28px,4vw,56px)">Fig. 1b — Concepto de habitación natural</p>
-   <p class="b">Arnet panora es el estudio de visualización de Arnet. Cada espacio se construye primero como luz, material y proporción, y luego se entrega como un recorrido, un render o un plano.</p><a class="btn" href="#pano">Ver recorridos</a>
+   <p class="b" style="text-align:justify;">En Arnet Panora, nuestro estudio de visualización especializado, transformamos cualquier espacio —real o en proyecto— en una experiencia inmersiva interactiva. A partir de una selección estratégica de imágenes 360º, construimos un recorrido virtual que permite al espectador navegar libremente de un punto a otro de la propiedad, explorando cada rincón, desde las áreas comunes hasta los detalles más íntimos. Es una exploración 'punto a punto' que eleva la presentación arquitectónica a una verdadera inmersión sensorial.</p><a class="btn" href="#pano">Ver recorridos</a>
   </div>
  </div>
 </section>
@@ -254,40 +273,64 @@ section{overflow-x:clip}
   <div class="m B" style="--d:9/13;--r:2;--m:4/-1" data-s=".16"><div class="im" style="background-image:url('/style/images/84d0484a-255b-4645-afac-983a84fad752.jfif')"></div></div>
   <h2 class="brand big" style="--d:1/-1;--r:3;margin-left:-.03em" data-x=".1">interiores</h2>
   <p class="b" style="--d:2/6;--r:4;margin-top:clamp(30px,5vw,80px)">Mobiliario, paleta e iluminación compuestos juntos, para que el espacio que apruebas sea el que recibes.</p>
-  <div style="--d:8/11;--r:4;--m:4/-1"><div class="m C" data-s=".08"><div class="im" style="background-image:url('/style/images/c228eabc-615e-4810-b1b4-f57e542d8842.jfif')"></div></div><p class="cap" style="margin-top:18px">Fig. 4 — Comedor para frutas, cocina</p></div>
-  <div class="m T" style="--d:1/5;--r:5;--m:1/8" data-s=".1"><div class="im" style="background-image:url('/style/images/9ece4787-4822-4645-8559-506b78f71ebf.jfif')"></div></div>
-  <div style="--d:6/13;--r:5;--m:1/-1"><div class="m W" data-s=".05"><div class="im" style="background-image:url('/style/images/b0b7911f-205e-4b29-ae89-c4fb3277cff2.jfif')"></div></div><p class="cap" style="margin-top:18px">Fig. 5 — Piscina de area social</p></div>
+  <div style="--d:8/11;--r:4;--m:4/-1"><div class="m C" data-s=".08"><div class="im" style="background-image:url('/style/images/c228eabc-615e-4810-b1b4-f57e542d8842.jfif')"></div></div><p class="cap" style="margin-top:18px">Fig. 4 — Arco mediterráneo, pasillo</p></div>
+  <div class="m T" style="--d:1/5;--r:5;--m:1/8" data-s=".1"><div class="im" style="background-image:url('/style/images/dbdb29fbbefa76be7ce22e3d4b2555b6.jpg')"></div></div>
+  <div style="--d:6/13;--r:5;--m:1/-1"><div class="m W" data-s=".05"><div class="im" style="background-image:url('/style/images/aa26f0f1-9091-4fbf-bc0a-fb36ad464313.png')"></div></div><p class="cap" style="margin-top:18px">Fig. 5 — Piscina de area social</p></div>
  </div>
 </section>
 
 <!-- PORTFOLIO -->
 <section id="portfolio" data-t="l">
  <div class="g">
-  <div style="--d:1/8;--r:1;--m:1/-1"><p class="eb">06 — Portfolio</p><h2 style="margin-top:clamp(28px,4vw,64px)" data-s="-.04">See our portfolio</h2></div>
-  <div class="portfolio-copy" style="--d:9/13;--r:1;--m:1/-1"><p class="b">A selection of spaces, materials and atmospheres built before they exist.</p><a class="btn" href="#tour">Explore the work</a></div>
-  <div class="pj p1" style="--d:1/8;--r:2;--ar:16/11"><div class="m" data-s=".07"><div class="im" style="background-image:url('https://picsum.photos/seed/arnet-portfolio/1600/1100')"></div></div><p class="cap">01 — Casa Lomas, residencial</p></div>
-  <div class="pj p2" style="--d:9/13;--r:2;--ar:3/4"><div class="m" data-s=".12"><div class="im" style="background-image:url('https://picsum.photos/seed/arnet-portfolio-2/800/1067')"></div></div><p class="cap">02 — Villa Ámbar, hospitalidad</p></div>
-  <div class="pj p3" style="--d:2/6;--r:3;--ar:1"><div class="m" data-s=".06"><div class="im" style="background-image:url('https://picsum.photos/seed/arnet-portfolio-3/800/800')"></div></div><p class="cap">03 — Loft Reforma, interiorismo</p></div>
-  <div class="pj p4" style="--d:7/13;--r:3;--ar:16/10"><div class="m" data-s=".09"><div class="im" style="background-image:url('https://picsum.photos/seed/arnet-portfolio-4/1400/875')"></div></div><p class="cap">04 — Torre Sol, comercial</p></div>
+  <div style="--d:1/8;--r:1;--m:1/-1"><p class="eb">06 — Portafolio</p><h2 style="margin-top:clamp(28px,4vw,64px)" data-s="-.04">Nuestro portafolio</h2></div>
+  <div class="portfolio-copy" style="--d:9/13;--r:1;--m:1/-1"><p class="b">Un viaje a través de espacios, materias y silencios creados antes de encontrar su lugar en el mundo.</p><a class="btn" href="#tour">Explore the work</a></div>
+  <a class="portfolio-link pj p1" target="_blank" rel="noopener noreferrer" style="--d:1/8;--r:2;--ar:16/11">
+   <div class="m" data-s=".07"><div class="im" style="background-image:url('/style/images/93449727-2147-4bfc-8788-320a93927cd7.png')"></div></div>
+   <div class="portfolio-overlay"><span class="eyebrow">01 — Casa Lomas, residencial</span></div>
+   <p class="cap"></p>
+  </a>
+  <div class="pj p2" style="--d:9/13;--r:2;--ar:3/4"><div class="m" data-s=".12"><div class="im" style="background-image:url('/style/images/656b6533-ab62-4530-9322-0afd58665113.jfif')"></div></div><p class="cap">02 — Villa Ámbar, hospitalidad</p></div>
+  <div class="pj p3" style="--d:2/6;--r:3;--ar:1"><div class="m" data-s=".06"><div class="im" style="background-image:url('/style/images/db07e761-3956-4ea3-a09a-be192f594c32.jfif')"></div></div><p class="cap">03 — Loft Reforma, interiorismo</p></div>
+  <div class="pj p4" style="--d:7/13;--r:3;--ar:16/10"><div class="m" data-s=".09"><div class="im" style="background-image:url('/style/images/f24ace01-48fa-4ebe-8b01-23c6790928c7.jfif')"></div></div><p class="cap">04 — Torre Sol, comercial</p></div>
+ </div>
+</section>
+
+<!-- AIRBNB -->
+<section id="airbnb" data-t="l">
+ <div class="g">
+  <div style="--d:1/8;--r:1;--m:1/-1"><p class="eb">07 — Airbnb</p><h2 style="margin-top:clamp(28px,4vw,64px)" data-s="-.04">Prepara tu vivienda para <img src="/style/images/Airbnb_Logo_Bélo.svg" alt="Airbnb" style="height: 120px; margin-left: 10px; margin-top: 30px;"></h2></div>
+  <div class="airbnb-copy" style="--d:9/13;--r:1;--m:1/-1"><p class="b">Arquitectura visual, staging y contenido que convierten cada propiedad en una experiencia memorable, lista para ser reservada.</p><a class="btn" href="#end">Solicitar propuesta</a></div>
+  <div class="airbnb-visual" style="--d:1/7;--r:2;--m:1/-1">
+   <div class="m" data-s=".08"><div class="im" style="background-image:url('/style/images/dbdb29fbbefa76be7ce22e3d4b2555g1.png')"></div></div>
+  </div>
+  <div class="airbnb-list" style="--d:8/13;--r:2;--m:1/-1">
+   <div class="item"><strong>01 — Staging</strong><p>Espacios cuidadosos, materiales y composición visual para que cada detalle comunique calma y valor.</p></div>
+   <div class="item"><strong>02 — Fotografía</strong><p>Imágenes de alta intención que acompañan la narrativa de la propiedad y potencian las reservas.</p></div>
+   <div class="item"><strong>03 — Estrategia</strong><p>Una propuesta coherente entre identidad, recorrido visual y presentación para cada tipo de huésped.</p></div>
+  </div>
  </div>
 </section>
 
 <!-- TOUR -->
 <section id="tour" data-t="d">
  <div class="g">
-  <div class="tour-copy" style="--d:1/8;--r:1;--m:1/-1"><p class="eb">07 — Tour experience</p><h2 style="margin-top:clamp(28px,4vw,64px)" data-s="-.05">Test our tour experience</h2><a class="btn" href="#pano">Enter the tour</a></div>
-  <div class="tour-card" style="--d:9/13;--r:1;--m:1/-1"><div class="fr"><div class="m" data-s=".06"><div class="im" style="background-image:url('https://picsum.photos/seed/arnet-tour-preview/800/1000')"></div><div class="ring">360°</div></div></div><p class="cap">Vista previa — Casa Lomas, sala</p></div>
+  <div class="tour-copy" style="--d:1/8;--r:1;--m:1/-1"><p class="eb">08 — Tour experience</p><h2 style="margin-top:clamp(28px,4vw,64px)" data-s="-.05">Prueba nuestro Tour 360°</h2><a class="btn" href="#pano">Enter the tour</a></div>
+  <a class="tour-card-link tour-card" href="https://www.ferrari.com" target="_blank" rel="noopener noreferrer" style="--d:9/13;--r:1;--m:1/-1">
+   <div class="fr"><div class="m" data-s=".06"><div class="im" style="background-image:url('/style/images/69e16a7b-616b-4942-bece-47f59a5b79c4.jfif')"></div><div class="ring">360°</div></div></div>
+   <div class="tour-overlay"><span class="eyebrow">01 — Ferrari</span><span class="title">Casa Lomas</span></div>
+   <p class="cap">Vista previa — Casa Lomas, sala</p>
+  </a>
   <div class="rooms" style="--d:1/8;--r:2;--m:1/-1">
-   <div><div class="m" data-s=".04"><div class="im" style="background-image:url('https://picsum.photos/seed/arnet-tour-room-1/640/400')"></div></div><p class="cap">Sala</p></div>
-   <div><div class="m" data-s=".07"><div class="im" style="background-image:url('https://picsum.photos/seed/arnet-tour-room-2/640/400')"></div></div><p class="cap">Comedor</p></div>
-   <div><div class="m" data-s=".10"><div class="im" style="background-image:url('https://picsum.photos/seed/arnet-tour-room-3/640/400')"></div></div><p class="cap">Recámara</p></div>
+   <div><div class="m" data-s=".04"><div class="im" style="background-image:url('/style/images/bfa32f6f-edec-4836-87f3-0a1694e2865d.png')"></div></div><p class="cap">Sala</p></div>
+   <div><div class="m" data-s=".07"><div class="im" style="background-image:url('/style/images/d4236b57-3f10-43d8-ac8d-50a5dda07646.jfif')"></div></div><p class="cap">Comedor</p></div>
+   <div><div class="m" data-s=".10"><div class="im" style="background-image:url('/style/images/fd136790-f17b-4362-931f-072914e99d6e.jfif')"></div></div><p class="cap">Baño</p></div>
   </div>
  </div>
 </section>
 
 <!-- CONTACTO -->
 <section id="end" data-t="d">
- <div><p class="eb">08 — Contacto</p><h2 class="z" style="margin-top:clamp(30px,5vw,70px)" data-s="-.04">Recórrelo<span>antes.</span></h2>
+ <div><p class="eb">09 — Contacto</p><h2 class="z" style="margin-top:clamp(30px,5vw,70px)" data-s="-.04">Recórrelo<span>antes.</span></h2>
  <div class="endimg m" data-s=".08"><div class="im" style="background-image:url('https://picsum.photos/seed/arnet-end-arch/700/1030')"></div></div>
  <div class="mw"><a class="btn o" href="mailto:panora@arnet.com">panora@arnet.com</a></div></div>
  <div class="ft"><p class="cap">© Arnet panora</p><p class="brand">arnet panora</p></div>
@@ -378,7 +421,7 @@ var w=document.createElement('div');w.id='intro-video';
 var st=document.createElement('style');
 st.textContent='#intro-video{position:fixed;inset:0;z-index:2147483647;background:#000;display:flex;align-items:center;justify-content:center;opacity:1;transition:opacity .9s ease;overflow:hidden}#intro-video.fade{opacity:0;pointer-events:none}#intro-video video{width:100%;height:100%;object-fit:cover;background:#000}#intro-video .ivskip{position:absolute;right:22px;bottom:22px;background:none;color:#fff;border:0;border-bottom:1px solid rgba(255,255,255,.6);font:300 11px/1 "Norms","Figtree",sans-serif;letter-spacing:.24em;text-transform:uppercase;padding:10px 0;cursor:pointer}@media (orientation:portrait) and (max-width:900px){#intro-video video{width:100vh;height:100vw;object-fit:cover;transform:rotate(90deg) scale(1.35)}}';
 document.head.appendChild(st);
-var v=document.createElement('video');v.src='style/video/panora%20logo.mp4';v.autoplay=true;v.muted=true;v.playsInline=true;v.preload='auto';v.setAttribute('autoplay','');v.setAttribute('muted','');v.setAttribute('playsinline','');
+var v=document.createElement('video');v.src='style/video/PANORA_CANVA.mp4';v.autoplay=true;v.muted=true;v.playsInline=true;v.preload='auto';v.setAttribute('autoplay','');v.setAttribute('muted','');v.setAttribute('playsinline','');
 var sk=document.createElement('button');sk.type='button';sk.className='ivskip';sk.textContent='Saltar';
 w.appendChild(v);w.appendChild(sk);document.body.appendChild(w);
 function cleanup(){window.removeEventListener('wheel',noScroll);window.removeEventListener('touchmove',noScroll);document.removeEventListener('keydown',kb);unlock();if(document.fullscreenElement&&document.exitFullscreen)document.exitFullscreen().catch(function(){});if(w.parentNode)w.parentNode.removeChild(w)}
