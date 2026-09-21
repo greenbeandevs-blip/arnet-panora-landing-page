@@ -12,7 +12,7 @@
 @font-face{font-family:"Norms";src:url("style/font/TT%20Norms%20sv/TTNorms-Regular.otf") format("opentype");font-weight:400;font-display:swap}
 @font-face{font-family:"Norms";src:url("style/font/TT%20Norms%20sv/TTNorms-Bold.otf") format("opentype");font-weight:700;font-display:swap}
 @font-face{font-family:"Norms";src:url("style/font/TT%20Norms%20sv/TTNorms-Italic.otf") format("opentype");font-weight:400;font-style:italic;font-display:swap}
-:root{--br:#673d1f;--bk:#000;--wh:#fff;--bg:#e8dcc4;--brand:"Arista","Cormorant Garamond",serif;--ui:"Norms","Figtree",sans-serif;--g:clamp(20px,5.5vw,96px);--gap:clamp(10px,1.7vw,26px)}
+:root{--br:#673d1f;--bk:#000;--wh:#fff;--bg:#e8dcc4;--brand:"Arista","Cormorant Garamond",serif;--ui:"Norms","Figtree",sans-serif;--g:clamp(20px,5.5vw,96px);--gap:clamp(10px,1.7vw,26px);--rad:clamp(10px,1.6vw,24px)}
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{background:var(--bg);color:var(--br);font-family:var(--ui);font-weight:300;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 #s{position:fixed;top:0;left:0;width:100vw;will-change:transform;overflow:hidden}
@@ -26,7 +26,7 @@ p.b{font-size:clamp(14px,1.15vw,17px);line-height:1.75;max-width:40ch}
 .g{display:grid;grid-template-columns:repeat(12,1fr);column-gap:var(--gap)}
 .g>*{grid-column:var(--d,1/-1);grid-row:var(--r,auto)}
 /* image mask: soft brown tone shows while the picsum photo is still loading */
-.m{position:relative;overflow:hidden;background:rgba(103,61,31,.16);transition:clip-path 1.9s cubic-bezier(.16,1,.3,1)}
+.m{position:relative;overflow:hidden;background:rgba(103,61,31,.16);border-radius:var(--rad);transition:clip-path 1.9s cubic-bezier(.16,1,.3,1)}
 .m .im{transition:transform 2.4s cubic-bezier(.16,1,.3,1)}
 /* images are visible by default; the reveal animation only applies when JS is running */
 .js .m:not(.in){clip-path:inset(100% 0 0 0)}
@@ -58,7 +58,7 @@ nav .btn{padding:.95em 1.6em}
 /* hero */
 #hero{height:100vh;min-height:640px;padding:0;background:#2a1a0e;color:var(--wh);overflow:hidden}
 #hero .bg{position:absolute;inset:-6% 0;background:#2a1a0e}
-#hero .bg img{width:100%;height:100%;object-fit:cover;filter:brightness(.55)}
+#hero .bg img{width:100%;height:100%;object-fit:cover;filter:brightness(.55);border-radius:var(--rad)}
 #hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.35),transparent 30%,transparent 55%,rgba(0,0,0,.55))}
 #hero h1{position:absolute;z-index:2;left:var(--g);right:var(--g);bottom:15vh;font-size:15.2vw;white-space:nowrap}
 #hero h1 span{display:inline-block}#hero h1 span+span{margin-left:.2em}
@@ -183,9 +183,9 @@ section{overflow-x:clip}
 <div id="s">
 <!-- HERO -->
 <section id="hero" data-t="d">
- <div class="bg" data-s=".18"><img src="https://picsum.photos/seed/arnet-hero/1920/1080" alt=""></div>
+ <div class="bg" data-s=".18"><img src="/style/images/Gemini_Generated_Image_2d40cc2d40cc2d40.jfif" alt=""></div>
  <h1 class="brand" data-s="-.05"><span>arnet</span><span><img class="title-mark" src="style/images/Panora_logo.png" alt=""></span></h1>
- <div class="hi" data-s=".12"><div class="fr"><div class="m" data-s=".04"><div class="im" style="background-image:url('https://picsum.photos/seed/arnet-hero-inset/600/800')"></div></div></div><p class="cap">Fig. 0 — Casa Lomas, fachada</p></div>
+ <div class="hi" data-s=".12"><div class="fr"><div class="m" data-s=".04"></div></div></div>
  <div class="ft"><p class="cap">Recorridos virtuales, renders, planos de planta y diseño de interiores.<br>Edición 01</p><p class="cap sc">Desplázate despacio</p></div>
 </section>
 
@@ -194,10 +194,10 @@ section{overflow-x:clip}
  <div class="g">
   <p class="eb" style="--d:1/5">01 — Estudio</p>
   <h2 class="q z" style="--d:2/13;--m:1/-1;margin-top:clamp(24px,4vw,60px)" data-s="-.03">Fotografiamos lo que aún no existe, <i>y te dejamos recorrerlo.</i></h2>
-  <div style="--d:1/6;--r:3"><div class="fr"><div class="m a" data-s=".08"><div class="im" style="background-image:url('https://picsum.photos/seed/arnet-intro-slats/800/1067')"></div></div></div><p class="cap" style="margin-top:22px">Fig. 1 — Estudio de madera, alzado oeste</p></div>
+  <div style="--d:1/6;--r:3"><div class="fr"><div class="m a" data-s=".08"><div class="im" style="background-image:url('/style/images/85ee97f9-e6f2-4917-b28f-52213fc25eb7.jfif')"></div></div></div><p class="cap" style="margin-top:22px">Fig. 1a — Concepto de montaña</p></div>
   <div class="t" style="--d:8/12;--r:3">
-   <div class="m ts" data-s=".1"><div class="im" style="background-image:url('https://picsum.photos/seed/arnet-intro-detail/800/600')"></div></div>
-   <p class="cap" style="margin:18px 0 clamp(28px,4vw,56px)">Fig. 1b — Detalle de carpintería</p>
+   <div class="m ts" data-s=".1"><div class="im" style="background-image:url('/style/images/92fd26bb-d47a-46cb-a61b-e2fb87583d86.jfif')"></div></div>
+   <p class="cap" style="margin:18px 0 clamp(28px,4vw,56px)">Fig. 1b — Concepto de habitación natural</p>
    <p class="b">Arnet panora es el estudio de visualización de Arnet. Cada espacio se construye primero como luz, material y proporción, y luego se entrega como un recorrido, un render o un plano.</p><a class="btn" href="#pano">Ver recorridos</a>
   </div>
  </div>
@@ -206,14 +206,14 @@ section{overflow-x:clip}
 <!-- PANORAMICO -->
 <section id="pano" data-t="d">
  <div class="g" style="padding-top:clamp(50px,9vh,110px)"><p class="eb" style="--d:1/5">02 — Recorridos</p><p class="cap" style="--d:8/13;text-align:right">Recorrido 04 — Casa Lomas, sala de estar</p></div>
- <div class="full m" style="margin-top:28px"><div class="im" style="background-image:url('https://picsum.photos/seed/arnet-pano/1920/1080')" data-s=".1"></div><div class="ring">360°</div></div>
+ <div class="full m" style="margin-top:28px"><div class="im" style="background-image:url('/style/images/8f20f23c-0244-4701-a409-3e39ce8644ea.png')" data-s=".1"></div><div class="ring">360°</div></div>
  <h2 class="brand big" data-x="-.12">Panoramico</h2>
  <div class="g pr">
   <p class="b" style="--d:2/7">Recorridos de 360° a los que entras desde un teléfono, un visor o un navegador. Arrastra para girar, toca para moverte entre habitaciones.</p>
   <div class="th" style="--d:8/13">
-   <div><div class="m" data-s=".05"><div class="im" style="background-image:url('https://picsum.photos/seed/arnet-pano-thumb-1/600/800')"></div></div><p class="cap">Sala</p></div>
-   <div><div class="m" data-s=".09"><div class="im" style="background-image:url('https://picsum.photos/seed/arnet-pano-thumb-2/600/800')"></div></div><p class="cap">Cocina</p></div>
-   <div><div class="m" data-s=".13"><div class="im" style="background-image:url('https://picsum.photos/seed/arnet-pano-thumb-3/600/800')"></div></div><p class="cap">Terraza</p></div>
+   <div><div class="m" data-s=".05"><div class="im" style="background-image:url('/style/images/84a6ec4f-10bd-40e3-bab1-23f2684692a9.jfif')"></div></div><p class="cap">Sala</p></div>
+   <div><div class="m" data-s=".09"><div class="im" style="background-image:url('/style/images/967fa647-3786-4ce6-9686-3c5d4579ef77.jfif')"></div></div><p class="cap">Cocina</p></div>
+   <div><div class="m" data-s=".13"><div class="im" style="background-image:url('/style/images/db85d153-bb11-447b-a45b-2070f80abfce.jfif')"></div></div><p class="cap">Terraza</p></div>
   </div>
  </div>
 </section>
@@ -223,14 +223,14 @@ section{overflow-x:clip}
  <div class="g">
   <p class="eb" style="--d:1/5">03 — Renders</p>
   <h2 style="--d:1/10;--r:2;margin-top:2vw" class="z" data-s="-.05">Renderizado</h2>
-  <div style="--d:7/13;--r:2/5" class="fr"><div class="m A" data-s=".05"><div class="im" style="background-image:url('https://picsum.photos/seed/arnet-render-a/800/1000')"></div></div></div>
+  <div style="--d:7/13;--r:2/5" class="fr"><div class="m A" data-s=".05"><div class="im" style="background-image:url('/style/images/ff16e667-779c-46db-a49d-dd1e04836182.jfif')"></div></div></div>
   <h2 style="--d:3/9;--r:3;color:var(--bk);margin-top:1vw" class="z" data-s="-.09">antes de</h2>
-  <div class="m B" style="--d:1/6;--r:4;--m:1/9" data-s=".14"><div class="im" style="background-image:url('https://picsum.photos/seed/arnet-render-b/800/1067')"></div></div>
+  <div class="m B" style="--d:1/6;--r:4;--m:1/9" data-s=".14"><div class="im" style="background-image:url('/style/images/35d93c3b-0a9d-47f8-93d3-b7975ee025dc.png')"></div></div>
   <h2 style="--d:4/13;--r:5;margin-top:-1.4vw;--m:1/-1" class="z" data-s="-.04">ser construido</h2>
   <!-- image directly below "ser construido" -->
-  <div class="m D" style="--d:5/12;--r:6;--m:1/-1" data-s=".06"><div class="im" style="background-image:url('https://picsum.photos/seed/arnet-built-detail/1200/750')"></div></div>
+  <div class="m D" style="--d:5/12;--r:6;--m:1/-1" data-s=".06"><div class="im" style="background-image:url('/style/images/52be204f-e68d-4b14-b934-dbab5e094be3.png')"></div></div>
   <p class="b tx" style="--d:2/6;--r:7;margin-top:clamp(40px,6vw,100px)">Renders de arquitectura e interiores con materiales reales, luz natural real y errores que aún se pueden corregir.</p>
-  <div style="--d:8/12;--r:7;--m:3/-1;margin-top:clamp(40px,6vw,100px)"><div class="m E" data-s=".03"><div class="im" style="background-image:url('https://picsum.photos/seed/arnet-render-c/800/1067')"></div></div><p class="cap" style="margin-top:18px">Fig. 2 — Estudio vespertino, sala de la galería</p></div>
+
  </div>
 </section>
 
@@ -240,10 +240,9 @@ section{overflow-x:clip}
 <!-- PLANOS -->
 <section id="plans" data-t="l">
  <div class="g" style="align-items:start">
-  <div class="pl m" style="--d:1/8;--r:1" data-s=".04"><div class="im" style="background-image:url('https://picsum.photos/seed/arnet-plan/800/1000')"></div></div>
-  <div style="--d:9/13;--r:1;--m:1/-1;padding-top:clamp(0px,6vw,90px)"><p class="eb">04 — Planos</p><h2 style="margin-top:28px" data-s="-.05">Planos que se leen como dibujos</h2><div class="m" style="margin-top:clamp(34px,5vw,72px);aspect-ratio:4/3" data-s=".05"><div class="im" style="background-image:url('https://picsum.photos/seed/arnet-plan-detail/900/700')"></div></div></div>
+  <div class="pl m" style="--d:1/8;--r:1" data-s=".04"><div class="im" style="background-image:url('/style/images/3b82b65b-d773-464d-926f-c4ac1a1ee762.png')"></div></div>
+  <div style="--d:9/13;--r:1;--m:1/-1;padding-top:clamp(0px,6vw,90px)"><p class="eb">04 — Planos</p><h2 style="margin-top:28px" data-s="-.05">Planos que se leen como dibujos</h2><div class="m" style="margin-top:clamp(34px,5vw,72px);aspect-ratio:4/3" data-s=".05"><div class="im" style="background-image:url('/style/images/6916d7a0-19ec-4eb2-9f9b-d65ff2bf2563.png')"></div></div></div>
   <div class="r2" style="--d:1/7;--r:2;--m:1/-1;align-self:end" data-s=".03"><div class="list"><div><span>Planta baja</span><span>142 m²</span></div><div><span>Nivel superior</span><span>96 m²</span></div><div><span>Plano amueblado</span><span>2D + 3D</span></div><div><span>Secciones</span><span>1:50</span></div></div><p class="cap" style="margin-top:20px">Fig. 3 — Casa Lomas, plano a 1:100</p></div>
-  <div class="r2" style="--d:8/13;--r:2;--m:1/-1"><div class="m" style="aspect-ratio:5/4" data-s=".06"><div class="im" style="background-image:url('https://picsum.photos/seed/arnet-plan-axo/900/720')"></div></div><p class="cap" style="margin-top:18px">Fig. 3b — Axonométrica, nivel superior</p></div>
  </div>
 </section>
 
@@ -251,13 +250,13 @@ section{overflow-x:clip}
 <section id="int" data-t="l">
  <div class="g">
   <p class="eb" style="--d:1/5">05 — Interiores</p>
-  <div style="--d:1/8;--r:2;margin-top:28px" class="fr"><div class="m A" data-s=".04"><div class="im" style="background-image:url('https://picsum.photos/seed/arnet-int-a/800/1000')"></div></div></div>
-  <div class="m B" style="--d:9/13;--r:2;--m:4/-1" data-s=".16"><div class="im" style="background-image:url('https://picsum.photos/seed/arnet-int-b/800/1067')"></div></div>
+  <div style="--d:1/8;--r:2;margin-top:28px" class="fr"><div class="m A" data-s=".04"><div class="im" style="background-image:url('/style/images/50a4337d-b1ed-4d69-87be-3f12e9c0c533.jfif')"></div></div></div>
+  <div class="m B" style="--d:9/13;--r:2;--m:4/-1" data-s=".16"><div class="im" style="background-image:url('/style/images/84d0484a-255b-4645-afac-983a84fad752.jfif')"></div></div>
   <h2 class="brand big" style="--d:1/-1;--r:3;margin-left:-.03em" data-x=".1">interiores</h2>
   <p class="b" style="--d:2/6;--r:4;margin-top:clamp(30px,5vw,80px)">Mobiliario, paleta e iluminación compuestos juntos, para que el espacio que apruebas sea el que recibes.</p>
-  <div style="--d:8/11;--r:4;--m:4/-1"><div class="m C" data-s=".08"><div class="im" style="background-image:url('https://picsum.photos/seed/arnet-int-c/800/800')"></div></div><p class="cap" style="margin-top:18px">Fig. 4 — Roble y yeso, comedor</p></div>
-  <div class="m T" style="--d:1/5;--r:5;--m:1/8" data-s=".1"><div class="im" style="background-image:url('https://picsum.photos/seed/arnet-int-d/800/1067')"></div></div>
-  <div style="--d:6/13;--r:5;--m:1/-1"><div class="m W" data-s=".05"><div class="im" style="background-image:url('https://picsum.photos/seed/arnet-int-e/1400/790')"></div></div><p class="cap" style="margin-top:18px">Fig. 5 — Sala de estar, luz de tarde</p></div>
+  <div style="--d:8/11;--r:4;--m:4/-1"><div class="m C" data-s=".08"><div class="im" style="background-image:url('/style/images/c228eabc-615e-4810-b1b4-f57e542d8842.jfif')"></div></div><p class="cap" style="margin-top:18px">Fig. 4 — Comedor para frutas, cocina</p></div>
+  <div class="m T" style="--d:1/5;--r:5;--m:1/8" data-s=".1"><div class="im" style="background-image:url('/style/images/9ece4787-4822-4645-8559-506b78f71ebf.jfif')"></div></div>
+  <div style="--d:6/13;--r:5;--m:1/-1"><div class="m W" data-s=".05"><div class="im" style="background-image:url('/style/images/b0b7911f-205e-4b29-ae89-c4fb3277cff2.jfif')"></div></div><p class="cap" style="margin-top:18px">Fig. 5 — Piscina de area social</p></div>
  </div>
 </section>
 
@@ -305,13 +304,14 @@ function scene(t,v){const[a,b,c]=P[v%4];let s=`<rect width="400" height="500" fi
  if(t=='plan')s+=`<g fill="none" stroke="${c}" stroke-width="3"><rect x="40" y="60" width="320" height="380"/><path d="M40 220H200V440M200 220H360M200 60V140M120 60V140H200"/><path d="M200 300a30 30 0 0 1 30 -30" stroke-width="1.5"/></g><g stroke="${c}" opacity=".4"><path d="M40 40H360M40 460H360"/></g>`;
  return`url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice">${s}</svg>`)}")`}
 function paint(r){r.querySelectorAll('[data-img]').forEach(e=>{const[t,v]=e.dataset.img.split(':');e.style.backgroundImage=scene(t,+v)})}
-const items=[['room',2,26],['plan',0,20],['arch',1,30],['pano',3,34],['slats',0,20],['room',1,28],['plan',2,22],['arch',0,26]];
-[['r1',0],['r2',3]].forEach(([id,o])=>{const r=document.getElementById(id);let h='';for(let k=0;k<2;k++)items.forEach((it,i)=>{const n=items[(i+o)%8];const seed='car-'+n[0]+'-'+n[1]+'-'+i+'-'+k;h+=`<div class="m in" style="width:${n[2]}vw"><div class="im" style="background-image:url('https://picsum.photos/seed/${seed}/800/600')"></div></div>`});r.innerHTML=h});
+const items=[['https://images.pexels.com/photos/20557234/pexels-photo-20557234.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200',26],['https://images.pexels.com/photos/25565683/pexels-photo-25565683.png?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200',20],['https://images.pexels.com/photos/20548957/pexels-photo-20548957.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200',30],['https://images.pexels.com/photos/32277993/pexels-photo-32277993.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200',34],['https://images.pexels.com/photos/20548025/pexels-photo-20548025.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200',20],['https://images.pexels.com/photos/39017406/pexels-photo-39017406.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200',28],['https://images.pexels.com/photos/20573189/pexels-photo-20573189.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200',22],['https://images.pexels.com/photos/20557088/pexels-photo-20557088.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200',26]];
+[['r1',0],['r2',3]].forEach(([id,o])=>{const r=document.getElementById(id);let h='';for(let k=0;k<2;k++)items.forEach((p,i)=>{const n=items[(i+o)%8];h+=`<div class="m in" style="width:${n[1]}vw; background-color: transparent"><div class="im" style="background-image:url('${n[0]}')"></div></div>`});r.innerHTML=h});
 paint(document);
 // depth layers: [section,type,left%,top%,size vw,speed(-far..+near),blur px,opacity,spin,baseRot,onMobile]
 const D=[
 ['hero','f',62,8,40,-.22,28,.14,0,0,1],['hero','r',6,12,26,-.14,0,.3,.004,0,1],['hero','c',70,30,18,.05,0,.5,0,0,1],['hero','s',84,62,7,.35,2,.55,.02,20,0],['hero','p',20,52,.9,.6,0,.8,0,0,1],['hero','c',44,72,5,.55,3,.5,0,0,1],['hero','l',0,84,100,-.06,0,.35,0,0,1],
-['intro','f',-6,6,30,-.2,30,.1,0,0,1],['intro','c',44,4,14,-.1,0,.35,0,0,1],['intro','a',80,55,16,-.16,2,.3,0,0,1],['intro','s',66,78,5,.4,1,.5,.015,12,0],['intro','r',84,8,18,.12,0,.25,-.004,0,0],['intro','p',36,60,.8,.55,0,.7,0,0,1],['intro','c',3,70,6,.5,4,.3,0,0,1],
+['intro','f',-6,6,30,-.2,30,.1,0,0,1],['intro','c',44,4,14,-.1,0,.35,
+0,0,1],['intro','r',80,20,20,.08,0,.25,.004,0,1],['intro','s',40,40,6,.5,1,.5,-.02,20,0],['intro','a',88,60,12,-.18,2,.3,0,0,0],['intro','c',90,90,7,.6,3,.3,0,0,1],['intro','p',22,50,.9,.6,0,.7,0,0,1],
 ['pano','f',70,18,44,-.25,30,.12,0,0,1],['pano','r',-6,52,34,-.12,0,.25,.005,0,1],['pano','c',78,60,12,.3,0,.4,0,0,1],['pano','s',10,88,6,.5,2,.5,-.02,30,0],['pano','a',88,4,12,-.18,2,.3,0,0,0],['pano','p',30,30,.9,.7,0,.8,0,0,1],['pano','l',12,94,60,.1,0,.4,0,0,1],
 ['render','f',60,10,36,-.24,28,.13,0,0,1],['render','c',4,26,16,-.12,0,.35,0,0,1],['render','r',86,44,20,.08,0,.25,.004,0,0],['render','s',44,52,5,.45,1,.5,.02,15,0],['render','a',-2,68,15,-.18,3,.3,0,0,1],['render','c',72,88,9,.55,3,.4,0,0,1],['render','p',52,30,1,.7,0,.8,0,0,1],
 ['car','c',10,10,8,.4,2,.4,0,0,1],['car','f',80,60,26,-.2,26,.12,0,0,1],
@@ -378,26 +378,13 @@ var w=document.createElement('div');w.id='intro-video';
 var st=document.createElement('style');
 st.textContent='#intro-video{position:fixed;inset:0;z-index:2147483647;background:#000;display:flex;align-items:center;justify-content:center;opacity:1;transition:opacity .9s ease;overflow:hidden}#intro-video.fade{opacity:0;pointer-events:none}#intro-video video{width:100%;height:100%;object-fit:cover;background:#000}#intro-video .ivskip{position:absolute;right:22px;bottom:22px;background:none;color:#fff;border:0;border-bottom:1px solid rgba(255,255,255,.6);font:300 11px/1 "Norms","Figtree",sans-serif;letter-spacing:.24em;text-transform:uppercase;padding:10px 0;cursor:pointer}@media (orientation:portrait) and (max-width:900px){#intro-video video{width:100vh;height:100vw;object-fit:cover;transform:rotate(90deg) scale(1.35)}}';
 document.head.appendChild(st);
-var v=document.createElement('video');v.src='style/video/panora%20logo.mp4';v.autoplay=true;v.muted=true;v.playsInline=true;v.preload='auto';
+var v=document.createElement('video');v.src='style/video/panora%20logo.mp4';v.autoplay=true;v.muted=true;v.playsInline=true;v.preload='auto';v.setAttribute('autoplay','');v.setAttribute('muted','');v.setAttribute('playsinline','');
 var sk=document.createElement('button');sk.type='button';sk.className='ivskip';sk.textContent='Saltar';
 w.appendChild(v);w.appendChild(sk);document.body.appendChild(w);
-// Intro music — plays alongside the video, fades out exactly 10s after it starts.
-var aud=document.createElement('audio');aud.src='style/audio/11325622-strings-intro-239970.mp3';aud.preload='auto';aud.loop=false;
-w.appendChild(aud);
-var faded=false,wid=0;
-function fadeAudio(){if(faded)return;faded=true;var t0=performance.now(),from=aud.volume,dur=1500;
- (function step(t){var k=Math.min(1,(t-t0)/dur);aud.volume=from*(1-k);if(k<1)requestAnimationFrame(step);else try{aud.pause()}catch(e){}})(t0)}
-function watchAudio(){if(faded)return;if(aud.currentTime>=10){fadeAudio();return}wid=requestAnimationFrame(watchAudio)}
-function stopAudio(){faded=true;cancelAnimationFrame(wid);try{aud.pause()}catch(e){}}
-function startAudio(){try{var q=aud.play();if(q&&q.catch)q.catch(function(){})}catch(e){}}
-aud.addEventListener('play',watchAudio);
-var ghand=function(){startAudio();window.removeEventListener('pointerdown',ghand);window.removeEventListener('keydown',ghand)};
-window.addEventListener('pointerdown',ghand);window.addEventListener('keydown',ghand);
-function cleanup(){window.removeEventListener('wheel',noScroll);window.removeEventListener('touchmove',noScroll);document.removeEventListener('keydown',kb);window.removeEventListener('pointerdown',ghand);window.removeEventListener('keydown',ghand);stopAudio();unlock();if(document.fullscreenElement&&document.exitFullscreen)document.exitFullscreen().catch(function(){});if(w.parentNode)w.parentNode.removeChild(w)}
+function cleanup(){window.removeEventListener('wheel',noScroll);window.removeEventListener('touchmove',noScroll);document.removeEventListener('keydown',kb);unlock();if(document.fullscreenElement&&document.exitFullscreen)document.exitFullscreen().catch(function(){});if(w.parentNode)w.parentNode.removeChild(w)}
 function done(){try{localStorage.setItem(KEY,String(Date.now()))}catch(e){}w.classList.add('fade');setTimeout(cleanup,900)}
 v.addEventListener('ended',done);v.addEventListener('error',cleanup);sk.addEventListener('click',done);
-var p=v.play();if(p&&p.catch)p.catch(function(){});
-startAudio();
+var p=v.play();if(p&&p.catch)p.catch(function(err){console.log('Autoplay blocked:',err)});
 if(w.requestFullscreen){var f=w.requestFullscreen();if(f&&f.catch)f.catch(function(){})}
 })();
 </script></body></html>
