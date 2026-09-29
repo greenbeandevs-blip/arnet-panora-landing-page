@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="shortcut icon" href="/style/images/logo/arnet_ico.png" type="image/x-icon">
 <title>arnet panora</title>
 <script>document.documentElement.classList.add('js')</script>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@300;400;500&family=Figtree:wght@300;400;500&display=swap" rel="stylesheet">
@@ -201,7 +202,7 @@ section{overflow-x:clip}
 }
 @media(prefers-reduced-motion:reduce){.m,.m .im,.sc:after{transition:none;animation:none}}
 </style></head><body>
-<nav><a href="#hero" class="brand">arnet panora</a><div><a href="#pano">Recorridos</a><a href="#render">Renders</a><a href="#plans">Planos</a><a href="#portfolio">Portfolio</a><a href="#end" class="btn o">Contacto</a><button id="mb" aria-expanded="false">Menú</button></div></nav>
+<nav><a href="#hero" class="brand"><img src="/style/images/logo/arnet_logo.png" style="height: 20px; margin-right: 20px;" alt="">arnet panora</a><div><a href="#pano">Recorridos</a><a href="#render">Renders</a><a href="#plans">Planos</a><a href="#portfolio">Portfolio</a><a href="#end" class="btn o">Contacto</a><button id="mb" aria-expanded="false">Menú</button></div></nav>
 <div id="menu"><a href="#pano">recorridos</a><a href="#render">renders</a><a href="#plans">planos</a><a href="#portfolio">portfolio</a><a href="#tour">tour</a><a href="#end">contacto</a></div>
 
 <div id="intro-video" aria-hidden="false">
@@ -285,7 +286,7 @@ section{overflow-x:clip}
   <p class="b" style="--d:2/6;--r:4;margin-top:clamp(30px,5vw,80px)">Mobiliario, paleta e iluminación compuestos juntos, para que el espacio que apruebas sea el que recibes.</p>
   <div style="--d:8/11;--r:4;--m:4/-1"><div class="m C" data-s=".08"><div class="im" style="background-image:url('/style/images/c228eabc-615e-4810-b1b4-f57e542d8842.jfif')"></div></div><p class="cap" style="margin-top:18px">Fig. 4 — Arco mediterráneo, pasillo</p></div>
   <div class="m T" style="--d:1/5;--r:5;--m:1/8" data-s=".1"><div class="im" style="background-image:url('/style/images/dbdb29fbbefa76be7ce22e3d4b2555b6.jpg')"></div></div>
-  <div style="--d:6/13;--r:5;--m:1/-1"><div class="m W" data-s=".05"><div class="im" style="background-image:url('/style/images/aa26f0f1-9091-4fbf-bc0a-fb36ad464313.png')"></div></div><p class="cap" style="margin-top:18px">Fig. 5 — Piscina de area social</p></div>
+  <div style="--d:6/13;--r:5;--m:1/-1"><div class="m W" data-s=".05"><div class="im" style="background-image:url('/style/images/aa26f0f1-9091-4fbf-bc0a-fb36ad464313.png')"></div></div><p class="cap" style="margin-top:18px">Fig. 5 — Oficina moderna verde</p></div>
  </div>
 </section>
 
@@ -293,7 +294,7 @@ section{overflow-x:clip}
 <section id="portfolio" data-t="l">
  <div class="g">
   <div style="--d:1/8;--r:1;--m:1/-1"><p class="eb">06 — Portafolio</p><h2 style="margin-top:clamp(28px,4vw,64px)" data-s="-.04">Nuestro portafolio</h2></div>
-  <div class="portfolio-copy" style="--d:9/13;--r:1;--m:1/-1"><p class="b">Un viaje a través de espacios, materias y silencios creados antes de encontrar su lugar en el mundo.</p><a class="btn" href="#tour">Explora nuestro trabajo</a></div>
+  <div class="portfolio-copy" style="--d:9/13;--r:1;--m:1/-1"><p class="b">Un viaje a través de espacios, materias y silencios creados antes de encontrar su lugar en el mundo.</p><a class="btn" href="about.html">Explora nuestro trabajo</a></div>
   <a class="portfolio-link pj p1" target="_blank" rel="noopener noreferrer" style="--d:1/8;--r:2;--ar:16/11">
    <div class="m" data-s=".07"><div class="im" style="background-image:url('/style/images/93449727-2147-4bfc-8788-320a93927cd7.png')"></div></div>
    <div class="portfolio-overlay"><span class="eyebrow">01 — Casa Lomas, residencial</span></div>
@@ -417,53 +418,40 @@ tick();
 (function(){
   var KEY='panora_intro_played', CD=5*60*1000;
   function getStoredTime(){
-    try{
-      var ts=localStorage.getItem(KEY);
-      if(ts!==null&&ts!==undefined&&ts!=='')return Number(ts);
-    }catch(e){}
-    try{
-      var ss=sessionStorage.getItem(KEY);
-      if(ss!==null&&ss!==undefined&&ss!=='')return Number(ss);
-    }catch(e){}
-    return 0;
-  }
+    try{return Number(localStorage.getItem(KEY))||0;}catch(e){
+    try{return Number(sessionStorage.getItem(KEY))||0;}catch(e2){return 0;}}}
   function setStoredTime(value){
-    try{localStorage.setItem(KEY,String(value));return;}catch(e){}
-    try{sessionStorage.setItem(KEY,String(value));}catch(e){}
-  }
+    try{localStorage.setItem(KEY,String(value));}catch(e){
+    try{sessionStorage.setItem(KEY,String(value));}catch(e2){}}}
 
   var lastPlayed=getStoredTime();
-  if(lastPlayed && Date.now()-lastPlayed < CD){ return; }
-
   var w=document.getElementById('intro-video');
   if(!w)return;
+
+  if(lastPlayed && Date.now()-lastPlayed < CD){
+    w.remove();
+    return;
+  }
+
   var v=w.querySelector('video');
   var sk=w.querySelector('.ivskip');
   if(!v||!sk)return;
-  // Block page scroll while the intro video is loading / playing.
-  var ho=document.documentElement.style,bo=document.body.style;
-  var prevO={h:ho.overflow,b:bo.overflow,p:bo.position,t:bo.top,l:bo.left,r:bo.right,w:bo.width};
-  function lock(){ho.overflow='hidden';bo.overflow='hidden';bo.position='fixed';bo.top='0';bo.left='0';bo.right='0';bo.width='100%';try{scrollTo(0,0)}catch(e){}}
-  function unlock(){
-    if(prevO.h) ho.overflow=prevO.h; else ho.overflow='auto';
-    if(prevO.b) bo.overflow=prevO.b; else bo.overflow='visible';
-    if(prevO.p) bo.position=prevO.p; else bo.position='static';
-    if(prevO.t) bo.top=prevO.t; else bo.top='auto';
-    if(prevO.l) bo.left=prevO.l; else bo.left='auto';
-    if(prevO.r) bo.right=prevO.r; else bo.right='auto';
-    if(prevO.w) bo.width=prevO.w; else bo.width='auto';
-  }
+
+  var locked=false;
+  function lock(){if(locked)return;locked=true;document.documentElement.style.overflow='hidden';document.body.style.overflow='hidden';document.body.style.position='fixed';document.body.style.top='0';document.body.style.left='0';document.body.style.right='0';document.body.style.width='100%';try{scrollTo(0,0)}catch(e){}}
+  function unlock(){if(!locked)return;locked=false;document.documentElement.style.overflow='';document.body.style.overflow='';document.body.style.position='';document.body.style.top='';document.body.style.left='';document.body.style.right='';document.body.style.width='';}
+
   lock();
-  function noScroll(e){e.preventDefault()}
-  window.addEventListener('wheel',noScroll,{passive:false});
-  window.addEventListener('touchmove',noScroll,{passive:false});
-  var kb=function(e){var k=[32,33,34,35,36,37,38,39,40];if(k.indexOf(e.keyCode)>-1)e.preventDefault()};
-  document.addEventListener('keydown',kb);
-  function cleanup(){window.removeEventListener('wheel',noScroll);window.removeEventListener('touchmove',noScroll);document.removeEventListener('keydown',kb);unlock();document.documentElement.style.background='';document.body.style.background='';if(document.fullscreenElement&&document.exitFullscreen)document.exitFullscreen().catch(function(){});w.style.display='none';if(w.parentNode)w.parentNode.removeChild(w)}
-  function done(){if(w.style.display==='none')return;setStoredTime(Date.now());w.classList.add('fade');document.documentElement.style.background='#e8dcc4';document.body.style.background='#e8dcc4';setTimeout(cleanup,900)}
-  v.addEventListener('ended',done);v.addEventListener('error',cleanup);sk.addEventListener('click',done);
+  var done_called=false;
+  function done(){if(done_called)return;done_called=true;setStoredTime(Date.now());w.classList.add('fade');setTimeout(function(){unlock();w.remove();},900);}
+
+  v.addEventListener('ended',done);
+  v.addEventListener('error',done);
+  sk.addEventListener('click',done);
   setTimeout(done,15000);
-  var p=v.play();if(p&&p.catch)p.catch(function(err){console.log('Autoplay blocked:',err)});
+
+  var p=v.play();
+  if(p&&p.catch)p.catch(function(err){console.log('Autoplay blocked:',err)});
   if(w.requestFullscreen){var f=w.requestFullscreen();if(f&&f.catch)f.catch(function(){})}
 })();
 </script></body></html>
