@@ -45,17 +45,22 @@ p.b{font-size:clamp(14px,1.15vw,17px);line-height:1.75;max-width:40ch}
 .ring{position:absolute;left:50%;top:50%;width:min(24vw,190px);aspect-ratio:1;translate:-50% -50%;border:1px solid currentColor;border-radius:50%;display:grid;place-items:center;font-size:11px;letter-spacing:.2em;color:inherit;z-index:2}
 .ring:before{content:"";position:absolute;inset:14%;border:1px dashed currentColor;border-radius:50%;opacity:.6}
 /* nav */
-nav{position:fixed;z-index:9;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:calc(22px + env(safe-area-inset-top,0px)) var(--g) 0;color:var(--wh);transition:color .6s;pointer-events:none}
+nav{position:fixed;z-index:9;top:0;left:0;right:0;display:flex;justify-content:center;padding:calc(12px + env(safe-area-inset-top,0px)) var(--g) 0;color:var(--bg);transition:color .4s ease;pointer-events:none}
+nav.show{color:var(--br)}
+nav .nav-pill{display:flex;justify-content:space-between;align-items:center;width:100%;max-width:calc(100% - var(--g)*2);background:rgba(235,225,210,0);backdrop-filter:blur(0px);-webkit-backdrop-filter:blur(0px);border-radius:60px;padding:12px 28px;pointer-events:auto;box-shadow:0 0 0 rgba(0,0,0,0);transition:background .4s ease,backdrop-filter .4s ease,-webkit-backdrop-filter .4s ease,box-shadow .4s ease}
+nav.show .nav-pill{background:rgba(235,225,210,.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 2px 16px rgba(0,0,0,.08)}
 nav.dk{color:var(--br)}
 nav>*{pointer-events:auto}
+nav .nav-pill>*{pointer-events:auto}
 nav .brand{font-size:clamp(24px,2.3vw,34px);color:inherit;text-decoration:none;line-height:1}
 nav div{display:flex;align-items:center;gap:clamp(18px,2.6vw,42px)}
 nav div a{color:inherit;text-decoration:none;font-size:11px;letter-spacing:.2em;text-transform:uppercase}
 nav .btn{padding:.95em 1.6em}
 #mb{display:none;background:none;border:0;color:inherit;font:inherit;font-size:11px;letter-spacing:.22em;text-transform:uppercase;padding:10px 0;cursor:pointer}
-#menu{position:fixed;inset:0;z-index:8;background:var(--br);color:var(--bg);display:flex;flex-direction:column;justify-content:center;padding:0 var(--g);gap:2.2vh;clip-path:inset(0 0 100% 0);transition:clip-path 1s cubic-bezier(.16,1,.3,1)}
+#menu{position:fixed;inset:0;z-index:8;background:var(--br);color:var(--bg);display:flex;flex-direction:column;justify-content:center;padding:calc(80px + env(safe-area-inset-top,0px)) var(--g) calc(30px + env(safe-area-inset-bottom,0px));gap:clamp(12px,3vh,28px);clip-path:inset(0 0 100% 0);transition:clip-path 1s cubic-bezier(.16,1,.3,1)}
 #menu.on{clip-path:inset(0)}
-#menu a{font-family:var(--brand);text-transform:lowercase;font-size:14vw;line-height:.95;color:inherit;text-decoration:none}
+#menu a{font-family:var(--brand);text-transform:lowercase;font-size:clamp(32px,11vw,14vw);line-height:.95;color:inherit;text-decoration:none}
+#menu .menu-footer{margin-top:auto;display:flex;align-items:center;gap:10px;font-family:var(--brand);font-size:clamp(16px,4vw,24px);text-transform:lowercase;letter-spacing:-.02em;opacity:.5}
 #intro-video{position:fixed;inset:0;z-index:2147483647;background:#000;display:flex;align-items:center;justify-content:center;opacity:1;transition:opacity .9s ease;overflow:hidden}
 #intro-video.fade{opacity:0;pointer-events:none}
 #intro-video video{width:100%;height:100%;object-fit:cover;background:#000}
@@ -178,7 +183,8 @@ section{overflow-x:clip}
 .d.l{height:1px;aspect-ratio:auto;background:currentColor}
 .d.r{background:repeating-radial-gradient(circle,currentColor 0 1px,transparent 1px 14px);-webkit-mask:radial-gradient(circle,#000 50%,transparent 70%);mask:radial-gradient(circle,#000 50%,transparent 70%)}
 @media(max-width:900px){
- nav div a{display:none}nav div{gap:0}nav .btn{display:none}#mb{display:block}
+ nav .nav-pill>div a{display:none !important}nav .nav-pill>div{gap:0}#mb{display:block}
+ nav .nav-pill{padding:10px 20px;border-radius:40px;width:auto;max-width:none}
  .g>*{grid-column:var(--m,1/-1);grid-row:auto}
  #hero h1{font-size:30vw;white-space:normal;bottom:20vh}#hero h1 span{display:block}#hero h1 span+span{margin:.06em 0 0}#hero h1 .title-mark{height:clamp(110px,28vw,150px);margin-bottom:clamp(-40px,-8vw,-24px)}
  #hero .ft{flex-direction:column;align-items:flex-start}#hero .sc{display:none}
@@ -202,8 +208,8 @@ section{overflow-x:clip}
 }
 @media(prefers-reduced-motion:reduce){.m,.m .im,.sc:after{transition:none;animation:none}}
 </style></head><body>
-<nav><a href="#hero" class="brand"><img src="/style/images/logo/arnet_logo.png" style="height: 20px; margin-right: 20px;" alt="">arnet panora</a><div><a href="#pano">Recorridos</a><a href="#render">Renders</a><a href="#plans">Planos</a><a href="#portfolio">Portfolio</a><a href="#end" class="btn o">Contacto</a><button id="mb" aria-expanded="false">Menú</button></div></nav>
-<div id="menu"><a href="#pano">recorridos</a><a href="#render">renders</a><a href="#plans">planos</a><a href="#portfolio">portfolio</a><a href="#tour">tour</a><a href="#end">contacto</a></div>
+<nav><div class="nav-pill"><a href="#hero" class="brand"><img src="/style/images/logo/arnet_logo.png" style="height: 20px; margin-right: 20px;" alt="">arnet panora</a><div><a href="#pano">Recorridos</a><a href="#render">Renders</a><a href="#plans">Planos</a><a href="#portfolio">Portfolio</a><a href="#end" class="btn o">Contacto</a><button id="mb" aria-expanded="false">Menú</button></div></div></nav>
+<div id="menu"><a href="#pano">recorridos</a><a href="#render">renders</a><a href="#plans">planos</a><a href="#portfolio">portfolio</a><a href="#tour">tour</a><a href="#end">contacto</a><div class="menu-footer"><img src="/style/images/logo/arnet_logo.png" alt="" style="height:18px">arnet panora</div></div>
 
 <div id="intro-video" aria-hidden="false">
  <video id="intro-video-player" src="style/video/PANORA_CANVA.mp4" autoplay muted playsinline preload="auto"></video>
@@ -309,7 +315,7 @@ section{overflow-x:clip}
 <!-- AIRBNB -->
 <section id="airbnb" data-t="l">
  <div class="g">
-  <div style="--d:1/8;--r:1;--m:1/-1"><p class="eb">07 — Airbnb</p><h2 style="margin-top:clamp(28px,4vw,64px)" data-s="-.04">Prepara tu vivienda para <img src="/style/images/Airbnb_Logo_Bélo.svg" alt="Airbnb" style="height: 120px; margin-left: 10px; margin-top: 30px;"></h2></div>
+  <div style="--d:1/8;--r:1;--m:1/-1"><p class="eb">07 — Airbnb</p><h2 style="margin-top:clamp(28px,4vw,64px)" data-s="-.04">Prepara tu vivienda para <img src="/style/images/Airbnb_Logo_Bélo.svg" alt="Airbnb" style="height: clamp(60px, 12vw, 120px); margin-left: 10px; margin-top: clamp(12px, 3vw, 30px);"></h2></div>
   <div class="airbnb-copy" style="--d:9/13;--r:1;--m:1/-1"><p class="b">Arquitectura visual, staging y contenido que convierten cada propiedad en una experiencia memorable, lista para ser reservada.</p><a class="btn" href="#end">Solicitar propuesta</a></div>
   <div class="airbnb-visual" style="--d:1/7;--r:2;--m:1/-1">
    <div class="m" data-s=".08"><div class="im" style="background-image:url('/style/images/dbdb29fbbefa76be7ce22e3d4b2555g1.png')"></div></div>
@@ -380,7 +386,7 @@ const D=[
 document.querySelectorAll('p.b').forEach(e=>e.dataset.s=e.dataset.s||.1);
 document.querySelectorAll('.cap:not([data-s])').forEach(e=>e.dataset.s=.15);
 document.querySelectorAll('.eb').forEach(e=>e.dataset.s=.07);
-const S=document.getElementById('s'),nav=document.querySelector('nav'),menu=document.getElementById('menu'),mb=document.getElementById('mb'),reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+const S=document.getElementById('s'),nav=document.querySelector('nav'),navLogo=nav.querySelector('.brand img'),menu=document.getElementById('menu'),mb=document.getElementById('mb'),reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
 const top_=e=>{let t=0;while(e&&e!==S){t+=e.offsetTop;e=e.offsetParent}return t};
 let ps=[],xs=[],secs=[],vh=innerHeight,cur=scrollY,vel=0,r1=0,r2=0,w1=0,w2=0,ms=1,cs=.5;
 function size(){vh=innerHeight;ms=Math.min(1,Math.max(.45,innerWidth/1440));cs=Math.max(.28,.5*ms);document.body.style.height=S.offsetHeight+'px';
@@ -397,9 +403,9 @@ let pend=[...document.querySelectorAll('.m:not(.in)')],shown=0;
 function reveal(){if(!pend.length)return;const h=innerHeight;pend=pend.filter(e=>{const r=e.getBoundingClientRect();if(r.top<h*.92&&r.bottom>0){e.classList.add('in');shown++;return false}return true})}
 // failsafe: if nothing has been revealed after 2.5s, show every image
 setTimeout(()=>{if(!shown){document.querySelectorAll('.m').forEach(e=>e.classList.add('in'));pend=[]}},2500);
-function go(a,ev){const t=document.querySelector(a.getAttribute('href'));if(t){ev.preventDefault();menu.classList.remove('on');mb.setAttribute('aria-expanded',false);scrollTo({top:top_(t),behavior:'smooth'})}}
+function go(a,ev){const t=document.querySelector(a.getAttribute('href'));if(t){ev.preventDefault();menu.classList.remove('on');mb.setAttribute('aria-expanded',false);mb.textContent='Menú';nav.style.color='';nav.style.zIndex=9;scrollTo({top:top_(t),behavior:'smooth'})}}
 document.querySelectorAll('nav a,#menu a').forEach(a=>a.onclick=ev=>go(a,ev));
-mb.onclick=()=>{const o=menu.classList.toggle('on');mb.setAttribute('aria-expanded',o);mb.textContent=o?'Cerrar':'Menú';nav.style.color=o?'var(--bg)':'';nav.style.zIndex=9};
+mb.onclick=()=>{const o=menu.classList.toggle('on');mb.setAttribute('aria-expanded',o);mb.textContent=o?'Cerrar':'Menú';nav.style.color=o?(nav.classList.contains('show')?'var(--br)':'var(--bg)'):'';nav.style.zIndex=9};
 const A=reduce?1:.075;
 function tick(){const y=scrollY,max=Math.max(0,document.body.offsetHeight-document.documentElement.clientHeight),atEnd=y>=max-1;
  if(atEnd){cur=y;vel=0}else{vel=(y-cur)*A;cur+=vel}
@@ -409,6 +415,8 @@ function tick(){const y=scrollY,max=Math.max(0,document.body.offsetHeight-docume
  ps.forEach(p=>{const o=(p.c-mid);p.e.style.transform=`translate3d(${p.d?o*p.s*-.25:0}px,${o*p.s}px,0)`;if(p.d)p.e.style.rotate=`${p.b+o*p.r}deg`});
  xs.forEach(p=>{p.e.style.transform=`translate3d(${(p.c-mid)*p.s}px,0,0)`});
  const s=secs.find(s=>cur+40>=s.t&&cur+40<s.t+s.h);if(s&&!menu.classList.contains('on'))nav.classList.toggle('dk',!s.d);
+ var showNav=cur>vh*.7;nav.classList.toggle('show',showNav);
+ navLogo.src=showNav?'/style/images/logo/arnet_logo_alt.png':'/style/images/logo/arnet_logo.png';
  if(!reduce){const k=cs+Math.abs(vel)*.35*ms;r1-=k;r2+=k;if(r1<=-w1)r1+=w1;if(r2>=0)r2-=w2;
   r1e.style.transform=`translate3d(${r1}px,0,0)`;r2e.style.transform=`translate3d(${r2}px,0,0)`}
  requestAnimationFrame(tick)}
@@ -447,11 +455,17 @@ tick();
 
   v.addEventListener('ended',done);
   v.addEventListener('error',done);
+  v.addEventListener('abort',done);
+  v.addEventListener('stalled',function(){console.warn('Video stalled')});
   sk.addEventListener('click',done);
+
+  var loadTimer=setTimeout(function(){console.warn('Video load timeout');done();},5000);
+  v.addEventListener('loadstart',function(){clearTimeout(loadTimer);});
+  v.addEventListener('canplay',function(){clearTimeout(loadTimer);});
+
   setTimeout(done,15000);
 
   var p=v.play();
-  if(p&&p.catch)p.catch(function(err){console.log('Autoplay blocked:',err)});
-  if(w.requestFullscreen){var f=w.requestFullscreen();if(f&&f.catch)f.catch(function(){})}
+  if(p&&p.catch)p.catch(function(err){console.log('Autoplay blocked or video error:',err);done();});
 })();
 </script></body></html>

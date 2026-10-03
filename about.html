@@ -26,13 +26,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@300;400;500&family=Figtree:wght@300;400;500&display=swap" rel="stylesheet">
 
 <!-- =====================================================================
-     360° VIEWER (OPTIONAL, LATER)
-     When you have equirectangular panoramas, uncomment these two lines.
-     Pannellum is a free, lightweight panorama viewer. The function
-     mount360() in the script already detects it and uses it automatically.
-     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css">
-     <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+     360° VIEWER — Pannellum (real WebGL panorama viewer)
+     Pano360 detects window.pannellum and uses it automatically. Without it
+     the module falls back to showing the equirectangular file as a flat,
+     non-interactive image.
+     NOTE: WebGL cannot read textures over file:// — the panorama will fail
+     to load silently. Open this page through a local server (VS Code Live
+     Server, or: npx serve .) or real hosting.
      ===================================================================== -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pannellum/2.5.6/pannellum.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pannellum/2.5.6/pannellum.js"></script>
 
 <style>
 /* ---------------------------------------------------------------------
@@ -57,7 +60,6 @@
   font-weight:500; font-style:normal; font-display:swap;
 }
 
-/* Header typefaces — same files index.html uses, so the nav matches exactly */
 @font-face{font-family:"Arista";src:url("style/font/arista_pro/Arista-Pro-Light-trial.ttf") format("truetype");font-weight:300;font-display:swap}
 @font-face{font-family:"Arista";src:url("style/font/arista_pro/Arista-Pro-Bold-trial.ttf") format("truetype");font-weight:700;font-display:swap}
 @font-face{font-family:"Norms";src:url("style/font/TT%20Norms%20sv/TTNorms-Light.otf") format("opentype");font-weight:300;font-display:swap}
@@ -65,17 +67,17 @@
 @font-face{font-family:"Norms";src:url("style/font/TT%20Norms%20sv/TTNorms-Bold.otf") format("opentype");font-weight:700;font-display:swap}
 
 /* ---------------------------------------------------------------------
-   DESIGN TOKENS (extracted from the PDF)
+   DESIGN TOKENS
    --------------------------------------------------------------------- */
 :root{
-  --sand:#E8DCC0;          /* main page background */
-  --sand-deep:#DFD0AE;     /* alternate light sections */
-  --cream:#F4ECD8;         /* text on dark, light surfaces */
-  --brown:#6B3A1F;         /* main text + dark sections */
-  --espresso:#2E170B;      /* footer, viewers */
-  --terracotta:#BF5B36;    /* accent for large type + decoration */
-  --terracotta-btn:#A94A26;/* accent for buttons (AA contrast with cream) */
-  --clay-light:#E08A5E;    /* accent on dark backgrounds */
+  --sand:#E8DCC0;
+  --sand-deep:#DFD0AE;
+  --cream:#F4ECD8;
+  --brown:#6B3A1F;
+  --espresso:#2E170B;
+  --terracotta:#BF5B36;
+  --terracotta-btn:#A94A26;
+  --clay-light:#E08A5E;
 
   --bg:var(--sand);
   --fg:var(--brown);
@@ -93,7 +95,6 @@
   --gutter:clamp(1.25rem,5vw,4.5rem);
   --maxw:1440px;
 
-  /* header tokens, mirrored from index.html so the nav sits and reads the same */
   --nav-brown:#673d1f;
   --nav-white:#fff;
   --nav-sand:#e8dcc4;
@@ -106,8 +107,6 @@
    BASE
    --------------------------------------------------------------------- */
 *,*::before,*::after{box-sizing:border-box}
-/* stable gutter so locking the page for an overlay doesn't shift the layout
-   sideways when the scrollbar disappears */
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scrollbar-gutter:stable}
 html.is-locked{overflow:hidden}
 body{
@@ -129,11 +128,9 @@ section[id]{scroll-margin-top:72px}
 
 .display{font-family:var(--font-display);font-weight:300;letter-spacing:-.03em;line-height:.95}
 
-/* small label with a thin rule, like the section markers in the PDF */
 .eyebrow{display:flex;align-items:center;gap:.9rem;font-size:.92rem;letter-spacing:.04em}
 .eyebrow .rule{flex:0 0 clamp(2rem,6vw,4.5rem);height:1px;background:currentColor;opacity:.5}
 
-/* decorative shapes from the PDF: thin arch outlines and soft blurred circles */
 .deco{position:absolute;pointer-events:none;color:var(--fg);opacity:.17;width:clamp(150px,22vw,320px);aspect-ratio:2/3;z-index:0}
 .blob{position:absolute;border-radius:50%;pointer-events:none;filter:blur(50px);background:radial-gradient(circle,rgba(107,58,31,.2),transparent 70%);z-index:0}
 
@@ -169,17 +166,19 @@ svg.i{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke
 /* ---------------------------------------------------------------------
    HEADER
    --------------------------------------------------------------------- */
-/* Same fixed nav as index.html: flush to the top, gutter-aligned, no background.
-   It turns brown (.dk) over light sections and cream over dark ones. */
 .site-nav{
   position:fixed;z-index:60;top:0;left:0;right:0;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:calc(22px + env(safe-area-inset-top,0px)) var(--nav-gutter) 0;
-  font-family:var(--font-ui);font-weight:300;color:var(--nav-white);
-  transition:color .6s;pointer-events:none;
+  display:flex;justify-content:center;
+  padding:calc(12px + env(safe-area-inset-top,0px)) var(--nav-gutter) 0;
+  font-family:var(--font-ui);font-weight:300;color:var(--nav-sand);
+  transition:color .4s ease;pointer-events:none;
 }
+.site-nav.show{color:var(--nav-brown)}
+.site-nav .nav-pill{display:flex;justify-content:space-between;align-items:center;width:100%;max-width:calc(100% - var(--nav-gutter)*2);background:rgba(235,225,210,0);backdrop-filter:blur(0px);-webkit-backdrop-filter:blur(0px);border-radius:60px;padding:12px 28px;pointer-events:auto;box-shadow:0 0 0 rgba(0,0,0,0);transition:background .4s ease,backdrop-filter .4s ease,-webkit-backdrop-filter .4s ease,box-shadow .4s ease}
+.site-nav.show .nav-pill{background:rgba(235,225,210,.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 2px 16px rgba(0,0,0,.08)}
 .site-nav.dk{color:var(--nav-brown)}
 .site-nav>*{pointer-events:auto}
+.site-nav .nav-pill>*{pointer-events:auto}
 .site-nav .brand{
   display:flex;align-items:center;font-family:var(--font-brand);font-weight:300;
   font-size:clamp(24px,2.3vw,34px);text-transform:lowercase;letter-spacing:-.02em;
@@ -194,16 +193,18 @@ svg.i{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke
 
 #menu{
   position:fixed;inset:0;z-index:55;background:var(--nav-brown);color:var(--nav-sand);
-  display:flex;flex-direction:column;justify-content:center;padding:0 var(--nav-gutter);gap:2.2vh;
+  display:flex;flex-direction:column;justify-content:center;padding:calc(80px + env(safe-area-inset-top,0px)) var(--nav-gutter) calc(30px + env(safe-area-inset-bottom,0px));gap:clamp(12px,3vh,28px);
   clip-path:inset(0 0 100% 0);transition:clip-path 1s cubic-bezier(.16,1,.3,1);
 }
 #menu.on{clip-path:inset(0)}
-#menu a{font-family:var(--font-brand);font-weight:300;text-transform:lowercase;letter-spacing:-.02em;font-size:clamp(26px,7vw,64px);line-height:.95;color:inherit;text-decoration:none}
+#menu a{font-family:var(--font-brand);font-weight:300;text-transform:lowercase;letter-spacing:-.02em;font-size:clamp(32px,11vw,14vw);line-height:.95;color:inherit;text-decoration:none}
+#menu .menu-footer{margin-top:auto;display:flex;align-items:center;gap:10px;font-family:var(--font-brand);font-size:clamp(16px,4vw,24px);text-transform:lowercase;letter-spacing:-.02em;opacity:.5}
 
 @media (max-width:1100px){
-  .site-nav__links a,.site-nav__cta{display:none}
+  .site-nav__links a,.site-nav__cta{display:none !important}
   .site-nav__links{gap:0}
   #mb{display:block}
+  .site-nav .nav-pill{padding:10px 20px;border-radius:40px;width:auto;max-width:none}
 }
 
 /* ---------------------------------------------------------------------
@@ -223,7 +224,6 @@ svg.i{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke
 .card img{width:100%;height:100%;object-fit:cover}
 .card--tall{right:0;top:0;width:64%;aspect-ratio:3/4}
 .card--small{left:0;bottom:6%;width:50%;aspect-ratio:4/3;border-radius:var(--radius-md);outline:10px solid var(--sand)}
-/* the one memorable typographic moment: a giant word overlapping the images, like "interiores" in the PDF */
 .collage__word{
   position:absolute;right:-1%;bottom:-3%;z-index:2;pointer-events:none;
   font-family:var(--font-display);font-weight:300;letter-spacing:-.05em;line-height:.8;
@@ -286,7 +286,7 @@ svg.i{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke
 @media (max-width:899px){.project__head{grid-template-columns:1fr}}
 
 /* ---------------------------------------------------------------------
-   IMAGE GALLERY (large main + 4 smaller)
+   IMAGE GALLERY
    --------------------------------------------------------------------- */
 .gallery{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(.75rem,1.6vw,1.4rem)}
 .tile{position:relative;isolation:isolate;overflow:hidden;aspect-ratio:4/3;border-radius:var(--radius-md);background:#b89a6f;box-shadow:var(--shadow-card)}
@@ -360,7 +360,7 @@ svg.i{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke
 }
 
 /* ---------------------------------------------------------------------
-   360° VIEWER (modal + placeholder)
+   360° VIEWER MODAL
    --------------------------------------------------------------------- */
 .v360{position:fixed;inset:0;z-index:110;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:1rem;padding:clamp(.75rem,2vw,1.5rem);background:var(--espresso);color:var(--cream);outline:none}
 .v360__bar{display:flex;align-items:center;gap:1rem;padding:.25rem .5rem}
@@ -369,8 +369,6 @@ svg.i{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke
 .v360__sub{font-size:.95rem;opacity:.75}
 .v360__stage{position:relative;overflow:hidden;min-height:0;border-radius:var(--radius-lg);background:#1c0f07}
 .v360__bg{position:absolute;top:0;left:0;width:150%;height:100%;object-fit:cover;filter:blur(3px) brightness(.5) saturate(1.1);animation:pan 70s linear infinite alternate}
-/* -15% of the image's own width = -22.5% of the stage, so the right edge
-   still sits well past the stage and never uncovers blank space */
 @keyframes pan{to{transform:translateX(-10%)}}
 .v360__ph{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:1.1rem;padding:1.5rem;text-align:center}
 .ring{position:relative;display:grid;place-items:center;width:132px;height:132px}
@@ -381,6 +379,164 @@ svg.i{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke
 .v360__ph p{max-width:36rem;opacity:.82}
 .v360__ph code{display:inline-block;margin-top:.2rem;padding:.35rem .8rem;border-radius:10px;background:rgba(244,236,216,.12);font-size:.9rem;word-break:break-all}
 .v360__foot{padding:0 .5rem .25rem;font-size:.9rem;opacity:.7}
+
+/* Equirectangular flat image view */
+.v360__eqr{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:contain;object-position:center;
+  border-radius:var(--radius-lg);
+}
+
+/* ---------------------------------------------------------------------
+   360° SCENE NAV MENU (bottom-right floating, collapsible)
+   --------------------------------------------------------------------- */
+.scene-nav{
+  position:absolute;
+  bottom:1.25rem;
+  right:1.25rem;
+  z-index:10;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:.55rem;
+}
+
+/* The list panel */
+.scene-nav__panel{
+  background:rgba(20,10,4,.78);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  border:1px solid rgba(244,236,216,.13);
+  border-radius:20px;
+  padding:.55rem .55rem;
+  display:flex;
+  flex-direction:column;
+  gap:.3rem;
+  min-width:180px;
+  max-width:240px;
+
+  /* collapsed state */
+  max-height:0;
+  overflow:hidden;
+  opacity:0;
+  transform:translateY(10px) scale(.97);
+  pointer-events:none;
+  transition:
+    max-height .42s cubic-bezier(.16,1,.3,1),
+    opacity    .32s cubic-bezier(.16,1,.3,1),
+    transform  .38s cubic-bezier(.16,1,.3,1),
+    padding    .38s cubic-bezier(.16,1,.3,1);
+}
+.scene-nav.is-open .scene-nav__panel{
+  max-height:420px;
+  opacity:1;
+  transform:none;
+  pointer-events:auto;
+  padding:.65rem .55rem;
+}
+
+/* Scene label inside the panel */
+.scene-nav__label{
+  font-size:.72rem;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:rgba(244,236,216,.45);
+  padding:.3rem .75rem .1rem;
+  font-family:var(--font-body);
+  font-weight:500;
+}
+
+/* Individual scene buttons */
+.scene-nav__btn{
+  display:flex;
+  align-items:center;
+  gap:.65rem;
+  width:100%;
+  padding:.6rem .85rem;
+  border:0;
+  border-radius:12px;
+  background:transparent;
+  color:rgba(244,236,216,.82);
+  font-family:var(--font-body);
+  font-size:.92rem;
+  font-weight:400;
+  letter-spacing:.01em;
+  cursor:pointer;
+  text-align:left;
+  transition:background .2s, color .2s, transform .18s;
+  position:relative;
+}
+.scene-nav__btn::before{
+  content:'';
+  display:block;
+  width:6px;height:6px;
+  border-radius:50%;
+  background:var(--clay-light);
+  opacity:.45;
+  flex-shrink:0;
+  transition:opacity .2s, transform .2s;
+}
+.scene-nav__btn:hover{
+  background:rgba(244,236,216,.1);
+  color:var(--cream);
+  transform:translateX(-2px);
+}
+.scene-nav__btn:hover::before{opacity:1}
+.scene-nav__btn.is-active{
+  background:rgba(191,91,54,.22);
+  color:var(--clay-light);
+}
+.scene-nav__btn.is-active::before{
+  background:var(--clay-light);
+  opacity:1;
+  transform:scale(1.4);
+}
+
+/* Toggle button */
+.scene-nav__toggle{
+  display:flex;
+  align-items:center;
+  gap:.6rem;
+  padding:.65rem 1.1rem;
+  border:0;
+  border-radius:999px;
+  background:rgba(20,10,4,.82);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border:1px solid rgba(244,236,216,.18);
+  color:var(--cream);
+  font-family:var(--font-body);
+  font-size:.88rem;
+  font-weight:500;
+  letter-spacing:.04em;
+  cursor:pointer;
+  transition:background .25s, border-color .25s, transform .22s;
+  white-space:nowrap;
+}
+.scene-nav__toggle:hover{
+  background:rgba(169,74,38,.75);
+  border-color:rgba(224,138,94,.3);
+}
+.scene-nav.is-open .scene-nav__toggle{
+  background:rgba(169,74,38,.65);
+  border-color:rgba(224,138,94,.4);
+}
+.scene-nav__toggle-icon{
+  width:18px;height:18px;
+  fill:none;stroke:currentColor;
+  stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;
+  transition:transform .38s cubic-bezier(.16,1,.3,1);
+  flex-shrink:0;
+}
+.scene-nav.is-open .scene-nav__toggle-icon{
+  transform:rotate(180deg);
+}
+
+@media (max-width:599px){
+  .scene-nav{bottom:.75rem;right:.75rem;}
+  .scene-nav__panel{min-width:160px;}
+  .scene-nav__btn{font-size:.85rem;padding:.5rem .7rem;}
+}
 
 /* ---------------------------------------------------------------------
    FOOTER
@@ -407,7 +563,6 @@ svg.i{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke
   .js .hero .rise,.js .hero .collage{opacity:1}
 }
 
-/* Smooth scroll wrapper */
 #scroll-wrapper{position:fixed;top:0;left:0;width:100%;will-change:transform;overflow:hidden}
 </style>
 </head>
@@ -415,13 +570,9 @@ svg.i{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke
 <body>
 <a class="skip" href="#projects">Skip to projects</a>
 
-<!-- =====================================================================
-     HEADER — same nav as index.html. It lives outside #scroll-wrapper
-     because that wrapper is transformed, which would otherwise capture
-     position:fixed and make the nav scroll with the page.
-     ===================================================================== -->
-<nav class="site-nav dk" id="siteNav">
-  <a class="brand" href="index.html">arnet panora</a>
+<nav class="site-nav" id="siteNav">
+  <div class="nav-pill">
+  <a class="brand" href="index.html"><img src="/style/images/logo/arnet_logo_alt.png" style="height:20px;margin-right:20px" alt=""></a>
   <div class="site-nav__links">
     <a href="#casa-montanas">Casa en las Montañas</a>
     <a href="#villa-moderna">Villa Moderna</a>
@@ -430,6 +581,7 @@ svg.i{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke
     <a class="site-nav__cta" href="#contact">Contacto</a>
     <button id="mb" type="button" aria-expanded="false">Menú</button>
   </div>
+  </div>
 </nav>
 <div id="menu">
   <a href="#casa-montanas">casa en las montañas</a>
@@ -437,11 +589,11 @@ svg.i{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke
   <a href="#casa-contemporanea">casa contemporánea</a>
   <a href="#oficina-moderna">oficina moderna</a>
   <a href="#contact">contacto</a>
+  <div class="menu-footer"><img src="/style/images/logo/arnet_logo.png" alt="" style="height:18px">arnet panora</div>
 </div>
 
 <div id="scroll-wrapper">
 
-<!-- Reusable SVG icons and decorative shapes -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <symbol id="arch" viewBox="0 0 200 300"><g fill="none" stroke="currentColor" stroke-width="1.2"><path d="M10 290V100a90 90 0 0 1 180 0v190z"/><path d="M42 290V106a58 58 0 0 1 116 0v184"/></g></symbol>
   <symbol id="i-360" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="12" rx="10" ry="4.5"/><path d="M19.4 8.6 22 11.4l-3.3 1"/></g><circle cx="12" cy="12" r="1.7" fill="currentColor"/></symbol>
@@ -453,14 +605,10 @@ svg.i{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke
 
 <main id="main">
 
-<!-- =====================================================================
-     HERO / INTRODUCTION
-     ✏️ Hero images are configured in the script (HERO_IMAGES).
-     ===================================================================== -->
+<!-- HERO -->
 <section class="hero" id="home" aria-labelledby="heroTitle">
   <svg class="deco" aria-hidden="true"><use href="#arch"/></svg>
   <div class="blob"></div>
-
   <div class="hero__inner">
     <div class="hero__copy">
       <p class="eyebrow rise">
@@ -468,91 +616,54 @@ svg.i{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke
         <i class="rule"></i>
         <span>Exploración virtual 360°</span>
       </p>
-
       <h1 class="display hero__title rise" id="heroTitle">
         Explora cada espacio
         <span>desde antes.</span>
       </h1>
-
       <p class="lead rise">
         Convierte propiedades, apartamentos y espacios en experiencias
         virtuales 360°. Recorre cada habitación, descubre sus detalles
         y conoce el espacio desde cualquier lugar.
       </p>
-
       <div class="hero__cta rise">
         <a class="btn btn--primary" href="#projects">Explorar propiedades</a>
         <a class="btn btn--ghost" href="#about">Conocer Panora</a>
       </div>
     </div>
-
     <div class="collage" aria-hidden="true">
       <figure class="card card--tall">
         <img data-hero="tall" alt="" width="900" height="1200">
       </figure>
-
       <figure class="card card--small">
         <img data-hero="small" alt="" width="900" height="675">
       </figure>
-
       <span class="collage__word">360°</span>
     </div>
   </div>
 </section>
 
-
-<!-- =====================================================================
-     ABOUT (statement)
-     ===================================================================== -->
+<!-- ABOUT -->
 <section class="statement" id="about" aria-labelledby="aboutTitle">
-  <svg class="deco" aria-hidden="true" style="left:-3%;right:auto;top:18%">
-    <use href="#arch"/>
-  </svg>
-
+  <svg class="deco" aria-hidden="true" style="left:-3%;right:auto;top:18%"><use href="#arch"/></svg>
   <div class="statement__inner">
-    <p class="eyebrow">
-      <span>Panora</span>
-      <i class="rule"></i>
-    </p>
-
+    <p class="eyebrow"><span>Panora</span><i class="rule"></i></p>
     <h2 class="statement__text" id="aboutTitle">
       Un espacio no tiene que estar frente a ti
       <em>para que puedas recorrerlo.</em>
     </h2>
-
     <div class="statement__cols">
-      <p>
-        Panora transforma propiedades y espacios habitables en experiencias
-        virtuales 360° que pueden explorarse desde cualquier lugar, habitación
-        por habitación.
-      </p>
-
-      <p>
-        Desde una propiedad terminada hasta un proyecto en planos, cada espacio
-        puede compartirse mediante un enlace sencillo para que otras personas
-        puedan conocerlo, recorrerlo y descubrir sus detalles.
-      </p>
+      <p>Panora transforma propiedades y espacios habitables en experiencias virtuales 360° que pueden explorarse desde cualquier lugar, habitación por habitación.</p>
+      <p>Desde una propiedad terminada hasta un proyecto en planos, cada espacio puede compartirse mediante un enlace sencillo para que otras personas puedan conocerlo, recorrerlo y descubrir sus detalles.</p>
     </div>
   </div>
 </section>
 
-
-<!-- =====================================================================
-     PROJECTS: INTRO + INDEX
-     ===================================================================== -->
+<!-- PROJECTS INTRO -->
 <section class="projects-intro" id="projects" aria-labelledby="projectsTitle">
   <div class="projects-intro__inner">
-    <p class="eyebrow">
-      <span>Propiedades</span>
-      <i class="rule"></i>
-    </p>
-
+    <p class="eyebrow"><span>Propiedades</span><i class="rule"></i></p>
     <div class="projects-intro__row">
-      <h2 class="h-xl" id="projectsTitle">
-        Explora los espacios,<br>
-        habitación por habitación
-      </h2>
-
+      <h2 class="h-xl" id="projectsTitle">Explora los espacios,<br>habitación por habitación</h2>
       <nav aria-label="Índice de propiedades">
         <ol class="project-index" id="projectIndex"></ol>
       </nav>
@@ -560,29 +671,20 @@ svg.i{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke
   </div>
 </section>
 
-
-<!-- =====================================================================
-     PROJECT SECTIONS
-     Generated by the script from the PROJECTS list (see "1. CONFIGURATION").
-     Each section has: title, description, specs, main image + 4 images, "View 360°" button.
-     ===================================================================== -->
+<!-- PROJECT SECTIONS (rendered by JS) -->
 <div id="projects-root">
   <noscript><p style="padding:2rem var(--gutter)">Please enable JavaScript to see the projects gallery.</p></noscript>
 </div>
 
 </main>
 
-<!-- =====================================================================
-     FOOTER
-     ===================================================================== -->
+<!-- FOOTER -->
 <footer class="site-footer" id="contact">
   <svg class="deco" aria-hidden="true"><use href="#arch"/></svg>
   <div class="site-footer__inner">
-    <p class="eyebrow"><span>Contact</span><i class="rule"></i></p>
-    <p class="site-footer__big">Walk in <span>before it is built.</span></p>
-    <!-- ✏️ Replace with your real email -->
-    <a class="btn btn--primary btn--lg" href="mailto:hello@yourstudio.com">Start a project</a>
-
+    <p class="eyebrow"><span>Contacto</span><i class="rule"></i></p>
+    <p class="site-footer__big">Recórrelo <span>antes de  construir.</span></p>
+    <a class="btn btn--primary btn--lg" href="mailto:hello@yourstudio.com">¡Empecemos a contruir!</a>
     <div class="site-footer__cols">
       <div class="site-footer__brand">
         <a class="brand" href="#home">PANORA<span>.</span>360</a>
@@ -611,16 +713,7 @@ svg.i{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke
 </div><!-- /#scroll-wrapper -->
 
 <!-- =====================================================================
-     OVERLAYS
-     These must stay OUTSIDE #scroll-wrapper. That wrapper is transformed,
-     and a transformed ancestor becomes the containing block for its
-     position:fixed descendants — so inside it, inset:0 would resolve
-     against the full translated page instead of the viewport, and the
-     viewers would open offset by the scroll position.
-     ===================================================================== -->
-
-<!-- =====================================================================
-     LIGHTBOX (fullscreen image viewer)
+     LIGHTBOX (outside #scroll-wrapper so position:fixed works correctly)
      ===================================================================== -->
 <div class="lightbox overlay" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer" aria-hidden="true" tabindex="-1">
   <div class="lb__bar">
@@ -640,148 +733,164 @@ svg.i{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke
 </div>
 
 <!-- =====================================================================
-     360° VIEWER (modal)
-     The stage (#panoStage) is where the panorama is mounted.
-     Right now it shows a placeholder; see mount360() in the script.
+     360° VIEWER MODAL (outside #scroll-wrapper)
      ===================================================================== -->
 <div class="v360 overlay" id="viewer360" role="dialog" aria-modal="true" aria-labelledby="v360Title" aria-hidden="true" tabindex="-1">
   <div class="v360__bar">
     <div>
       <p class="v360__title" id="v360Title"></p>
-      <p class="v360__sub">360° experience</p>
+      <p class="v360__sub" id="v360Sub">360° experience</p>
     </div>
     <button type="button" class="icon-btn" id="v360Close" aria-label="Close 360° viewer" data-autofocus><svg class="i"><use href="#i-close"/></svg></button>
   </div>
   <div class="v360__stage" id="panoStage"></div>
-  <p class="v360__foot">When the viewer is connected, drag to look around and scroll or pinch to zoom.</p>
+  <p class="v360__foot">Drag to look around · scroll or pinch to zoom · use the menu to switch rooms</p>
 </div>
 
+
+<!-- =====================================================================
+     SCRIPT 1 — CORE: configuration, rendering, lightbox, header, scroll
+     ===================================================================== -->
 <script>
 /* =====================================================================
    1. CONFIGURATION
-   ✏️✏️✏️  EDIT THIS BLOCK TO USE YOUR OWN IMAGES AND TEXT  ✏️✏️✏️
-
-   HOW IMAGES WORK
-   Every image is a local file, resolved as:
-     IMAGE_ROOT + project.folder + "/" + image.file
-     e.g.  style/images/portfolio/casa-en-las-montanas/front.png
-   If a file is missing, the page draws a generated placeholder in its place,
-   so a gap never looks broken.
-
-   TO ADD A PROJECT
-     - Create style/images/portfolio/<folder>/ and drop the renders in.
-     - Use these five names, or change "file" below to match yours:
-         front.png  back.png  living-room.png  kitchen.png  master-bedroom.png
-
-   style/images/portfolio/
-     casa-en-las-montanas/   present
-     villa-moderna/          present
-     casa-contemporanea/     folder not created yet
-     oficina-moderna/         folder not created yet
    ===================================================================== */
 const IMAGE_ROOT = 'style/images/portfolio/';
-const TRY_LOCAL_IMAGES_FIRST = true;   // false makes every image use the generated placeholder
+const PANORAMA_ROOT = '360/';              /* ✏️ root folder for all 360° images */
+/* ✏️ Extensions tried for each scene, in order — the first that loads wins.
+   Add or reorder freely; put the format you use most first so it hits on
+   the first try and the others are never requested. */
+const PANORAMA_EXTS = ['png'];
+const TRY_LOCAL_IMAGES_FIRST = true;
 
-
-/* Hero collage (two images) */
 const HERO_IMAGES = {
   tall:  { local: IMAGE_ROOT + 'casa-en-las-montanas/front.png',       label: 'Modern house exterior' },
   small: { local: IMAGE_ROOT + 'casa-en-las-montanas/living-room.png', label: 'Living room' }
 };
 
-/* The projects.
-   - First image in "images" is the LARGE main render.
-   - "theme": 'light' or 'dark' (background of the section).
-   - "panorama": file name of the 360° equirectangular image (used later by mount360()).
-   - "specs": placeholder data, replace with your own. */
+/*
+  scenes: array of { id, label }
+    id    → used as the filename: PANORAMA_ROOT + project.folder + "/" + scene.id + "." + ext
+            where ext is the first entry of PANORAMA_EXTS that loads
+    label → displayed in the scene-nav menu
+*/
 const PROJECTS = [
   {
     id: 'casa-montanas',
     folder: 'casa-en-las-montanas',
     number: '01',
     theme: 'light',
-
     kicker: 'Mountain retreat',
     title: 'Casa en las Montañas',
     description: 'A house that opens to the valley. Stone, timber and floor-to-ceiling glass frame the view from every main room.',
-
     specs: [
       ['Location', 'Constanza, Dominican Republic'],
       ['Built area', '420 m²'],
       ['Style', 'Alpine modern']
     ],
-
-    panorama: 'panorama-360.jpg',
-
+    scenes: [
+      { id: 'front',          label: 'Exterior' },
+      { id: 'living-room',    label: 'Living room' },
+      { id: 'kitchen',        label: 'Kitchen' },
+      { id: 'master-bedroom', label: 'Master bedroom' },
+      { id: 'back',           label: 'Rear garden' }
+    ],
     images: [
-      {
-        file: 'front.png',
-        label: 'Exterior, front'
-      },
-      {
-        file: 'back.png',
-        label: 'Exterior, rear'
-      },
-      { file: 'living-room.png', 
-        label: 'Living room' 
-      },
-      { file: 'kitchen.png', 
-        label: 'Kitchen' 
-      },
-      { file: 'master-bedroom.png', 
-        label: 'Master bedroom' 
-      }
+      { file: 'front.png',          label: 'Exterior, front' },
+      { file: 'back.png',           label: 'Exterior, rear' },
+      { file: 'living-room.png',    label: 'Living room' },
+      { file: 'kitchen.png',        label: 'Kitchen' },
+      { file: 'master-bedroom.png', label: 'Master bedroom' }
     ]
   },
   {
-    id: 'villa-moderna', folder: 'villa-moderna', number: '02', theme: 'dark',
+    id: 'villa-moderna',
+    folder: 'villa-moderna',
+    number: '02',
+    theme: 'dark',
     kicker: 'Minimalist villa',
     title: 'Villa Moderna',
     description: 'Clean volumes, a long infinity pool and a plan built around one generous social space that runs from kitchen to terrace.',
-    specs: [['Location', 'Punta Cana, Dominican Republic'], ['Built area', '560 m²'], ['Style', 'Minimalist']],
-    panorama: 'panorama-360.jpg',
+    specs: [
+      ['Location', 'Punta Cana, Dominican Republic'],
+      ['Built area', '560 m²'],
+      ['Style', 'Minimalist']
+    ],
+    scenes: [
+      { id: 'front',          label: 'Exterior' },
+      { id: 'living-room',    label: 'Living room' },
+      { id: 'kitchen',        label: 'Kitchen' },
+      { id: 'master-bedroom', label: 'Master bedroom' },
+      { id: 'pool',           label: 'Pool terrace' }
+    ],
     images: [
-      { file: 'front.png', label: 'Exterior, front' },
-      { file: 'back.png', label: 'Exterior, rear' },
-      { file: 'living-room.png', label: 'Living room' },
-      { file: 'kitchen.png', label: 'Kitchen' },
+      { file: 'front.png',          label: 'Exterior, front' },
+      { file: 'back.png',           label: 'Exterior, rear' },
+      { file: 'living-room.png',    label: 'Living room' },
+      { file: 'kitchen.png',        label: 'Kitchen' },
       { file: 'master-bedroom.png', label: 'Master bedroom' }
     ]
   },
   {
-    id: 'casa-contemporanea', folder: 'casa-contemporanea', number: '03', theme: 'light',
+    id: 'casa-contemporanea',
+    folder: 'casa-contemporanea',
+    number: '03',
+    theme: 'light',
     kicker: 'Urban family home',
     title: 'Casa Contemporánea',
     description: 'A warm, family-scale home with double-height living areas, a private garden and a quiet palette of wood and plaster.',
-    specs: [['Location', 'Santo Domingo, Dominican Republic'], ['Built area', '310 m²'], ['Style', 'Contemporary']],
-    panorama: 'panorama-360.jpg',
+    specs: [
+      ['Location', 'Santo Domingo, Dominican Republic'],
+      ['Built area', '310 m²'],
+      ['Style', 'Contemporary']
+    ],
+    scenes: [
+      { id: 'front',          label: 'Exterior' },
+      { id: 'living-room',    label: 'Living room' },
+      { id: 'kitchen',        label: 'Kitchen' },
+      { id: 'master-bedroom', label: 'Master bedroom' },
+      { id: 'terrace',        label: 'Terrace' }
+    ],
     images: [
-      { file: 'front.png', label: 'Exterior, front' },
-      { file: 'terrace.png', label: 'Terrace' },
-      { file: 'living-room.png', label: 'Living room' },
-      { file: 'kitchen.png', label: 'Kitchen' },
+      { file: 'front.png',          label: 'Exterior, front' },
+      { file: 'terrace.png',        label: 'Terrace' },
+      { file: 'living-room.png',    label: 'Living room' },
+      { file: 'kitchen.png',        label: 'Kitchen' },
       { file: 'master-bedroom.png', label: 'Master bedroom' }
     ]
   },
   {
-    id: 'oficina-moderna', folder: 'oficina-moderna', number: '04', theme: 'dark',
+    id: 'oficina-moderna',
+    folder: 'oficina-moderna',
+    number: '04',
+    theme: 'dark',
     kicker: 'Tropical retreat',
     title: 'Oficina Moderna',
     description: 'Deep shaded terraces, natural materials and cross ventilation make this villa feel part of the garden around it.',
-    specs: [['Location', 'Samaná, Dominican Republic'], ['Built area', '480 m²'], ['Style', 'Tropical modern']],
-    panorama: 'panorama-360.jpg',
+    specs: [
+      ['Location', 'Samaná, Dominican Republic'],
+      ['Built area', '480 m²'],
+      ['Style', 'Tropical modern']
+    ],
+    scenes: [
+      { id: 'front',            label: 'Entrance' },
+      { id: 'meeting-room',     label: 'Meeting room' },
+      { id: 'work-area',        label: 'Work area' },
+      { id: 'break-room',       label: 'Break room' },
+      { id: 'executive-office', label: 'Executive office' }
+    ],
     images: [
-      { file: 'front.png', label: 'Exterior, front' },
-      { file: 'meeting-room.png', label: 'Meeting room' },
-      { file: 'work-area.png', label: 'Work area' },
-      { file: 'break-room.png', label: 'Break room' },
+      { file: 'front.png',            label: 'Exterior, front' },
+      { file: 'meeting-room.png',     label: 'Meeting room' },
+      { file: 'work-area.png',        label: 'Work area' },
+      { file: 'break-room.png',       label: 'Break room' },
       { file: 'executive-office.png', label: 'Executive office' }
     ]
   }
 ];
 
 /* =====================================================================
-   2. HELPERS AND IMAGE LOADING (local file, then placeholder, then drawing)
+   2. HELPERS
    ===================================================================== */
 const $  = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
@@ -800,10 +909,7 @@ function hydrateImage(img, { local, placeholder, label }) {
   if (placeholder) chain.push(placeholder);
   chain.push(fallbackDrawing(label));
   let i = 0;
-  img.onerror = () => {
-    i += 1;
-    if (i < chain.length) img.src = chain[i]; else img.onerror = null;
-  };
+  img.onerror = () => { i += 1; if (i < chain.length) img.src = chain[i]; else img.onerror = null; };
   img.src = chain[0];
 }
 
@@ -814,7 +920,7 @@ const sourcesFor = (project, item) => ({
 });
 
 /* =====================================================================
-   3. RENDER: HERO IMAGES, PROJECT INDEX, PROJECT SECTIONS + GALLERY
+   3. RENDER: HERO, INDEX, PROJECTS
    ===================================================================== */
 function renderHero() {
   $$('img[data-hero]').forEach(img => hydrateImage(img, HERO_IMAGES[img.dataset.hero]));
@@ -834,7 +940,7 @@ function tileHTML(p, im, i) {
       <figcaption class="tile__cap">${esc(im.label)}</figcaption>
       <span class="tile__zoom" aria-hidden="true"><svg class="i"><use href="#i-expand"/></svg></span>
       ${main ? `
-      <button type="button" class="tile__360" data-action="view360" data-project="${p.id}">
+      <button type="button" class="tile__360" data-action="view360" data-project="${p.id}" data-scene="${p.scenes[0].id}">
         <span class="dot"><svg class="i" aria-hidden="true"><use href="#i-360"/></svg></span>View 360°
       </button>` : ''}
     </figure>`;
@@ -845,7 +951,6 @@ function renderProjects() {
     `<li><a href="#${p.id}"><span>${p.number}</span>${esc(p.title)}</a></li>`).join('');
 
   $('#projects-root').innerHTML = PROJECTS.map((p, pi) => `
-  <!-- PROJECT ${p.number}: ${esc(p.title)} -->
   <section class="project project--${p.theme}${pi % 2 ? ' project--flip' : ''}" id="${p.id}" aria-labelledby="${p.id}-title">
     <svg class="deco" aria-hidden="true"><use href="#arch"/></svg>
     <div class="project__inner">
@@ -859,14 +964,11 @@ function renderProjects() {
           <dl class="specs">${p.specs.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl>
         </div>
       </header>
-
-      <!-- IMAGE GALLERY -->
       <div class="gallery" role="group" aria-label="${esc(p.title)} images">
         ${p.images.map((im, i) => tileHTML(p, im, i)).join('')}
       </div>
-
       <div class="project__actions">
-        <button type="button" class="btn btn--primary" data-action="view360" data-project="${p.id}">
+        <button type="button" class="btn btn--primary" data-action="view360" data-project="${p.id}" data-scene="${p.scenes[0].id}">
           <svg class="i btn__icon" aria-hidden="true"><use href="#i-360"/></svg>View 360°
         </button>
         <button type="button" class="btn btn--ghost" data-action="gallery" data-project="${p.id}">
@@ -881,7 +983,7 @@ function renderProjects() {
 }
 
 /* =====================================================================
-   4. OVERLAY HELPERS (shared by lightbox and 360° viewer)
+   4. OVERLAY HELPERS
    ===================================================================== */
 const overlay = { active: null, opener: null, onClose: null };
 
@@ -933,7 +1035,7 @@ function showLightboxImage(i) {
     if (k === lb.index) { b.setAttribute('aria-current', 'true'); b.scrollIntoView({ block: 'nearest', inline: 'center' }); }
     else b.removeAttribute('aria-current');
   });
-  setTimeout(() => lb.img.classList.remove('is-loading'), 2500); // safety net
+  setTimeout(() => lb.img.classList.remove('is-loading'), 2500);
 }
 const stepLightbox = d => showLightboxImage(lb.index + d);
 
@@ -944,7 +1046,6 @@ $('#lbClose').addEventListener('click', closeOverlay);
 lb.thumbs.addEventListener('click', e => { const b = e.target.closest('.lb__thumb'); if (b) showLightboxImage(+b.dataset.i); });
 lb.stage.addEventListener('click', e => { if (e.target === lb.stage || e.target.classList.contains('lb__frame')) closeOverlay(); });
 
-/* swipe on touch screens */
 let touchX = null;
 lb.stage.addEventListener('touchstart', e => { touchX = e.changedTouches[0].clientX; }, { passive: true });
 lb.stage.addEventListener('touchend', e => {
@@ -955,78 +1056,14 @@ lb.stage.addEventListener('touchend', e => {
 }, { passive: true });
 
 /* =====================================================================
-   6. 360° VIEWER (placeholder now, ready for a real panorama later)
-
-   HOW TO CONNECT A REAL 360° PANORAMA
-   1. Export an equirectangular image (2:1 ratio, e.g. 8192x4096 px) from your render software.
-   2. Save it as images/<project folder>/panorama-360.jpg
-      (the file name is the "panorama" field of each project above).
-   3. Uncomment the two Pannellum lines in the <head>.
-   4. Done: mount360() detects Pannellum and loads the panorama.
-   NOTE: WebGL viewers cannot read images from file:// in most browsers, so once you
-   add real panoramas, test through a local server (for example the "Live Server"
-   extension in VS Code) or upload the site to your hosting.
-   To use another library (Photo Sphere Viewer, Marzipano, Three.js...) replace the
-   Pannellum block inside mount360(); everything else stays the same.
-   ===================================================================== */
-const v360 = { el: $('#viewer360'), stage: $('#panoStage'), viewer: null };
-
-function open360(projectId, opener) {
-  const p = projectById(projectId);
-  $('#v360Title').textContent = p.title;
-  mount360(v360.stage, p);
-  openOverlay(v360.el, opener, destroy360);
-}
-
-function destroy360() {
-  if (v360.viewer && typeof v360.viewer.destroy === 'function') v360.viewer.destroy();
-  v360.viewer = null;
-  v360.stage.innerHTML = '';
-}
-
-function mount360(container, project) {
-  destroy360();
-  const panoUrl = project.panorama ? `${IMAGE_ROOT}${project.folder}/${project.panorama}` : null;
-
-  /* --- REAL VIEWER (Pannellum) --- */
-  if (window.pannellum && panoUrl) {
-    v360.viewer = window.pannellum.viewer(container, {
-      type: 'equirectangular',
-      panorama: panoUrl,
-      autoLoad: true,
-      showControls: true,
-      compass: false,
-      hfov: 100
-    });
-    return;
-  }
-
-  /* --- PLACEHOLDER (shown until a viewer library and panorama are added) --- */
-  container.innerHTML = `
-    <img class="v360__bg" alt="">
-    <div class="v360__ph">
-      <div class="ring" aria-hidden="true">
-        <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1"><circle cx="50" cy="50" r="48" stroke-dasharray="2 5"/><circle cx="50" cy="50" r="38" opacity=".45"/></svg>
-        <b>360°</b>
-      </div>
-      <h3>The 360° panorama of ${esc(project.title)} will load here</h3>
-      <p>Add an equirectangular image and connect a viewer library. This is the container where it will be mounted.</p>
-      <code>${esc(panoUrl || 'images/…/panorama-360.jpg')}</code>
-    </div>`;
-  hydrateImage($('.v360__bg', container), sourcesFor(project, project.images[0]));
-}
-
-$('#v360Close').addEventListener('click', closeOverlay);
-
-/* =====================================================================
-   7. GLOBAL EVENTS (clicks, keyboard, focus trap)
+   6. GLOBAL EVENTS (clicks, keyboard, focus trap)
    ===================================================================== */
 document.addEventListener('click', e => {
   const tileBtn = e.target.closest('.tile__btn');
   if (tileBtn) { openLightbox(tileBtn.dataset.project, +tileBtn.dataset.index, tileBtn); return; }
   const act = e.target.closest('[data-action]');
   if (!act) return;
-  if (act.dataset.action === 'view360')  open360(act.dataset.project, act);
+  if (act.dataset.action === 'view360')  Pano360.open(act.dataset.project, act.dataset.scene || null, act);
   if (act.dataset.action === 'gallery')  openLightbox(act.dataset.project, 0, act);
 });
 
@@ -1040,7 +1077,7 @@ document.addEventListener('keydown', e => {
     else if (e.key === 'Home') showLightboxImage(0);
     else if (e.key === 'End') showLightboxImage(lb.project.images.length - 1);
   }
-  if (e.key === 'Tab') {  // keep focus inside the open dialog
+  if (e.key === 'Tab') {
     const f = $$('button:not([disabled]), a[href], [tabindex="0"]', a).filter(x => x.getClientRects().length);
     if (!f.length) return;
     const first = f[0], last = f[f.length - 1];
@@ -1050,27 +1087,27 @@ document.addEventListener('keydown', e => {
 });
 
 /* =====================================================================
-   8. HEADER (scroll state + mobile menu)
+   7. HEADER
    ===================================================================== */
-const siteNav = $('#siteNav'), menu = $('#menu'), mb = $('#mb');
+const siteNav = $('#siteNav'), navLogo = siteNav.querySelector('.brand img'), menu = $('#menu'), mb = $('#mb');
 
-/* Like index.html, the nav reads cream over dark sections and brown over light
-   ones. navTone() is called from the smooth-scroll loop at the bottom of the
-   page, because the eased transform keeps moving after the scroll event stops. */
 function navTone() {
-  const probe = 40; // a line just below the nav
+  const probe = 40;
   const overDark = $$('.project--dark, .site-footer').some(s => {
     const r = s.getBoundingClientRect();
     return r.top <= probe && r.bottom > probe;
   });
   siteNav.classList.toggle('dk', !overDark);
+  const showNav = window.scrollY > window.innerHeight * 0.7;
+  siteNav.classList.toggle('show', showNav);
+  if (navLogo) navLogo.src = '/style/images/logo/arnet_logo_alt.png';
 }
 
 function setMenu(open) {
   menu.classList.toggle('on', open);
   mb.setAttribute('aria-expanded', String(open));
   mb.textContent = open ? 'Cerrar' : 'Menú';
-  siteNav.style.color = open ? 'var(--nav-sand)' : '';
+  siteNav.style.color = open ? (siteNav.classList.contains('show') ? 'var(--nav-brown)' : 'var(--nav-sand)') : '';
   document.documentElement.classList.toggle('is-locked', open);
 }
 mb.addEventListener('click', () => setMenu(mb.getAttribute('aria-expanded') !== 'true'));
@@ -1078,25 +1115,18 @@ menu.addEventListener('click', e => { if (e.target.closest('a')) setMenu(false);
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && menu.classList.contains('on')) setMenu(false); });
 window.matchMedia('(min-width:1101px)').addEventListener('change', e => { if (e.matches) setMenu(false); });
 
-/* Same-page anchor scrolling.
-   The sections live inside #scroll-wrapper, which is transformed, so a native
-   hash jump measures from the translated position and lands short whenever the
-   eased scroll is still catching up. Resolving the offset against the wrapper
-   itself makes every nav link land on the same spot every time. */
-const NAV_OFFSET = 72;            // keep in sync with section[id]{scroll-margin-top}
+const NAV_OFFSET = 72;
 const wrapperEl = document.getElementById('scroll-wrapper');
-
 function offsetInWrapper(el) {
   let top = 0;
   while (el && el !== wrapperEl) { top += el.offsetTop; el = el.offsetParent; }
   return top;
 }
-
 document.addEventListener('click', ev => {
   const a = ev.target.closest('a[href^="#"]');
   if (!a) return;
   const href = a.getAttribute('href');
-  if (href.length < 2) return;                    // bare "#" placeholder links
+  if (href.length < 2) return;
   const target = document.querySelector(href);
   if (!target) return;
   ev.preventDefault();
@@ -1105,15 +1135,302 @@ document.addEventListener('click', ev => {
 });
 
 /* =====================================================================
-   9. INIT
+   8. INIT
    ===================================================================== */
 renderHero();
 renderProjects();
 navTone();
 $('#year').textContent = new Date().getFullYear();
+
+
 </script>
 
-<!-- Smooth scroll animation -->
+
+<!-- =====================================================================
+     SCRIPT 2 — 360° VIEWER (fully separate)
+     Handles: opening the modal, loading equirectangular images,
+     scene navigation menu (collapsible, bottom-right), Pannellum support.
+     ===================================================================== -->
+<script>
+/* =====================================================================
+   Pano360 — self-contained 360° viewer module
+   ===================================================================== */
+const Pano360 = (() => {
+
+  /* ── Internal references ─────────────────────────────────────────── */
+  const modalEl   = document.getElementById('viewer360');
+  const stageEl   = document.getElementById('panoStage');
+  const titleEl   = document.getElementById('v360Title');
+  const subEl     = document.getElementById('v360Sub');
+  const closeBtn  = document.getElementById('v360Close');
+
+  /* ── State ───────────────────────────────────────────────────────── */
+  let currentProject = null;
+  let currentSceneId = null;
+  let pannellumInst  = null;
+  let sceneNavEl     = null;
+
+  /* ── Helpers ─────────────────────────────────────────────────────── */
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+  /* Candidate paths for a 360° scene, one per allowed extension.
+     Structure: PANORAMA_ROOT + project.folder + "/" + sceneId + "." + ext
+     e.g. 360/casa-en-las-montanas/living-room.jpg, then .jpeg, .png, ... */
+  function sceneUrls(project, sceneId) {
+    return PANORAMA_EXTS.map(ext => `${PANORAMA_ROOT}${project.folder}/${sceneId}.${ext}`);
+  }
+
+  /* Pannellum needs a single URL up front and does no retrying of its own,
+     so probe the candidates and hand it the one that exists. The flat <img>
+     path does not need this — its onerror chain walks the list by itself. */
+  function resolveSceneUrl(urls, done) {
+    let i = 0;
+    (function attempt() {
+      if (i >= urls.length) return done(null);
+      const url = urls[i++];
+      const probe = new Image();
+      probe.onload  = () => done(url);
+      probe.onerror = attempt;
+      probe.src = url;
+    })();
+  }
+
+  /* Fallback arch drawing identical to the rest of the page */
+  function fallback360(label) {
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><defs><linearGradient id="g360" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8a5535"/><stop offset="1" stop-color="#2e170b"/></linearGradient></defs><rect width="1200" height="600" fill="url(#g360)"/><g fill="none" stroke="#e8dcc0" stroke-opacity=".45" stroke-width="2.5"><path d="M380 480V300a120 120 0 0 1 240 0v180z"/><path d="M300 480h400"/><path d="M440 480V320a60 60 0 0 1 120 0v160"/></g><text x="600" y="545" text-anchor="middle" font-family="sans-serif" font-size="28" fill="#e8dcc0" fill-opacity=".7">${esc(label)}</text><text x="600" y="280" text-anchor="middle" font-family="sans-serif" font-size="72" fill="#e8dcc0" fill-opacity=".18">360°</text></svg>`;
+    return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+  }
+
+  /* ── Scene-nav menu (collapsible floating list) ──────────────────── */
+  function buildSceneNav(project) {
+    /* Remove any previous menu */
+    const old = stageEl.querySelector('.scene-nav');
+    if (old) old.remove();
+
+    const nav = document.createElement('div');
+    nav.className = 'scene-nav';
+    nav.setAttribute('aria-label', 'Room navigation');
+
+    /* Panel (list of scenes) */
+    const panel = document.createElement('div');
+    panel.className = 'scene-nav__panel';
+    panel.setAttribute('role', 'list');
+
+    const panelLabel = document.createElement('p');
+    panelLabel.className = 'scene-nav__label';
+    panelLabel.textContent = 'Rooms';
+    panel.appendChild(panelLabel);
+
+    project.scenes.forEach(scene => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'scene-nav__btn';
+      btn.dataset.sceneId = scene.id;
+      btn.setAttribute('role', 'listitem');
+      btn.textContent = scene.label;
+      if (scene.id === currentSceneId) btn.classList.add('is-active');
+      btn.addEventListener('click', () => {
+        loadScene(project, scene.id);
+      });
+      panel.appendChild(btn);
+    });
+
+    /* Toggle button */
+    const toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'scene-nav__toggle';
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-controls', 'scene-panel');
+    panel.id = 'scene-panel';
+    toggle.innerHTML = `
+      <svg class="scene-nav__toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M6 9l6-6 6 6M6 15l6 6 6-6"/>
+      </svg>
+      Rooms`;
+
+    toggle.addEventListener('click', e => {
+      e.stopPropagation();
+      const open = nav.classList.toggle('is-open');
+      toggle.setAttribute('aria-expanded', String(open));
+    });
+
+    /* Close menu when clicking outside */
+    stageEl.addEventListener('click', e => {
+      if (!nav.contains(e.target)) {
+        nav.classList.remove('is-open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    }, { passive: true });
+
+    nav.appendChild(panel);
+    nav.appendChild(toggle);
+    stageEl.appendChild(nav);
+    sceneNavEl = nav;
+  }
+
+  function updateSceneNavActive(sceneId) {
+    if (!sceneNavEl) return;
+    sceneNavEl.querySelectorAll('.scene-nav__btn').forEach(btn => {
+      btn.classList.toggle('is-active', btn.dataset.sceneId === sceneId);
+    });
+    /* Update the toggle label to reflect the active room */
+    const activeScene = currentProject && currentProject.scenes.find(s => s.id === sceneId);
+    const toggle = sceneNavEl.querySelector('.scene-nav__toggle');
+    if (toggle && activeScene) {
+      toggle.childNodes[toggle.childNodes.length - 1].textContent = ' ' + activeScene.label;
+    }
+  }
+
+  /* ── Load a scene (equirectangular image or Pannellum) ───────────── */
+  function loadScene(project, sceneId) {
+    currentSceneId = sceneId;
+    const urls = sceneUrls(project, sceneId);
+    const scene = project.scenes.find(s => s.id === sceneId) || { label: sceneId };
+
+    /* Update subtitle */
+    if (subEl) subEl.textContent = scene.label + ' · 360°';
+
+    /* Update nav active state */
+    updateSceneNavActive(sceneId);
+
+    /* ── Real Pannellum viewer ─────────────────────────────────────── */
+    if (window.pannellum) {
+      if (pannellumInst) {
+        pannellumInst.destroy();
+        pannellumInst = null;
+      }
+      /* Remove any flat image if present */
+      const flatImg = stageEl.querySelector('.v360__eqr');
+      if (flatImg) flatImg.remove();
+      /* Remove placeholder if present */
+      const ph = stageEl.querySelector('.v360__ph');
+      if (ph) ph.remove();
+      const bg = stageEl.querySelector('.v360__bg');
+      if (bg) bg.remove();
+
+      /* Create a dedicated div for Pannellum so the scene-nav stays */
+      let panoDiv = stageEl.querySelector('.pano-mount');
+      if (!panoDiv) {
+        panoDiv = document.createElement('div');
+        panoDiv.className = 'pano-mount';
+        panoDiv.style.cssText = 'position:absolute;inset:0;border-radius:inherit;overflow:hidden;z-index:0';
+        stageEl.insertBefore(panoDiv, stageEl.firstChild);
+      }
+
+      resolveSceneUrl(urls, found => {
+        /* the viewer may have moved on while we were probing */
+        if (currentSceneId !== sceneId) return;
+        if (!found) {
+          /* No panorama on disk for this scene. Pannellum would render its
+             own error card, so drop the mount and show the drawn placeholder. */
+          panoDiv.remove();
+          renderFlat(project, scene, urls);
+          return;
+        }
+        pannellumInst = window.pannellum.viewer(panoDiv, {
+          type: 'equirectangular',
+          panorama: found,
+          autoLoad: true,
+          showControls: true,
+          compass: false,
+          hfov: 100
+        });
+      });
+      return;
+    }
+
+    renderFlat(project, scene, urls);
+  }
+
+  /* ── Flat fallback ────────────────────────────────────────────────────
+     Used when Pannellum is unavailable, or when a scene has no panorama
+     file. Shows the equirectangular image as a still, or the drawing. */
+  function renderFlat(project, scene, urls) {
+    let flatImg = stageEl.querySelector('.v360__eqr');
+    /* Remove old placeholder content if switching from placeholder */
+    const ph = stageEl.querySelector('.v360__ph');
+    const bgOld = stageEl.querySelector('.v360__bg');
+    if (ph) ph.remove();
+    if (bgOld) bgOld.remove();
+
+    if (!flatImg) {
+      flatImg = document.createElement('img');
+      flatImg.className = 'v360__eqr';
+      flatImg.alt = `${project.title}: ${scene.label} — equirectangular 360°`;
+      stageEl.insertBefore(flatImg, stageEl.firstChild);
+    }
+
+    /* Fade transition between scenes */
+    flatImg.style.opacity = '0';
+    flatImg.style.transition = 'opacity .35s ease';
+
+    let tried = 0;
+    const chain = [...urls, fallback360(scene.label)];
+    flatImg.onerror = () => {
+      tried++;
+      if (tried < chain.length) flatImg.src = chain[tried];
+      else flatImg.onerror = null;
+    };
+    flatImg.onload = () => { flatImg.style.opacity = '1'; };
+    flatImg.src = chain[0];
+  }
+
+  /* ── Mount everything into the stage ─────────────────────────────── */
+  function mount(project, sceneId) {
+    /* Clear stage completely */
+    stageEl.innerHTML = '';
+    pannellumInst = null;
+    sceneNavEl = null;
+
+    /* Build scene nav first (it sits on top via z-index) */
+    buildSceneNav(project);
+
+    /* Load the requested (or first) scene */
+    loadScene(project, sceneId || project.scenes[0].id);
+  }
+
+  /* ── Destroy on close ─────────────────────────────────────────────── */
+  function destroy() {
+    if (pannellumInst && typeof pannellumInst.destroy === 'function') {
+      pannellumInst.destroy();
+    }
+    pannellumInst = null;
+    stageEl.innerHTML = '';
+    sceneNavEl = null;
+    currentProject = null;
+    currentSceneId = null;
+  }
+
+  /* ── Public API ──────────────────────────────────────────────────── */
+
+  /**
+   * open(projectId, sceneId, openerEl)
+   * Opens the 360° modal for the given project, starting at sceneId.
+   * If sceneId is null / undefined, the first scene is used.
+   */
+  function open(projectId, sceneId, openerEl) {
+    currentProject = PROJECTS.find(p => p.id === projectId);
+    if (!currentProject) return;
+
+    titleEl.textContent = currentProject.title;
+
+    /* Use the openOverlay helper defined in Script 1 */
+    mount(currentProject, sceneId || null);
+    openOverlay(modalEl, openerEl || null, destroy);
+  }
+
+  /* Wire close button */
+  closeBtn.addEventListener('click', closeOverlay);
+
+  return { open };
+
+})();
+</script>
+
+
+<!-- =====================================================================
+     SCRIPT 3 — SMOOTH SCROLL ANIMATION
+     ===================================================================== -->
 <script>
 (function(){
   const wrapper = document.getElementById('scroll-wrapper');
