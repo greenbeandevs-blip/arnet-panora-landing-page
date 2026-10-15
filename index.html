@@ -3,20 +3,46 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="shortcut icon" href="/style/images/logo/arnet_ico.png" type="image/x-icon">
 <title>arnet panora</title>
-<script>document.documentElement.classList.add('js')</script>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@300;400;500&family=Figtree:wght@300;400;500&display=swap" rel="stylesheet">
+
+<!-- Device tiering runs before first paint so the CSS below can react to it.
+     t2 = desktop / high-end, t1 = mid phones & tablets, t0 = low-end, slow
+     network, data-saver or reduced-motion. -->
+<script>
+(function(){var d=document.documentElement,n=navigator,c=n.connection||n.mozConnection||n.webkitConnection||{},
+ mem=n.deviceMemory||4,cpu=n.hardwareConcurrency||4,et=c.effectiveType||'4g',
+ slow=!!c.saveData||et=='slow-2g'||et=='2g'||et=='3g',
+ reduce=matchMedia('(prefers-reduced-motion:reduce)').matches,
+ small=Math.min(innerWidth,innerHeight)<=480,t=2;
+ if(mem<=4||cpu<=4||small)t=1;
+ if(mem<=2||cpu<=2||slow||reduce)t=0;
+ d.className='js t'+t;window.__tier=t;window.__slow=slow;window.__reduce=reduce;})();
+</script>
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" href="style/font/woff2/Arista-Pro-Light.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="style/font/woff2/TTNorms-Light.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" as="image" href="style/images/opt/Gemini_Generated_Image_2d40cc2d40cc2d40-1440.webp"
+      imagesrcset="style/images/opt/Gemini_Generated_Image_2d40cc2d40cc2d40-480.webp 480w, style/images/opt/Gemini_Generated_Image_2d40cc2d40cc2d40-960.webp 960w, style/images/opt/Gemini_Generated_Image_2d40cc2d40cc2d40-1440.webp 1440w, style/images/opt/Gemini_Generated_Image_2d40cc2d40cc2d40-1920.webp 1920w"
+      imagesizes="100vw" fetchpriority="high">
+<!-- Google fallback faces load without blocking render; the local woff2 above is the real thing. -->
+<link rel="stylesheet" media="print" onload="this.media='all';this.onload=null"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@300;400;500&family=Figtree:wght@300;400;500&display=swap">
 <style>
-@font-face{font-family:"Arista";src:url("style/font/arista_pro/Arista-Pro-Light-trial.ttf") format("truetype");font-weight:300;font-display:swap}
-@font-face{font-family:"Arista";src:url("style/font/arista_pro/Arista-Pro-Bold-trial.ttf") format("truetype");font-weight:700;font-display:swap}
-@font-face{font-family:"Arista";src:url("style/font/arista_pro/Arista-Pro-Fat-trial.ttf") format("truetype");font-weight:900;font-display:swap}
-@font-face{font-family:"Norms";src:url("style/font/TT%20Norms%20sv/TTNorms-Light.otf") format("opentype");font-weight:300;font-display:swap}
-@font-face{font-family:"Norms";src:url("style/font/TT%20Norms%20sv/TTNorms-Regular.otf") format("opentype");font-weight:400;font-display:swap}
-@font-face{font-family:"Norms";src:url("style/font/TT%20Norms%20sv/TTNorms-Bold.otf") format("opentype");font-weight:700;font-display:swap}
-@font-face{font-family:"Norms";src:url("style/font/TT%20Norms%20sv/TTNorms-Italic.otf") format("opentype");font-weight:400;font-style:italic;font-display:swap}
+/* woff2 first (62K vs 405K for the ttf), originals kept as a fallback */
+@font-face{font-family:"Arista";src:url("style/font/woff2/Arista-Pro-Light.woff2") format("woff2"),url("style/font/arista_pro/Arista-Pro-Light-trial.ttf") format("truetype");font-weight:300;font-display:swap}
+@font-face{font-family:"Arista";src:url("style/font/woff2/Arista-Pro-Bold.woff2") format("woff2"),url("style/font/arista_pro/Arista-Pro-Bold-trial.ttf") format("truetype");font-weight:700;font-display:swap}
+@font-face{font-family:"Arista";src:url("style/font/woff2/Arista-Pro-Fat.woff2") format("woff2"),url("style/font/arista_pro/Arista-Pro-Fat-trial.ttf") format("truetype");font-weight:900;font-display:swap}
+@font-face{font-family:"Norms";src:url("style/font/woff2/TTNorms-Light.woff2") format("woff2"),url("style/font/TT%20Norms%20sv/TTNorms-Light.otf") format("opentype");font-weight:300;font-display:swap}
+@font-face{font-family:"Norms";src:url("style/font/woff2/TTNorms-Regular.woff2") format("woff2"),url("style/font/TT%20Norms%20sv/TTNorms-Regular.otf") format("opentype");font-weight:400;font-display:swap}
+@font-face{font-family:"Norms";src:url("style/font/woff2/TTNorms-Bold.woff2") format("woff2"),url("style/font/TT%20Norms%20sv/TTNorms-Bold.otf") format("opentype");font-weight:700;font-display:swap}
+@font-face{font-family:"Norms";src:url("style/font/woff2/TTNorms-Italic.woff2") format("woff2"),url("style/font/TT%20Norms%20sv/TTNorms-Italic.otf") format("opentype");font-weight:400;font-style:italic;font-display:swap}
 :root{--br:#673d1f;--bk:#000;--wh:#fff;--bg:#e8dcc4;--brand:"Arista","Cormorant Garamond",serif;--ui:"Norms","Figtree",sans-serif;--g:clamp(20px,5.5vw,96px);--gap:clamp(10px,1.7vw,26px);--rad:clamp(10px,1.6vw,24px)}
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{background:var(--bg);color:var(--br);font-family:var(--ui);font-weight:300;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 #s{position:fixed;top:0;left:0;width:100vw;will-change:transform;overflow:hidden}
+/* low tier scrolls natively: no fixed wrapper, no transform, no measured body height */
+.t0 #s{position:static;width:auto;will-change:auto}
+.t0 body{height:auto!important}
 section{position:relative;padding:0 var(--g)}
 .brand{font-family:var(--brand);text-transform:lowercase;font-weight:300;letter-spacing:-.02em;line-height:.8}
 h2{font-weight:300;letter-spacing:-.035em;line-height:.92}
@@ -26,14 +52,15 @@ h2{font-weight:300;letter-spacing:-.035em;line-height:.92}
 p.b{font-size:clamp(14px,1.15vw,17px);line-height:1.75;max-width:40ch}
 .g{display:grid;grid-template-columns:repeat(12,1fr);column-gap:var(--gap)}
 .g>*{grid-column:var(--d,1/-1);grid-row:var(--r,auto)}
-/* image mask: soft brown tone shows while the picsum photo is still loading */
+/* image mask: soft brown tone shows while the photo is still loading */
 .m{position:relative;overflow:hidden;background:rgba(103,61,31,.16);border-radius:var(--rad);transition:clip-path 1.9s cubic-bezier(.16,1,.3,1)}
 .m .im{transition:transform 2.4s cubic-bezier(.16,1,.3,1)}
 /* images are visible by default; the reveal animation only applies when JS is running */
 .js .m:not(.in){clip-path:inset(100% 0 0 0)}
 .js .m:not(.in) .im{transform:scale(1.3)}
 .m.in{clip-path:inset(0)}
-.im{position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat}
+/* .im is now a real <img> so it gets lazy loading, srcset and async decode */
+.im{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block;border:0}
 .fr{position:relative}.fr:after{content:"";position:absolute;inset:-14px 14px 14px -14px;border:1px solid currentColor;opacity:.4;pointer-events:none}
 .z{position:relative;z-index:3}
 .btn{display:inline-flex;align-items:center;gap:1.2em;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:inherit;text-decoration:none;padding:1.25em 0;border-bottom:1px solid currentColor;transition:gap .5s cubic-bezier(.16,1,.3,1),opacity .3s}
@@ -47,8 +74,13 @@ p.b{font-size:clamp(14px,1.15vw,17px);line-height:1.75;max-width:40ch}
 /* nav */
 nav{position:fixed;z-index:9;top:0;left:0;right:0;display:flex;justify-content:center;padding:calc(12px + env(safe-area-inset-top,0px)) var(--g) 0;color:var(--bg);transition:color .4s ease;pointer-events:none}
 nav.show{color:var(--br)}
-nav .nav-pill{display:flex;justify-content:space-between;align-items:center;width:100%;max-width:calc(100% - var(--g)*2);background:rgba(235,225,210,0);backdrop-filter:blur(0px);-webkit-backdrop-filter:blur(0px);border-radius:60px;padding:12px 28px;pointer-events:auto;box-shadow:0 0 0 rgba(0,0,0,0);transition:background .4s ease,backdrop-filter .4s ease,-webkit-backdrop-filter .4s ease,box-shadow .4s ease}
-nav.show .nav-pill{background:rgba(235,225,210,.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 2px 16px rgba(0,0,0,.08)}
+nav .nav-pill{display:flex;justify-content:space-between;align-items:center;width:100%;max-width:calc(100% - var(--g)*2);background:rgba(235,225,210,0);border-radius:60px;padding:12px 28px;pointer-events:auto;box-shadow:0 0 0 rgba(0,0,0,0);transition:background .4s ease,box-shadow .4s ease}
+nav.show .nav-pill{background:rgba(235,225,210,.85);box-shadow:0 2px 16px rgba(0,0,0,.08)}
+/* backdrop-filter is a real per-frame cost on weak GPUs: mid/high only, and the
+   low tier gets a near-opaque fill that reads the same */
+.t1 nav .nav-pill,.t2 nav .nav-pill{backdrop-filter:blur(0px);-webkit-backdrop-filter:blur(0px);transition:background .4s ease,backdrop-filter .4s ease,-webkit-backdrop-filter .4s ease,box-shadow .4s ease}
+.t1 nav.show .nav-pill,.t2 nav.show .nav-pill{backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.t0 nav.show .nav-pill{background:rgba(235,225,210,.96)}
 nav.dk{color:var(--br)}
 nav>*{pointer-events:auto}
 nav .nav-pill>*{pointer-events:auto}
@@ -107,8 +139,14 @@ nav .btn{padding:.95em 1.6em}
 #render .tx{align-self:end}
 /* carousel */
 #car{padding:clamp(40px,8vh,100px) 0 clamp(90px,14vh,180px);overflow:hidden}
-.row{display:flex;gap:var(--gap);width:max-content;margin-bottom:var(--gap);will-change:transform}
+.row{display:flex;gap:var(--gap);width:max-content;margin-bottom:var(--gap)}
+.t2 .row{will-change:transform}
 .row div{height:34vh;flex:none}
+/* no marquee on the low tier - the rows become swipeable instead of animated */
+.t0 #car{overflow:visible}
+.t0 .row{width:auto;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:0 var(--g)}
+.t0 .row::-webkit-scrollbar{display:none}
+.t0 .row div{scroll-snap-align:center}
 /* plans */
 #plans{background:#dfd0b3;padding-top:clamp(100px,16vh,200px);padding-bottom:clamp(100px,16vh,200px)}
 #plans h2{font-size:clamp(34px,6.4vw,104px);color:var(--bk)}
@@ -145,7 +183,8 @@ nav .btn{padding:.95em 1.6em}
 #airbnb .airbnb-list .item p{font-size:clamp(15px,1.15vw,18px);line-height:1.6;max-width:26ch}
 /* tour */
 #tour{min-height:min(100vh,900px);padding-top:clamp(100px,16vh,200px);padding-bottom:clamp(70px,10vh,130px);color:var(--wh);overflow:hidden;isolation:isolate}
-#tour:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.68),rgba(0,0,0,.16) 70%),url('https://tryinteriorlab.com/_next/image?url=%2Fimages%2Fstyles%2Fmid-century-modern.webp&w=3840&q=75') center/cover;z-index:-2;transform:scale(1.04)}
+/* was a 3840px wide remote jpeg; 1600 (900 on phones) is indistinguishable under the dark gradient */
+#tour:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.68),rgba(0,0,0,.16) 70%),url('https://tryinteriorlab.com/_next/image?url=%2Fimages%2Fstyles%2Fmid-century-modern.webp&w=1920&q=60') center/cover;z-index:-2;transform:scale(1.04)}
 #tour:after{content:"";position:absolute;inset:0;background:rgba(42,26,14,.16);z-index:-1}
 #tour .tour-copy{max-width:760px}
 #tour h2{font-size:clamp(46px,9.5vw,150px);max-width:8ch}
@@ -175,10 +214,15 @@ nav .btn{padding:.95em 1.6em}
 #end .endimg{position:absolute;z-index:1;right:0;top:clamp(0px,3vh,40px);width:clamp(150px,21vw,370px);aspect-ratio:3/4.4;border-radius:999px 999px 0 0}
 section{overflow-x:clip}
 .g,#pano .full,#pano .big,#end>div:not(.d),#car .row{position:relative;z-index:1}
-.d{position:absolute;pointer-events:none;will-change:transform;aspect-ratio:1;z-index:0}
+.d{position:absolute;pointer-events:none;aspect-ratio:1;z-index:0}
+/* promoting ~50 decorative layers costs real GPU memory - only do it where there is headroom */
+.t2 .d{will-change:transform}
 .d.n{z-index:5}
-.d.c,.d.s{border:1px solid currentColor}.d.c,.d.f,.d.p,.d.r{border-radius:50%}
-.d.f,.d.p{background:currentColor}
+.d.c,.d.s{border:1px solid currentColor}.d.c,.d.p,.d.r{border-radius:50%}
+.d.p{background:currentColor}
+/* was a solid circle under filter:blur(26-30px). A radial gradient gives the same
+   soft blob with no filter pass, which is the single biggest GPU saving here. */
+.d.f{border-radius:50%;background:radial-gradient(circle at 50% 50%,currentColor 0,currentColor 34%,transparent 72%)}
 .d.a{border:1px solid currentColor;border-radius:999px 999px 0 0;aspect-ratio:1/1.6}
 .d.l{height:1px;aspect-ratio:auto;background:currentColor}
 .d.r{background:repeating-radial-gradient(circle,currentColor 0 1px,transparent 1px 14px);-webkit-mask:radial-gradient(circle,#000 50%,transparent 70%);mask:radial-gradient(circle,#000 50%,transparent 70%)}
@@ -202,14 +246,15 @@ section{overflow-x:clip}
  #portfolio h2{font-size:16vw}
  #portfolio .portfolio-copy{margin-top:34px}
  #portfolio .p1,#portfolio .p2,#portfolio .p3,#portfolio .p4{margin-top:36px}
- #tour{min-height:88vh}#tour:before{background-position:center}
+ #tour{min-height:88vh}
+ #tour:before{background:linear-gradient(90deg,rgba(0,0,0,.68),rgba(0,0,0,.16) 70%),url('https://tryinteriorlab.com/_next/image?url=%2Fimages%2Fstyles%2Fmid-century-modern.webp&w=1080&q=55') center/cover}
  #tour .tour-card{margin-top:44px}#tour .ring{width:26vw}
  .fr:after{inset:-9px 9px 9px -9px}
 }
 @media(prefers-reduced-motion:reduce){.m,.m .im,.sc:after{transition:none;animation:none}}
 </style></head><body>
-<nav><div class="nav-pill"><a href="#hero" class="brand"><img src="/style/images/logo/arnet_logo.png" style="height: 20px; margin-right: 20px;" alt="">arnet panora</a><div><a href="#pano">Recorridos</a><a href="#render">Renders</a><a href="#plans">Planos</a><a href="#portfolio">Portfolio</a><a href="#end" class="btn o">Contacto</a><button id="mb" aria-expanded="false">Menú</button></div></div></nav>
-<div id="menu"><a href="#pano">recorridos</a><a href="#render">renders</a><a href="#plans">planos</a><a href="#portfolio">portfolio</a><a href="#tour">tour</a><a href="#end">contacto</a><div class="menu-footer"><img src="/style/images/logo/arnet_logo.png" alt="" style="height:18px">arnet panora</div></div>
+<nav><div class="nav-pill"><a href="#hero" class="brand"><img src="/style/images/logo/arnet_logo.png" style="height: 20px; margin-right: 20px;" alt="" fetchpriority="high">arnet panora</a><div><a href="#pano">Recorridos</a><a href="#render">Renders</a><a href="#plans">Planos</a><a href="#portfolio">Portfolio</a><a href="#end" class="btn o">Contacto</a><button id="mb" aria-expanded="false">Menú</button></div></div></nav>
+<div id="menu"><a href="#pano">recorridos</a><a href="#render">renders</a><a href="#plans">planos</a><a href="#portfolio">portfolio</a><a href="#tour">tour</a><a href="#end">contacto</a><div class="menu-footer"><img src="/style/images/logo/arnet_logo.png" alt="" loading="lazy" decoding="async" style="height:18px;width:auto">arnet panora</div></div>
 
 <div id="intro-video" aria-hidden="false">
  <video id="intro-video-player" src="style/video/PANORA_CANVA.mp4" autoplay muted playsinline preload="auto"></video>
@@ -219,8 +264,8 @@ section{overflow-x:clip}
 <div id="s">
 <!-- HERO -->
 <section id="hero" data-t="d">
- <div class="bg" data-s=".18"><img src="/style/images/Gemini_Generated_Image_2d40cc2d40cc2d40.jfif" alt=""></div>
- <h1 class="brand" data-s="-.05"><span>arnet</span><span><img class="title-mark" src="style/images/Panora_logo.png" alt=""></span></h1>
+ <div class="bg" data-s=".18"><img src="style/images/opt/Gemini_Generated_Image_2d40cc2d40cc2d40-960.webp" srcset="style/images/opt/Gemini_Generated_Image_2d40cc2d40cc2d40-480.webp 480w, style/images/opt/Gemini_Generated_Image_2d40cc2d40cc2d40-960.webp 960w, style/images/opt/Gemini_Generated_Image_2d40cc2d40cc2d40-1440.webp 1440w, style/images/opt/Gemini_Generated_Image_2d40cc2d40cc2d40-1920.webp 1920w, style/images/opt/Gemini_Generated_Image_2d40cc2d40cc2d40-2816.webp 2816w" sizes="100vw" alt="" fetchpriority="high" decoding="async"></div>
+ <h1 class="brand" data-s="-.05"><span>arnet</span><span><img class="title-mark" src="style/images/opt/Panora_logo-960.webp" srcset="style/images/opt/Panora_logo-480.webp 480w, style/images/opt/Panora_logo-960.webp 960w, style/images/opt/Panora_logo-1440.webp 1440w, style/images/opt/Panora_logo-1818.webp 1818w" sizes="(max-width:900px) 70vw, 45vw" alt="Panora" fetchpriority="high" decoding="async"></span></h1>
  <div class="hi" data-s=".12"><div class="fr"><div class="m" data-s=".04"></div></div></div>
  <div class="ft"><p class="cap">Recorridos virtuales, renders, planos de planta y diseño de interiores.<br>Edición 01</p><p class="cap sc">Desplázate despacio</p></div>
 </section>
@@ -230,9 +275,9 @@ section{overflow-x:clip}
  <div class="g">
   <p class="eb" style="--d:1/5">01 — Estudio</p>
   <h2 class="q z" style="--d:2/13;--m:1/-1;margin-top:clamp(24px,4vw,60px)" data-s="-.03">Fotografiamos lo que aún no existe, <i>y te dejamos recorrerlo.</i></h2>
-  <div style="--d:1/6;--r:3"><div class="fr"><div class="m a" data-s=".08"><div class="im" style="background-image:url('/style/images/f1094b20-b8b5-42fb-be5c-75fc19d97c40.png')"></div></div></div><p class="cap" style="margin-top:22px">Fig. 1a — Concepto de montaña</p></div>
+  <div style="--d:1/6;--r:3"><div class="fr"><div class="m a" data-s=".08"><img class="im" src="style/images/opt/f1094b20-b8b5-42fb-be5c-75fc19d97c40-960.webp" srcset="style/images/opt/f1094b20-b8b5-42fb-be5c-75fc19d97c40-480.webp 480w, style/images/opt/f1094b20-b8b5-42fb-be5c-75fc19d97c40-960.webp 960w, style/images/opt/f1094b20-b8b5-42fb-be5c-75fc19d97c40-1440.webp 1440w, style/images/opt/f1094b20-b8b5-42fb-be5c-75fc19d97c40-1678.webp 1678w" sizes="(max-width:900px) 100vw, 40vw" alt="" loading="lazy" decoding="async"></div></div><p class="cap" style="margin-top:22px">Fig. 1a — Concepto de montaña</p></div>
   <div class="t" style="--d:8/12;--r:3">
-   <div class="m ts" data-s=".1"><div class="im" style="background-image:url('/style/images/92fd26bb-d47a-46cb-a61b-e2fb87583d86.jfif')"></div></div>
+   <div class="m ts" data-s=".1"><img class="im" src="style/images/opt/92fd26bb-d47a-46cb-a61b-e2fb87583d86-960.webp" srcset="style/images/opt/92fd26bb-d47a-46cb-a61b-e2fb87583d86-480.webp 480w, style/images/opt/92fd26bb-d47a-46cb-a61b-e2fb87583d86-960.webp 960w, style/images/opt/92fd26bb-d47a-46cb-a61b-e2fb87583d86-1024.webp 1024w" sizes="(max-width:900px) 100vw, 40vw" alt="" loading="lazy" decoding="async"></div>
    <p class="cap" style="margin:18px 0 clamp(28px,4vw,56px)">Fig. 1b — Concepto de habitación natural</p>
    <p class="b" style="text-align:justify;">En Arnet Panora, nuestro estudio de visualización especializado, transformamos cualquier espacio —real o en proyecto— en una experiencia inmersiva interactiva. A partir de una selección estratégica de imágenes 360º, construimos un recorrido virtual que permite al espectador navegar libremente de un punto a otro de la propiedad, explorando cada rincón, desde las áreas comunes hasta los detalles más íntimos. Es una exploración 'punto a punto' que eleva la presentación arquitectónica a una verdadera inmersión sensorial.</p><a class="btn" href="#pano">Ver recorridos</a>
   </div>
@@ -242,14 +287,14 @@ section{overflow-x:clip}
 <!-- PANORAMICO -->
 <section id="pano" data-t="d">
  <div class="g" style="padding-top:clamp(50px,9vh,110px)"><p class="eb" style="--d:1/5">02 — Recorridos</p><p class="cap" style="--d:8/13;text-align:right">Recorrido 04 — Casa Lomas, sala de estar</p></div>
- <div class="full m" style="margin-top:28px"><div class="im" style="background-image:url('/style/images/8f20f23c-0244-4701-a409-3e39ce8644ea.png')" data-s=".1"></div><div class="ring">360°</div></div>
+ <div class="full m" style="margin-top:28px"><img class="im" src="style/images/opt/8f20f23c-0244-4701-a409-3e39ce8644ea-960.webp" srcset="style/images/opt/8f20f23c-0244-4701-a409-3e39ce8644ea-480.webp 480w, style/images/opt/8f20f23c-0244-4701-a409-3e39ce8644ea-960.webp 960w, style/images/opt/8f20f23c-0244-4701-a409-3e39ce8644ea-1440.webp 1440w, style/images/opt/8f20f23c-0244-4701-a409-3e39ce8644ea-1774.webp 1774w" sizes="100vw" alt="" loading="lazy" decoding="async" data-s=".1"><div class="ring">360°</div></div>
  <h2 class="brand big" data-x="-.12">Panoramico</h2>
  <div class="g pr">
   <p class="b" style="--d:2/7">Recorridos de 360° a los que entras desde un teléfono, un visor o un navegador. Arrastra para girar, toca para moverte entre habitaciones.</p>
   <div class="th" style="--d:8/13">
-   <div><div class="m" data-s=".05"><div class="im" style="background-image:url('/style/images/84a6ec4f-10bd-40e3-bab1-23f2684692a9.jfif')"></div></div><p class="cap">Sala</p></div>
-   <div><div class="m" data-s=".09"><div class="im" style="background-image:url('/style/images/967fa647-3786-4ce6-9686-3c5d4579ef77.jfif')"></div></div><p class="cap">Cocina</p></div>
-   <div><div class="m" data-s=".13"><div class="im" style="background-image:url('/style/images/db85d153-bb11-447b-a45b-2070f80abfce.jfif')"></div></div><p class="cap">Terraza</p></div>
+   <div><div class="m" data-s=".05"><img class="im" src="style/images/opt/84a6ec4f-10bd-40e3-bab1-23f2684692a9-765.webp" srcset="style/images/opt/84a6ec4f-10bd-40e3-bab1-23f2684692a9-480.webp 480w, style/images/opt/84a6ec4f-10bd-40e3-bab1-23f2684692a9-765.webp 765w" sizes="(max-width:900px) 32vw, 17vw" alt="" loading="lazy" decoding="async"></div><p class="cap">Sala</p></div>
+   <div><div class="m" data-s=".09"><img class="im" src="style/images/opt/967fa647-3786-4ce6-9686-3c5d4579ef77-765.webp" srcset="style/images/opt/967fa647-3786-4ce6-9686-3c5d4579ef77-480.webp 480w, style/images/opt/967fa647-3786-4ce6-9686-3c5d4579ef77-765.webp 765w" sizes="(max-width:900px) 32vw, 17vw" alt="" loading="lazy" decoding="async"></div><p class="cap">Cocina</p></div>
+   <div><div class="m" data-s=".13"><img class="im" src="style/images/opt/db85d153-bb11-447b-a45b-2070f80abfce-960.webp" srcset="style/images/opt/db85d153-bb11-447b-a45b-2070f80abfce-480.webp 480w, style/images/opt/db85d153-bb11-447b-a45b-2070f80abfce-960.webp 960w, style/images/opt/db85d153-bb11-447b-a45b-2070f80abfce-1024.webp 1024w" sizes="(max-width:900px) 32vw, 17vw" alt="" loading="lazy" decoding="async"></div><p class="cap">Terraza</p></div>
   </div>
  </div>
 </section>
@@ -259,12 +304,12 @@ section{overflow-x:clip}
  <div class="g">
   <p class="eb" style="--d:1/5">03 — Renders</p>
   <h2 style="--d:1/10;--r:2;margin-top:2vw" class="z" data-s="-.05">Renderizado</h2>
-  <div style="--d:7/13;--r:2/5" class="fr"><div class="m A" data-s=".05"><div class="im" style="background-image:url('/style/images/ff16e667-779c-46db-a49d-dd1e04836182.jfif')"></div></div></div>
+  <div style="--d:7/13;--r:2/5" class="fr"><div class="m A" data-s=".05"><img class="im" src="style/images/opt/ff16e667-779c-46db-a49d-dd1e04836182-825.webp" srcset="style/images/opt/ff16e667-779c-46db-a49d-dd1e04836182-480.webp 480w, style/images/opt/ff16e667-779c-46db-a49d-dd1e04836182-825.webp 825w" sizes="(max-width:900px) 100vw, 40vw" alt="" loading="lazy" decoding="async"></div></div>
   <h2 style="--d:3/9;--r:3;color:var(--bk);margin-top:1vw" class="z" data-s="-.09">antes de</h2>
-  <div class="m B" style="--d:1/6;--r:4;--m:1/9" data-s=".14"><div class="im" style="background-image:url('/style/images/35d93c3b-0a9d-47f8-93d3-b7975ee025dc.png')"></div></div>
+  <div class="m B" style="--d:1/6;--r:4;--m:1/9" data-s=".14"><img class="im" src="style/images/opt/35d93c3b-0a9d-47f8-93d3-b7975ee025dc-960.webp" srcset="style/images/opt/35d93c3b-0a9d-47f8-93d3-b7975ee025dc-480.webp 480w, style/images/opt/35d93c3b-0a9d-47f8-93d3-b7975ee025dc-960.webp 960w, style/images/opt/35d93c3b-0a9d-47f8-93d3-b7975ee025dc-1086.webp 1086w" sizes="(max-width:900px) 100vw, 40vw" alt="" loading="lazy" decoding="async"></div>
   <h2 style="--d:4/13;--r:5;margin-top:-1.4vw;--m:1/-1" class="z" data-s="-.04">ser construido</h2>
   <!-- image directly below "ser construido" -->
-  <div class="m D" style="--d:5/12;--r:6;--m:1/-1" data-s=".06"><div class="im" style="background-image:url('/style/images/52be204f-e68d-4b14-b934-dbab5e094be3.png')"></div></div>
+  <div class="m D" style="--d:5/12;--r:6;--m:1/-1" data-s=".06"><img class="im" src="style/images/opt/52be204f-e68d-4b14-b934-dbab5e094be3-960.webp" srcset="style/images/opt/52be204f-e68d-4b14-b934-dbab5e094be3-480.webp 480w, style/images/opt/52be204f-e68d-4b14-b934-dbab5e094be3-960.webp 960w, style/images/opt/52be204f-e68d-4b14-b934-dbab5e094be3-1440.webp 1440w, style/images/opt/52be204f-e68d-4b14-b934-dbab5e094be3-1586.webp 1586w" sizes="(max-width:900px) 100vw, 60vw" alt="" loading="lazy" decoding="async"></div>
   <p class="b tx" style="--d:2/6;--r:7;margin-top:clamp(40px,6vw,100px)">Renders de arquitectura e interiores con materiales reales, luz natural real y errores que aún se pueden corregir.</p>
 
  </div>
@@ -276,8 +321,8 @@ section{overflow-x:clip}
 <!-- PLANOS -->
 <section id="plans" data-t="l">
  <div class="g" style="align-items:start">
-  <div class="pl m" style="--d:1/8;--r:1" data-s=".04"><div class="im" style="background-image:url('/style/images/3b82b65b-d773-464d-926f-c4ac1a1ee762.png')"></div></div>
-  <div style="--d:9/13;--r:1;--m:1/-1;padding-top:clamp(0px,6vw,90px)"><p class="eb">04 — Planos</p><h2 style="margin-top:28px" data-s="-.05">Planos que se leen como dibujos</h2><div class="m" style="margin-top:clamp(34px,5vw,72px);aspect-ratio:4/3" data-s=".05"><div class="im" style="background-image:url('/style/images/6916d7a0-19ec-4eb2-9f9b-d65ff2bf2563.png')"></div></div></div>
+  <div class="pl m" style="--d:1/8;--r:1" data-s=".04"><img class="im" src="style/images/opt/3b82b65b-d773-464d-926f-c4ac1a1ee762-960.webp" srcset="style/images/opt/3b82b65b-d773-464d-926f-c4ac1a1ee762-480.webp 480w, style/images/opt/3b82b65b-d773-464d-926f-c4ac1a1ee762-960.webp 960w, style/images/opt/3b82b65b-d773-464d-926f-c4ac1a1ee762-1122.webp 1122w" sizes="(max-width:900px) 100vw, 60vw" alt="" loading="lazy" decoding="async"></div>
+  <div style="--d:9/13;--r:1;--m:1/-1;padding-top:clamp(0px,6vw,90px)"><p class="eb">04 — Planos</p><h2 style="margin-top:28px" data-s="-.05">Planos que se leen como dibujos</h2><div class="m" style="margin-top:clamp(34px,5vw,72px);aspect-ratio:4/3" data-s=".05"><img class="im" src="style/images/opt/6916d7a0-19ec-4eb2-9f9b-d65ff2bf2563-960.webp" srcset="style/images/opt/6916d7a0-19ec-4eb2-9f9b-d65ff2bf2563-480.webp 480w, style/images/opt/6916d7a0-19ec-4eb2-9f9b-d65ff2bf2563-960.webp 960w, style/images/opt/6916d7a0-19ec-4eb2-9f9b-d65ff2bf2563-1424.webp 1424w" sizes="(max-width:900px) 100vw, 40vw" alt="" loading="lazy" decoding="async"></div></div>
   <div class="r2" style="--d:1/7;--r:2;--m:1/-1;align-self:end" data-s=".03"><div class="list"><div><span>Planta baja</span><span>142 m²</span></div><div><span>Nivel superior</span><span>96 m²</span></div><div><span>Plano amueblado</span><span>2D + 3D</span></div><div><span>Secciones</span><span>1:50</span></div></div><p class="cap" style="margin-top:20px">Fig. 3 — Casa Lomas, plano a 1:100</p></div>
  </div>
 </section>
@@ -286,13 +331,13 @@ section{overflow-x:clip}
 <section id="int" data-t="l">
  <div class="g">
   <p class="eb" style="--d:1/5">05 — Interiores</p>
-  <div style="--d:1/8;--r:2;margin-top:28px" class="fr"><div class="m A" data-s=".04"><div class="im" style="background-image:url('/style/images/50a4337d-b1ed-4d69-87be-3f12e9c0c533.jfif')"></div></div></div>
-  <div class="m B" style="--d:9/13;--r:2;--m:4/-1" data-s=".16"><div class="im" style="background-image:url('/style/images/84d0484a-255b-4645-afac-983a84fad752.jfif')"></div></div>
+  <div style="--d:1/8;--r:2;margin-top:28px" class="fr"><div class="m A" data-s=".04"><img class="im" src="style/images/opt/50a4337d-b1ed-4d69-87be-3f12e9c0c533-718.webp" srcset="style/images/opt/50a4337d-b1ed-4d69-87be-3f12e9c0c533-480.webp 480w, style/images/opt/50a4337d-b1ed-4d69-87be-3f12e9c0c533-718.webp 718w" sizes="(max-width:900px) 100vw, 60vw" alt="" loading="lazy" decoding="async"></div></div>
+  <div class="m B" style="--d:9/13;--r:2;--m:4/-1" data-s=".16"><img class="im" src="style/images/opt/84d0484a-255b-4645-afac-983a84fad752-765.webp" srcset="style/images/opt/84d0484a-255b-4645-afac-983a84fad752-480.webp 480w, style/images/opt/84d0484a-255b-4645-afac-983a84fad752-765.webp 765w" sizes="(max-width:900px) 100vw, 40vw" alt="" loading="lazy" decoding="async"></div>
   <h2 class="brand big" style="--d:1/-1;--r:3;margin-left:-.03em" data-x=".1">interiores</h2>
   <p class="b" style="--d:2/6;--r:4;margin-top:clamp(30px,5vw,80px)">Mobiliario, paleta e iluminación compuestos juntos, para que el espacio que apruebas sea el que recibes.</p>
-  <div style="--d:8/11;--r:4;--m:4/-1"><div class="m C" data-s=".08"><div class="im" style="background-image:url('/style/images/c228eabc-615e-4810-b1b4-f57e542d8842.jfif')"></div></div><p class="cap" style="margin-top:18px">Fig. 4 — Arco mediterráneo, pasillo</p></div>
-  <div class="m T" style="--d:1/5;--r:5;--m:1/8" data-s=".1"><div class="im" style="background-image:url('/style/images/dbdb29fbbefa76be7ce22e3d4b2555b6.jpg')"></div></div>
-  <div style="--d:6/13;--r:5;--m:1/-1"><div class="m W" data-s=".05"><div class="im" style="background-image:url('/style/images/aa26f0f1-9091-4fbf-bc0a-fb36ad464313.png')"></div></div><p class="cap" style="margin-top:18px">Fig. 5 — Oficina moderna verde</p></div>
+  <div style="--d:8/11;--r:4;--m:4/-1"><div class="m C" data-s=".08"><img class="im" src="style/images/opt/c228eabc-615e-4810-b1b4-f57e542d8842-960.webp" srcset="style/images/opt/c228eabc-615e-4810-b1b4-f57e542d8842-480.webp 480w, style/images/opt/c228eabc-615e-4810-b1b4-f57e542d8842-960.webp 960w, style/images/opt/c228eabc-615e-4810-b1b4-f57e542d8842-1024.webp 1024w" sizes="(max-width:900px) 100vw, 40vw" alt="" loading="lazy" decoding="async"></div><p class="cap" style="margin-top:18px">Fig. 4 — Arco mediterráneo, pasillo</p></div>
+  <div class="m T" style="--d:1/5;--r:5;--m:1/8" data-s=".1"><img class="im" src="style/images/opt/dbdb29fbbefa76be7ce22e3d4b2555b6-960.webp" srcset="style/images/opt/dbdb29fbbefa76be7ce22e3d4b2555b6-480.webp 480w, style/images/opt/dbdb29fbbefa76be7ce22e3d4b2555b6-960.webp 960w, style/images/opt/dbdb29fbbefa76be7ce22e3d4b2555b6-1024.webp 1024w" sizes="(max-width:900px) 100vw, 40vw" alt="" loading="lazy" decoding="async"></div>
+  <div style="--d:6/13;--r:5;--m:1/-1"><div class="m W" data-s=".05"><img class="im" src="style/images/opt/aa26f0f1-9091-4fbf-bc0a-fb36ad464313-960.webp" srcset="style/images/opt/aa26f0f1-9091-4fbf-bc0a-fb36ad464313-480.webp 480w, style/images/opt/aa26f0f1-9091-4fbf-bc0a-fb36ad464313-960.webp 960w, style/images/opt/aa26f0f1-9091-4fbf-bc0a-fb36ad464313-1024.webp 1024w" sizes="(max-width:900px) 100vw, 60vw" alt="" loading="lazy" decoding="async"></div><p class="cap" style="margin-top:18px">Fig. 5 — Oficina moderna verde</p></div>
  </div>
 </section>
 
@@ -302,23 +347,23 @@ section{overflow-x:clip}
   <div style="--d:1/8;--r:1;--m:1/-1"><p class="eb">06 — Portafolio</p><h2 style="margin-top:clamp(28px,4vw,64px)" data-s="-.04">Nuestro portafolio</h2></div>
   <div class="portfolio-copy" style="--d:9/13;--r:1;--m:1/-1"><p class="b">Un viaje a través de espacios, materias y silencios creados antes de encontrar su lugar en el mundo.</p><a class="btn" href="about.html">Explora nuestro trabajo</a></div>
   <a class="portfolio-link pj p1" target="_blank" rel="noopener noreferrer" style="--d:1/8;--r:2;--ar:16/11">
-   <div class="m" data-s=".07"><div class="im" style="background-image:url('/style/images/93449727-2147-4bfc-8788-320a93927cd7.png')"></div></div>
+   <div class="m" data-s=".07"><img class="im" src="style/images/opt/93449727-2147-4bfc-8788-320a93927cd7-960.webp" srcset="style/images/opt/93449727-2147-4bfc-8788-320a93927cd7-480.webp 480w, style/images/opt/93449727-2147-4bfc-8788-320a93927cd7-960.webp 960w, style/images/opt/93449727-2147-4bfc-8788-320a93927cd7-1440.webp 1440w, style/images/opt/93449727-2147-4bfc-8788-320a93927cd7-1586.webp 1586w" sizes="(max-width:900px) 100vw, 60vw" alt="" loading="lazy" decoding="async"></div>
    <div class="portfolio-overlay"><span class="eyebrow">01 — Casa Lomas, residencial</span></div>
    <p class="cap"></p>
   </a>
-  <div class="pj p2" style="--d:9/13;--r:2;--ar:3/4"><div class="m" data-s=".12"><div class="im" style="background-image:url('/style/images/656b6533-ab62-4530-9322-0afd58665113.jfif')"></div></div><p class="cap">02 — Villa Ámbar, hospitalidad</p></div>
-  <div class="pj p3" style="--d:2/6;--r:3;--ar:1"><div class="m" data-s=".06"><div class="im" style="background-image:url('/style/images/db07e761-3956-4ea3-a09a-be192f594c32.jfif')"></div></div><p class="cap">03 — Loft Reforma, interiorismo</p></div>
-  <div class="pj p4" style="--d:7/13;--r:3;--ar:16/10"><div class="m" data-s=".09"><div class="im" style="background-image:url('/style/images/f24ace01-48fa-4ebe-8b01-23c6790928c7.jfif')"></div></div><p class="cap">04 — Torre Sol, comercial</p></div>
+  <div class="pj p2" style="--d:9/13;--r:2;--ar:3/4"><div class="m" data-s=".12"><img class="im" src="style/images/opt/656b6533-ab62-4530-9322-0afd58665113-631.webp" srcset="style/images/opt/656b6533-ab62-4530-9322-0afd58665113-480.webp 480w, style/images/opt/656b6533-ab62-4530-9322-0afd58665113-631.webp 631w" sizes="(max-width:900px) 100vw, 40vw" alt="" loading="lazy" decoding="async"></div><p class="cap">02 — Villa Ámbar, hospitalidad</p></div>
+  <div class="pj p3" style="--d:2/6;--r:3;--ar:1"><div class="m" data-s=".06"><img class="im" src="style/images/opt/db07e761-3956-4ea3-a09a-be192f594c32-960.webp" srcset="style/images/opt/db07e761-3956-4ea3-a09a-be192f594c32-480.webp 480w, style/images/opt/db07e761-3956-4ea3-a09a-be192f594c32-960.webp 960w, style/images/opt/db07e761-3956-4ea3-a09a-be192f594c32-1024.webp 1024w" sizes="(max-width:900px) 100vw, 40vw" alt="" loading="lazy" decoding="async"></div><p class="cap">03 — Loft Reforma, interiorismo</p></div>
+  <div class="pj p4" style="--d:7/13;--r:3;--ar:16/10"><div class="m" data-s=".09"><img class="im" src="style/images/opt/f24ace01-48fa-4ebe-8b01-23c6790928c7-960.webp" srcset="style/images/opt/f24ace01-48fa-4ebe-8b01-23c6790928c7-480.webp 480w, style/images/opt/f24ace01-48fa-4ebe-8b01-23c6790928c7-960.webp 960w, style/images/opt/f24ace01-48fa-4ebe-8b01-23c6790928c7-1024.webp 1024w" sizes="(max-width:900px) 100vw, 60vw" alt="" loading="lazy" decoding="async"></div><p class="cap">04 — Torre Sol, comercial</p></div>
  </div>
 </section>
 
 <!-- AIRBNB -->
 <section id="airbnb" data-t="l">
  <div class="g">
-  <div style="--d:1/8;--r:1;--m:1/-1"><p class="eb">07 — Airbnb</p><h2 style="margin-top:clamp(28px,4vw,64px)" data-s="-.04">Prepara tu vivienda para <img src="/style/images/Airbnb_Logo_Bélo.svg" alt="Airbnb" style="height: clamp(60px, 12vw, 120px); margin-left: 10px; margin-top: clamp(12px, 3vw, 30px);"></h2></div>
+  <div style="--d:1/8;--r:1;--m:1/-1"><p class="eb">07 — Airbnb</p><h2 style="margin-top:clamp(28px,4vw,64px)" data-s="-.04">Prepara tu vivienda para <img src="/style/images/Airbnb_Logo_Bélo.svg" alt="Airbnb" loading="lazy" decoding="async" style="height: clamp(60px, 12vw, 120px); margin-left: 10px; margin-top: clamp(12px, 3vw, 30px);"></h2></div>
   <div class="airbnb-copy" style="--d:9/13;--r:1;--m:1/-1"><p class="b">Arquitectura visual, staging y contenido que convierten cada propiedad en una experiencia memorable, lista para ser reservada.</p><a class="btn" href="#end">Solicitar propuesta</a></div>
   <div class="airbnb-visual" style="--d:1/7;--r:2;--m:1/-1">
-   <div class="m" data-s=".08"><div class="im" style="background-image:url('/style/images/dbdb29fbbefa76be7ce22e3d4b2555g1.png')"></div></div>
+   <div class="m" data-s=".08"><img class="im" src="style/images/opt/dbdb29fbbefa76be7ce22e3d4b2555g1-960.webp" srcset="style/images/opt/dbdb29fbbefa76be7ce22e3d4b2555g1-480.webp 480w, style/images/opt/dbdb29fbbefa76be7ce22e3d4b2555g1-960.webp 960w, style/images/opt/dbdb29fbbefa76be7ce22e3d4b2555g1-1440.webp 1440w, style/images/opt/dbdb29fbbefa76be7ce22e3d4b2555g1-1585.webp 1585w" sizes="(max-width:900px) 100vw, 60vw" alt="" loading="lazy" decoding="async"></div>
   </div>
   <div class="airbnb-list" style="--d:8/13;--r:2;--m:1/-1">
    <div class="item"><strong>01 — Staging</strong><p>Espacios cuidadosos, materiales y composición visual para que cada detalle comunique calma y valor.</p></div>
@@ -332,15 +377,15 @@ section{overflow-x:clip}
 <section id="tour" data-t="d">
  <div class="g">
   <div class="tour-copy" style="--d:1/8;--r:1;--m:1/-1"><p class="eb">08 — Tour experience</p><h2 style="margin-top:clamp(28px,4vw,64px)" data-s="-.05">Prueba nuestro Tour 360°</h2><a class="btn" href="#pano">Enter the tour</a></div>
-  <a class="tour-card-link tour-card" href="https://www.ferrari.com" target="_blank" rel="noopener noreferrer" style="--d:9/13;--r:1;--m:1/-1">
-   <div class="fr"><div class="m" data-s=".06"><div class="im" style="background-image:url('/style/images/69e16a7b-616b-4942-bece-47f59a5b79c4.jfif')"></div><div class="ring">360°</div></div></div>
-   <div class="tour-overlay"><span class="eyebrow">01 — Ferrari</span><span class="title">Casa Lomas</span></div>
+  <a class="tour-card-link tour-card" href="about.html" target="_blank" rel="noopener noreferrer" style="--d:9/13;--r:1;--m:1/-1">
+   <div class="fr"><div class="m" data-s=".06"><img class="im" src="style/images/opt/69e16a7b-616b-4942-bece-47f59a5b79c4-825.webp" srcset="style/images/opt/69e16a7b-616b-4942-bece-47f59a5b79c4-480.webp 480w, style/images/opt/69e16a7b-616b-4942-bece-47f59a5b79c4-825.webp 825w" sizes="(max-width:900px) 100vw, 40vw" alt="" loading="lazy" decoding="async"><div class="ring">360°</div></div></div>
+   <div class="tour-overlay"><span class="eyebrow">01 — Modelo 360</span><span class="title">Casa Lomas</span></div>
    <p class="cap">Vista previa — Casa Lomas, sala</p>
   </a>
   <div class="rooms" style="--d:1/8;--r:2;--m:1/-1">
-   <div><div class="m" data-s=".04"><div class="im" style="background-image:url('/style/images/bfa32f6f-edec-4836-87f3-0a1694e2865d.png')"></div></div><p class="cap">Sala</p></div>
-   <div><div class="m" data-s=".07"><div class="im" style="background-image:url('/style/images/d4236b57-3f10-43d8-ac8d-50a5dda07646.jfif')"></div></div><p class="cap">Comedor</p></div>
-   <div><div class="m" data-s=".10"><div class="im" style="background-image:url('/style/images/fd136790-f17b-4362-931f-072914e99d6e.jfif')"></div></div><p class="cap">Baño</p></div>
+   <div><div class="m" data-s=".04"><img class="im" src="style/images/opt/bfa32f6f-edec-4836-87f3-0a1694e2865d-960.webp" srcset="style/images/opt/bfa32f6f-edec-4836-87f3-0a1694e2865d-480.webp 480w, style/images/opt/bfa32f6f-edec-4836-87f3-0a1694e2865d-960.webp 960w, style/images/opt/bfa32f6f-edec-4836-87f3-0a1694e2865d-1440.webp 1440w, style/images/opt/bfa32f6f-edec-4836-87f3-0a1694e2865d-1586.webp 1586w" sizes="(max-width:900px) 32vw, 17vw" alt="" loading="lazy" decoding="async"></div><p class="cap">Sala</p></div>
+   <div><div class="m" data-s=".07"><img class="im" src="style/images/opt/d4236b57-3f10-43d8-ac8d-50a5dda07646-960.webp" srcset="style/images/opt/d4236b57-3f10-43d8-ac8d-50a5dda07646-480.webp 480w, style/images/opt/d4236b57-3f10-43d8-ac8d-50a5dda07646-960.webp 960w, style/images/opt/d4236b57-3f10-43d8-ac8d-50a5dda07646-1024.webp 1024w" sizes="(max-width:900px) 32vw, 17vw" alt="" loading="lazy" decoding="async"></div><p class="cap">Comedor</p></div>
+   <div><div class="m" data-s=".10"><img class="im" src="style/images/opt/fd136790-f17b-4362-931f-072914e99d6e-960.webp" srcset="style/images/opt/fd136790-f17b-4362-931f-072914e99d6e-480.webp 480w, style/images/opt/fd136790-f17b-4362-931f-072914e99d6e-960.webp 960w, style/images/opt/fd136790-f17b-4362-931f-072914e99d6e-1024.webp 1024w" sizes="(max-width:900px) 32vw, 17vw" alt="" loading="lazy" decoding="async"></div><p class="cap">Baño</p></div>
   </div>
  </div>
 </section>
@@ -348,30 +393,31 @@ section{overflow-x:clip}
 <!-- CONTACTO -->
 <section id="end" data-t="d">
  <div><p class="eb">09 — Contacto</p><h2 class="z" style="margin-top:clamp(30px,5vw,70px)" data-s="-.04">Recórrelo<span>antes.</span></h2>
- <div class="endimg m" data-s=".08"><div class="im" style="background-image:url('https://picsum.photos/seed/arnet-end-arch/700/1030')"></div></div>
+ <div class="endimg m" data-s=".08"><img class="im" src="https://picsum.photos/seed/arnet-end-arch/700/1030" alt="" loading="lazy" decoding="async"></div>
  <div class="mw"><a class="btn o" href="mailto:panora@arnet.com">panora@arnet.com</a></div></div>
  <div class="ft"><p class="cap">© Arnet panora</p><p class="brand">arnet panora</p></div>
 </section>
 </div>
 
 <script>
-const P=[['#e8dcc4','#c9b48f','#673d1f'],['#673d1f','#3a2210','#e8dcc4'],['#ffffff','#e8dcc4','#673d1f'],['#1a0f07','#000000','#e8dcc4']];
-function scene(t,v){const[a,b,c]=P[v%4];let s=`<rect width="400" height="500" fill="${a}"/>`;
- if(t=='room')s+=`<rect y="330" width="400" height="170" fill="${b}"/><path d="M110 330V150a50 50 0 0 1 100 0V330z" fill="${c}" opacity=".85"/><path d="M250 330V190a35 35 0 0 1 70 0V330z" fill="${c}" opacity=".45"/><polygon points="110,330 210,330 330,500 60,500" fill="#fff" opacity=".2"/><rect x="20" y="385" width="170" height="48" fill="${c}" opacity=".7"/>`;
- if(t=='arch')for(let i=0;i<3;i++)s+=`<path d="M${20+i*125} 500V220a50 50 0 0 1 100 0V500z" fill="${i==1?c:b}" opacity="${i==1?.9:.8}"/>`;
- if(t=='slats')for(let i=0;i<20;i++)s+=`<rect x="${i*20}" width="12" height="500" fill="${c}" opacity="${.15+((i*37)%10)/14}"/>`;
- if(t=='pano'){for(let i=1;i<6;i++)s+=`<ellipse cx="200" cy="260" rx="${i*45}" ry="${i*30}" fill="none" stroke="${c}" opacity=".45"/>`;s+=`<rect y="260" width="400" height="240" fill="${b}" opacity=".7"/><path d="M0 260H400" stroke="${c}"/>`}
- if(t=='plan')s+=`<g fill="none" stroke="${c}" stroke-width="3"><rect x="40" y="60" width="320" height="380"/><path d="M40 220H200V440M200 220H360M200 60V140M120 60V140H200"/><path d="M200 300a30 30 0 0 1 30 -30" stroke-width="1.5"/></g><g stroke="${c}" opacity=".4"><path d="M40 40H360M40 460H360"/></g>`;
- return`url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice">${s}</svg>`)}")`}
-function paint(r){r.querySelectorAll('[data-img]').forEach(e=>{const[t,v]=e.dataset.img.split(':');e.style.backgroundImage=scene(t,+v)})}
-const items=[['https://images.pexels.com/photos/20557234/pexels-photo-20557234.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200',26],['https://images.pexels.com/photos/25565683/pexels-photo-25565683.png?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200',20],['https://images.pexels.com/photos/20548957/pexels-photo-20548957.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200',30],['https://images.pexels.com/photos/32277993/pexels-photo-32277993.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200',34],['https://images.pexels.com/photos/20548025/pexels-photo-20548025.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200',20],['https://images.pexels.com/photos/39017406/pexels-photo-39017406.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200',28],['https://images.pexels.com/photos/20573189/pexels-photo-20573189.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200',22],['https://images.pexels.com/photos/20557088/pexels-photo-20557088.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200',26]];
-[['r1',0],['r2',3]].forEach(([id,o])=>{const r=document.getElementById(id);let h='';for(let k=0;k<2;k++)items.forEach((p,i)=>{const n=items[(i+o)%8];h+=`<div class="m in" style="width:${n[1]}vw; background-color: transparent"><div class="im" style="background-image:url('${n[0]}')"></div></div>`});r.innerHTML=h});
-paint(document);
-// depth layers: [section,type,left%,top%,size vw,speed(-far..+near),blur px,opacity,spin,baseRot,onMobile]
+const TIER=window.__tier,REDUCE=window.__reduce,MOTION=TIER>0;
+
+/* ── carousel ─────────────────────────────────────────────────────────
+   Native loading="lazy" keeps these 8 remote photos off the initial load;
+   the request height dropped from 627 to 480 (rows are ~34vh tall). */
+const items=[['https://images.pexels.com/photos/20557234/pexels-photo-20557234.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=480&w=900',26],['https://images.pexels.com/photos/25565683/pexels-photo-25565683.png?auto=compress&cs=tinysrgb&fit=crop&h=480&w=900',20],['https://images.pexels.com/photos/20548957/pexels-photo-20548957.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=480&w=900',30],['https://images.pexels.com/photos/32277993/pexels-photo-32277993.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=480&w=900',34],['https://images.pexels.com/photos/20548025/pexels-photo-20548025.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=480&w=900',20],['https://images.pexels.com/photos/39017406/pexels-photo-39017406.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=480&w=900',28],['https://images.pexels.com/photos/20573189/pexels-photo-20573189.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=480&w=900',22],['https://images.pexels.com/photos/20557088/pexels-photo-20557088.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=480&w=900',26]];
+/* the marquee needs the list twice to loop seamlessly; without a marquee one pass is enough */
+{const reps=MOTION?2:1;
+ [['r1',0],['r2',3]].forEach(([id,o])=>{const r=document.getElementById(id);let h='';
+  for(let k=0;k<reps;k++)items.forEach((p,i)=>{const n=items[(i+o)%8];
+   h+=`<div class="m in" style="width:${n[1]}vw;background-color:transparent"><img class="im" src="${n[0]}" alt="" loading="lazy" decoding="async"></div>`});
+  r.innerHTML=h});}
+
+/* ── decorative depth layers ──────────────────────────────────────────
+   [section,type,left%,top%,size vw,speed(-far..+near),blur px,opacity,spin,baseRot,onMobile] */
 const D=[
 ['hero','f',62,8,40,-.22,28,.14,0,0,1],['hero','r',6,12,26,-.14,0,.3,.004,0,1],['hero','c',70,30,18,.05,0,.5,0,0,1],['hero','s',84,62,7,.35,2,.55,.02,20,0],['hero','p',20,52,.9,.6,0,.8,0,0,1],['hero','c',44,72,5,.55,3,.5,0,0,1],['hero','l',0,84,100,-.06,0,.35,0,0,1],
-['intro','f',-6,6,30,-.2,30,.1,0,0,1],['intro','c',44,4,14,-.1,0,.35,
-0,0,1],['intro','r',80,20,20,.08,0,.25,.004,0,1],['intro','s',40,40,6,.5,1,.5,-.02,20,0],['intro','a',88,60,12,-.18,2,.3,0,0,0],['intro','c',90,90,7,.6,3,.3,0,0,1],['intro','p',22,50,.9,.6,0,.7,0,0,1],
+['intro','f',-6,6,30,-.2,30,.1,0,0,1],['intro','c',44,4,14,-.1,0,.35,0,0,1],['intro','r',80,20,20,.08,0,.25,.004,0,1],['intro','s',40,40,6,.5,1,.5,-.02,20,0],['intro','a',88,60,12,-.18,2,.3,0,0,0],['intro','c',90,90,7,.6,3,.3,0,0,1],['intro','p',22,50,.9,.6,0,.7,0,0,1],
 ['pano','f',70,18,44,-.25,30,.12,0,0,1],['pano','r',-6,52,34,-.12,0,.25,.005,0,1],['pano','c',78,60,12,.3,0,.4,0,0,1],['pano','s',10,88,6,.5,2,.5,-.02,30,0],['pano','a',88,4,12,-.18,2,.3,0,0,0],['pano','p',30,30,.9,.7,0,.8,0,0,1],['pano','l',12,94,60,.1,0,.4,0,0,1],
 ['render','f',60,10,36,-.24,28,.13,0,0,1],['render','c',4,26,16,-.12,0,.35,0,0,1],['render','r',86,44,20,.08,0,.25,.004,0,0],['render','s',44,52,5,.45,1,.5,.02,15,0],['render','a',-2,68,15,-.18,3,.3,0,0,1],['render','c',72,88,9,.55,3,.4,0,0,1],['render','p',52,30,1,.7,0,.8,0,0,1],
 ['car','c',10,10,8,.4,2,.4,0,0,1],['car','f',80,60,26,-.2,26,.12,0,0,1],
@@ -380,51 +426,126 @@ const D=[
 ['portfolio','f',62,6,38,-.22,30,.1,0,0,1],['portfolio','c',46,26,14,-.12,0,.35,0,0,1],['portfolio','r',-6,58,26,-.1,0,.25,.004,0,0],['portfolio','s',90,50,6,.5,2,.5,.02,15,0],['portfolio','p',34,44,.9,.6,0,.7,0,0,1],
 ['tour','c',52,10,16,-.1,0,.4,0,0,1],['tour','s',90,80,6,.5,2,.5,.02,15,0],['tour','p',60,60,1,.7,0,.8,0,0,1],['tour','l',0,92,60,.08,0,.4,0,0,1],
 ['end','f',60,6,44,-.22,30,.12,0,0,1],['end','r',66,18,30,-.1,0,.3,.005,0,1],['end','c',82,54,10,.4,0,.4,0,0,1],['end','s',10,72,5,.5,2,.5,.02,15,0],['end','p',50,40,1,.7,0,.8,0,0,1],['end','c',4,50,14,-.14,2,.3,0,0,0]];
-{const mob=innerWidth<900,k=mob?1.7:1;D.forEach(([id,t,l,tp,sz,sp,bl,op,sr,br,m])=>{if(mob&&!m)return;const e=document.createElement('div');e.className='d '+t+(sp>=.3?' n':'');
- e.style.cssText=`left:${l}%;top:${tp}%;width:${sz*k}vw;opacity:${op};`+(bl?`filter:blur(${bl}px);`:'');
- e.dataset.s=sp;e.dataset.r=sr;e.dataset.b=br;e.dataset.x=0;e.setAttribute('aria-hidden','true');document.getElementById(id).appendChild(e)})}
-document.querySelectorAll('p.b').forEach(e=>e.dataset.s=e.dataset.s||.1);
-document.querySelectorAll('.cap:not([data-s])').forEach(e=>e.dataset.s=.15);
-document.querySelectorAll('.eb').forEach(e=>e.dataset.s=.07);
-const S=document.getElementById('s'),nav=document.querySelector('nav'),navLogo=nav.querySelector('.brand img'),menu=document.getElementById('menu'),mb=document.getElementById('mb'),reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+/* tier 0 gets no decorative layers at all; tier 1 keeps them but drops the
+   spinning masked-gradient discs and every blur filter */
+if(TIER>0){const mob=innerWidth<900,k=mob?1.7:1,frag={};
+ D.forEach(([id,t,l,tp,sz,sp,bl,op,sr,br,m])=>{
+  if(mob&&!m)return;
+  if(TIER<2&&t=='r')return;
+  const e=document.createElement('div');e.className='d '+t+(sp>=.3?' n':'');
+  const blur=TIER<2?0:bl;
+  e.style.cssText=`left:${l}%;top:${tp}%;width:${sz*k}vw;opacity:${op};`+(blur?`filter:blur(${blur}px);`:'');
+  e.dataset.s=sp;e.dataset.r=TIER<2?0:sr;e.dataset.b=br;e.setAttribute('aria-hidden','true');
+  (frag[id]||(frag[id]=document.createDocumentFragment())).appendChild(e)});
+ for(const id in frag)document.getElementById(id).appendChild(frag[id]);}
+
+if(MOTION){
+ document.querySelectorAll('p.b').forEach(e=>e.dataset.s=e.dataset.s||.1);
+ document.querySelectorAll('.cap:not([data-s])').forEach(e=>e.dataset.s=.15);
+ document.querySelectorAll('.eb').forEach(e=>e.dataset.s=.07);
+}
+
+const S=document.getElementById('s'),nav=document.querySelector('nav'),navLogo=nav.querySelector('.brand img'),
+ menu=document.getElementById('menu'),mb=document.getElementById('mb'),
+ r1e=document.getElementById('r1'),r2e=document.getElementById('r2');
+const LOGO_A='/style/images/logo/arnet_logo.png',LOGO_B='/style/images/logo/arnet_logo_alt.png';
 const top_=e=>{let t=0;while(e&&e!==S){t+=e.offsetTop;e=e.offsetParent}return t};
-let ps=[],xs=[],secs=[],vh=innerHeight,cur=scrollY,vel=0,r1=0,r2=0,w1=0,w2=0,ms=1,cs=.5;
-function size(){vh=innerHeight;ms=Math.min(1,Math.max(.45,innerWidth/1440));cs=Math.max(.28,.5*ms);document.body.style.height=S.offsetHeight+'px';
- const m=e=>({e,c:top_(e)+e.offsetHeight/2});
- const DB=reduce?0:1.6;ps=[...document.querySelectorAll('[data-s]')].map(e=>({...m(e),s:+e.dataset.s*ms*DB,d:e.classList.contains('d'),r:+e.dataset.r||0,b:+e.dataset.b||0}));
- xs=[...document.querySelectorAll('[data-x]:not(.d)')].map(e=>({...m(e),s:+e.dataset.x}));
+
+let ps=[],xs=[],secs=[],vh=innerHeight,cur=scrollY,vel=0,r1=0,r2=0,w1=0,w2=0,ms=1,cs=.5,
+ maxScroll=0,carOn=false,lastLogo='',lastDk=null,lastShow=null;
+
+/* Declared up here because the observers below can call schedule() as soon as
+   they are wired up; frame() itself is a hoisted function declaration. */
+const A=REDUCE?1:.075;
+let queued=false;
+function schedule(){if(!queued){queued=true;requestAnimationFrame(frame)}}
+
+/* measure once per resize - never inside the frame loop */
+function size(){
+ vh=innerHeight;ms=Math.min(1,Math.max(.45,innerWidth/1440));cs=Math.max(.28,.5*ms);
+ if(MOTION)document.body.style.height=S.offsetHeight+'px';
+ const m=e=>{const t=top_(e),h=e.offsetHeight;return{e,t,b:t+h,c:t+h/2}};
+ const DB=1.6;
+ ps=MOTION?[...document.querySelectorAll('[data-s]')].map(e=>({...m(e),s:+e.dataset.s*ms*DB,d:e.classList.contains('d'),r:+e.dataset.r||0,b2:+e.dataset.b||0})):[];
+ xs=MOTION?[...document.querySelectorAll('[data-x]:not(.d)')].map(e=>({...m(e),s:+e.dataset.x})):[];
  secs=[...document.querySelectorAll('section[data-t]')].map(e=>({t:top_(e),h:e.offsetHeight,d:e.dataset.t=='d'}));
- w1=r1e.scrollWidth/2;w2=r2e.scrollWidth/2;if(!r2)r2=-w2}
-const r1e=document.getElementById('r1'),r2e=document.getElementById('r2');
-addEventListener('resize',size);addEventListener('load',size);setTimeout(size,300);size();
-addEventListener('scroll',()=>{const max=Math.max(0,document.body.offsetHeight-document.documentElement.clientHeight);if(scrollY>=max-1){cur=scrollY;vel=0;S.style.transform=`translate3d(0,${-cur}px,0)`}});
-// reveal images when they enter the viewport (position-based, works with the transformed #s wrapper)
-let pend=[...document.querySelectorAll('.m:not(.in)')],shown=0;
-function reveal(){if(!pend.length)return;const h=innerHeight;pend=pend.filter(e=>{const r=e.getBoundingClientRect();if(r.top<h*.92&&r.bottom>0){e.classList.add('in');shown++;return false}return true})}
-// failsafe: if nothing has been revealed after 2.5s, show every image
-setTimeout(()=>{if(!shown){document.querySelectorAll('.m').forEach(e=>e.classList.add('in'));pend=[]}},2500);
-function go(a,ev){const t=document.querySelector(a.getAttribute('href'));if(t){ev.preventDefault();menu.classList.remove('on');mb.setAttribute('aria-expanded',false);mb.textContent='Menú';nav.style.color='';nav.style.zIndex=9;scrollTo({top:top_(t),behavior:'smooth'})}}
+ w1=r1e.scrollWidth/2;w2=r2e.scrollWidth/2;if(!r2)r2=-w2;
+ maxScroll=Math.max(0,document.body.offsetHeight-document.documentElement.clientHeight);
+}
+addEventListener('resize',()=>{size();schedule()});
+addEventListener('load',()=>{size();schedule()});
+size();
+
+/* reveal: one IntersectionObserver instead of a getBoundingClientRect sweep per frame */
+if('IntersectionObserver' in window){
+ let shown=0;
+ const io=new IntersectionObserver((es)=>{for(const en of es)if(en.isIntersecting){en.target.classList.add('in');shown++;io.unobserve(en.target)}},
+  {rootMargin:'0px 0px -8% 0px'});
+ document.querySelectorAll('.m:not(.in)').forEach(e=>io.observe(e));
+ /* only if the observer never fired at all - never a blanket reveal */
+ setTimeout(()=>{if(!shown)document.querySelectorAll('.m:not(.in)').forEach(e=>{e.classList.add('in');io.unobserve(e)})},2500);
+ /* the marquee only runs while #car is actually on screen */
+ if(MOTION){const cio=new IntersectionObserver((es)=>{carOn=es[0].isIntersecting;if(carOn)schedule()},{rootMargin:'20% 0px'});
+  cio.observe(document.getElementById('car'))}
+}else{document.querySelectorAll('.m').forEach(e=>e.classList.add('in'));carOn=MOTION}
+
+function go(a,ev){const t=document.querySelector(a.getAttribute('href'));if(t){ev.preventDefault();menu.classList.remove('on');mb.setAttribute('aria-expanded',false);mb.textContent='Menú';nav.style.color='';nav.style.zIndex=9;scrollTo({top:top_(t),behavior:REDUCE?'auto':'smooth'})}}
 document.querySelectorAll('nav a,#menu a').forEach(a=>a.onclick=ev=>go(a,ev));
 mb.onclick=()=>{const o=menu.classList.toggle('on');mb.setAttribute('aria-expanded',o);mb.textContent=o?'Cerrar':'Menú';nav.style.color=o?(nav.classList.contains('show')?'var(--br)':'var(--bg)'):'';nav.style.zIndex=9};
-const A=reduce?1:.075;
-function tick(){const y=scrollY,max=Math.max(0,document.body.offsetHeight-document.documentElement.clientHeight),atEnd=y>=max-1;
- if(atEnd){cur=y;vel=0}else{vel=(y-cur)*A;cur+=vel}
- S.style.transform=`translate3d(0,${-cur}px,0)`;
- reveal();
- const mid=cur+vh/2;
- ps.forEach(p=>{const o=(p.c-mid);p.e.style.transform=`translate3d(${p.d?o*p.s*-.25:0}px,${o*p.s}px,0)`;if(p.d)p.e.style.rotate=`${p.b+o*p.r}deg`});
- xs.forEach(p=>{p.e.style.transform=`translate3d(${(p.c-mid)*p.s}px,0,0)`});
- const s=secs.find(s=>cur+40>=s.t&&cur+40<s.t+s.h);if(s&&!menu.classList.contains('on'))nav.classList.toggle('dk',!s.d);
- var showNav=cur>vh*.7;nav.classList.toggle('show',showNav);
- navLogo.src=showNav?'/style/images/logo/arnet_logo_alt.png':'/style/images/logo/arnet_logo.png';
- if(!reduce){const k=cs+Math.abs(vel)*.35*ms;r1-=k;r2+=k;if(r1<=-w1)r1+=w1;if(r2>=0)r2-=w2;
-  r1e.style.transform=`translate3d(${r1}px,0,0)`;r2e.style.transform=`translate3d(${r2}px,0,0)`}
- requestAnimationFrame(tick)}
-tick();
+
+/* ── frame loop ───────────────────────────────────────────────────────
+   Runs only while something is actually moving: a scroll delta still being
+   eased, or the carousel on screen. It idles at 0 frames otherwise. */
+function frame(){
+ queued=false;
+ const y=scrollY;let moving=false;
+ if(MOTION){
+  const dy=y-cur;
+  if(y>=maxScroll-1||Math.abs(dy)<.08){cur=y;vel=0}
+  else{vel=dy*A;cur+=vel;moving=true}
+  S.style.transform=`translate3d(0,${-cur}px,0)`;
+ }else{cur=y;vel=0}
+
+ /* parallax, culled to a band around the viewport instead of the whole page */
+ if(MOTION){
+  const mid=cur+vh/2,lo=cur-vh*.9,hi=cur+vh*1.9;
+  for(let i=0;i<ps.length;i++){const p=ps[i];
+   if(p.b<lo||p.t>hi)continue;
+   const o=p.c-mid;
+   p.e.style.transform=`translate3d(${p.d?o*p.s*-.25:0}px,${o*p.s}px,0)`;
+   if(p.d&&p.r)p.e.style.rotate=`${p.b2+o*p.r}deg`}
+  for(let i=0;i<xs.length;i++){const p=xs[i];
+   if(p.b<lo||p.t>hi)continue;
+   p.e.style.transform=`translate3d(${(p.c-mid)*p.s}px,0,0)`}
+ }
+
+ /* nav tone + logo: written only when the value actually changes */
+ const s=secs.find(s=>cur+40>=s.t&&cur+40<s.t+s.h);
+ if(s&&!menu.classList.contains('on')&&lastDk!==!s.d){lastDk=!s.d;nav.classList.toggle('dk',lastDk)}
+ const showNav=cur>vh*.7;
+ if(showNav!==lastShow){lastShow=showNav;nav.classList.toggle('show',showNav);
+  const want=showNav?LOGO_B:LOGO_A;if(want!==lastLogo){lastLogo=want;navLogo.src=want}}
+
+ if(MOTION&&carOn){const k=cs+Math.abs(vel)*.35*ms;r1-=k;r2+=k;
+  if(r1<=-w1)r1+=w1;if(r2>=0)r2-=w2;
+  r1e.style.transform=`translate3d(${r1}px,0,0)`;r2e.style.transform=`translate3d(${r2}px,0,0)`;
+  moving=true}
+
+ if(moving)schedule();
+}
+addEventListener('scroll',schedule,{passive:true});
+schedule();
 </script>
 <script>
 (function(){
   var KEY='panora_intro_played', CD=5*60*1000;
+  var w=document.getElementById('intro-video');
+  if(!w)return;
+
+  /* 5MB of video is not worth it on a metered or slow connection, and the low
+     tier skips it outright so the page is interactive immediately. */
+  if(window.__slow||window.__tier===0){w.remove();return;}
+
   function getStoredTime(){
     try{return Number(localStorage.getItem(KEY))||0;}catch(e){
     try{return Number(sessionStorage.getItem(KEY))||0;}catch(e2){return 0;}}}
@@ -433,9 +554,6 @@ tick();
     try{sessionStorage.setItem(KEY,String(value));}catch(e2){}}}
 
   var lastPlayed=getStoredTime();
-  var w=document.getElementById('intro-video');
-  if(!w)return;
-
   if(lastPlayed && Date.now()-lastPlayed < CD){
     w.remove();
     return;
@@ -456,16 +574,17 @@ tick();
   v.addEventListener('ended',done);
   v.addEventListener('error',done);
   v.addEventListener('abort',done);
-  v.addEventListener('stalled',function(){console.warn('Video stalled')});
   sk.addEventListener('click',done);
 
-  var loadTimer=setTimeout(function(){console.warn('Video load timeout');done();},5000);
+  var loadTimer=setTimeout(done,5000);
   v.addEventListener('loadstart',function(){clearTimeout(loadTimer);});
   v.addEventListener('canplay',function(){clearTimeout(loadTimer);});
 
   setTimeout(done,15000);
 
-  var p=v.play();
-  if(p&&p.catch)p.catch(function(err){console.log('Autoplay blocked or video error:',err);done();});
+  try{
+    var pr=v.play();
+    if(pr&&pr.catch)pr.catch(function(){done();});
+  }catch(e){done();}
 })();
 </script></body></html>
