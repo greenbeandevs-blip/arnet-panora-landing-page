@@ -40,9 +40,6 @@
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{background:var(--bg);color:var(--br);font-family:var(--ui);font-weight:300;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 #s{position:fixed;top:0;left:0;width:100vw;will-change:transform;overflow:hidden}
-/* low tier scrolls natively: no fixed wrapper, no transform, no measured body height */
-.t0 #s{position:static;width:auto;will-change:auto}
-.t0 body{height:auto!important}
 section{position:relative;padding:0 var(--g)}
 .brand{font-family:var(--brand);text-transform:lowercase;font-weight:300;letter-spacing:-.02em;line-height:.8}
 h2{font-weight:300;letter-spacing:-.035em;line-height:.92}
@@ -431,11 +428,14 @@ const D=[
 if(TIER>0){const mob=innerWidth<900,k=mob?1.7:1,frag={};
  D.forEach(([id,t,l,tp,sz,sp,bl,op,sr,br,m])=>{
   if(mob&&!m)return;
+  /* 'r' is a masked repeating-gradient disc: cheap to show, expensive to
+     re-raster while spinning, so it stays off below the top tier. */
   if(TIER<2&&t=='r')return;
   const e=document.createElement('div');e.className='d '+t+(sp>=.3?' n':'');
   const blur=TIER<2?0:bl;
   e.style.cssText=`left:${l}%;top:${tp}%;width:${sz*k}vw;opacity:${op};`+(blur?`filter:blur(${blur}px);`:'');
-  e.dataset.s=sp;e.dataset.r=TIER<2?0:sr;e.dataset.b=br;e.setAttribute('aria-hidden','true');
+  /* the slow rotation is a transform like any other - keep it on the mid tier */
+  e.dataset.s=sp;e.dataset.r=sr;e.dataset.b=br;e.setAttribute('aria-hidden','true');
   (frag[id]||(frag[id]=document.createDocumentFragment())).appendChild(e)});
  for(const id in frag)document.getElementById(id).appendChild(frag[id]);}
 
@@ -454,20 +454,38 @@ const top_=e=>{let t=0;while(e&&e!==S){t+=e.offsetTop;e=e.offsetParent}return t}
 let ps=[],xs=[],secs=[],vh=innerHeight,cur=scrollY,vel=0,r1=0,r2=0,w1=0,w2=0,ms=1,cs=.5,
  maxScroll=0,carOn=false,lastLogo='',lastDk=null,lastShow=null;
 
-/* Declared up here because the observers below can call schedule() as soon as
+/* ── scroll weight ───────────────────────────────────────────────────
+   How much of the remaining distance the page covers each frame. This is
+   the "heaviness" dial and it is the same value about.html uses:
+     .075  heavy, long glide   (default, matches about.html)
+     .12   noticeably lighter
+     .05   very heavy / syrupy
+   Note it is per frame, so a 120Hz display settles about twice as fast as a
+   60Hz one - lower it a touch if you author on a high-refresh monitor.
+   Declared up here because the observers below can call schedule() as soon as
    they are wired up; frame() itself is a hoisted function declaration. */
-const A=REDUCE?1:.075;
+const EASE=.075;
+const A=REDUCE?1:EASE;
 let queued=false;
 function schedule(){if(!queued){queued=true;requestAnimationFrame(frame)}}
 
 /* measure once per resize - never inside the frame loop */
 function size(){
  vh=innerHeight;ms=Math.min(1,Math.max(.45,innerWidth/1440));cs=Math.max(.28,.5*ms);
- if(MOTION)document.body.style.height=S.offsetHeight+'px';
- const m=e=>{const t=top_(e),h=e.offsetHeight;return{e,t,b:t+h,c:t+h/2}};
+ document.body.style.height=S.offsetHeight+'px';
+ const m=e=>{const t=top_(e),h=e.offsetHeight;return{e,t,b:t+h,c:t+h/2,h}};
  const DB=1.6;
- ps=MOTION?[...document.querySelectorAll('[data-s]')].map(e=>({...m(e),s:+e.dataset.s*ms*DB,d:e.classList.contains('d'),r:+e.dataset.r||0,b2:+e.dataset.b||0})):[];
- xs=MOTION?[...document.querySelectorAll('[data-x]:not(.d)')].map(e=>({...m(e),s:+e.dataset.x})):[];
+ /* pad = how far this element can ever be pushed from its layout box. Culling
+    without it clipped elements that were still on screen, so they snapped into
+    position instead of drifting in - which is exactly the depth cue that makes
+    the scroll feel heavy. */
+ const pad=(o,s)=>Math.abs(s)*(vh+o.h);
+ ps=MOTION?[...document.querySelectorAll('[data-s]')].map(e=>{
+   const o=m(e),s=+e.dataset.s*ms*DB;
+   return{...o,s,pad:pad(o,s),d:e.classList.contains('d'),r:+e.dataset.r||0,b2:+e.dataset.b||0}}):[];
+ xs=MOTION?[...document.querySelectorAll('[data-x]:not(.d)')].map(e=>{
+   const o=m(e),s=+e.dataset.x;
+   return{...o,s,pad:pad(o,s)}}):[];
  secs=[...document.querySelectorAll('section[data-t]')].map(e=>({t:top_(e),h:e.offsetHeight,d:e.dataset.t=='d'}));
  w1=r1e.scrollWidth/2;w2=r2e.scrollWidth/2;if(!r2)r2=-w2;
  maxScroll=Math.max(0,document.body.offsetHeight-document.documentElement.clientHeight);
@@ -499,23 +517,25 @@ mb.onclick=()=>{const o=menu.classList.toggle('on');mb.setAttribute('aria-expand
 function frame(){
  queued=false;
  const y=scrollY;let moving=false;
- if(MOTION){
-  const dy=y-cur;
-  if(y>=maxScroll-1||Math.abs(dy)<.08){cur=y;vel=0}
-  else{vel=dy*A;cur+=vel;moving=true}
-  S.style.transform=`translate3d(0,${-cur}px,0)`;
- }else{cur=y;vel=0}
+ /* Same easing as about.html, on every device: cover a fraction of the
+    remaining distance each frame and keep going until it is spent. */
+ const dy=y-cur;
+ if(y>=maxScroll-1||Math.abs(dy)<.08){cur=y;vel=0}
+ else{vel=dy*A;cur+=vel;moving=true}
+ S.style.transform=`translate3d(0,${-cur}px,0)`;
 
- /* parallax, culled to a band around the viewport instead of the whole page */
+ /* Parallax. Still culled so we are not writing ~150 transforms a frame, but
+    the band is the viewport plus each element's own displacement, so anything
+    that can be seen is always up to date and nothing jumps. */
  if(MOTION){
-  const mid=cur+vh/2,lo=cur-vh*.9,hi=cur+vh*1.9;
+  const mid=cur+vh/2,lo=cur-vh*.5,hi=cur+vh*1.5;
   for(let i=0;i<ps.length;i++){const p=ps[i];
-   if(p.b<lo||p.t>hi)continue;
+   if(p.b+p.pad<lo||p.t-p.pad>hi)continue;
    const o=p.c-mid;
    p.e.style.transform=`translate3d(${p.d?o*p.s*-.25:0}px,${o*p.s}px,0)`;
    if(p.d&&p.r)p.e.style.rotate=`${p.b2+o*p.r}deg`}
   for(let i=0;i<xs.length;i++){const p=xs[i];
-   if(p.b<lo||p.t>hi)continue;
+   if(p.b+p.pad<lo||p.t-p.pad>hi)continue;
    p.e.style.transform=`translate3d(${(p.c-mid)*p.s}px,0,0)`}
  }
 
