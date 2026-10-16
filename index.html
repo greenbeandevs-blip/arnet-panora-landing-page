@@ -51,7 +51,10 @@ p.b{font-size:clamp(14px,1.15vw,17px);line-height:1.75;max-width:40ch}
 .g>*{grid-column:var(--d,1/-1);grid-row:var(--r,auto)}
 /* image mask: soft brown tone shows while the photo is still loading */
 .m{position:relative;overflow:hidden;background:rgba(103,61,31,.16);border-radius:var(--rad);transition:clip-path 1.9s cubic-bezier(.16,1,.3,1)}
-.m .im{transition:transform 2.4s cubic-bezier(.16,1,.3,1)}
+/* :not([data-s]) matters: a parallaxed .im gets its transform rewritten every
+   frame, and a 2.4s transition on that same property restarts the easing on
+   every one of those writes. */
+.m .im:not([data-s]){transition:transform 2.4s cubic-bezier(.16,1,.3,1)}
 /* images are visible by default; the reveal animation only applies when JS is running */
 .js .m:not(.in){clip-path:inset(100% 0 0 0)}
 .js .m:not(.in) .im{transform:scale(1.3)}
@@ -432,7 +435,10 @@ if(TIER>0){const mob=innerWidth<900,k=mob?1.7:1,frag={};
      re-raster while spinning, so it stays off below the top tier. */
   if(TIER<2&&t=='r')return;
   const e=document.createElement('div');e.className='d '+t+(sp>=.3?' n':'');
-  const blur=TIER<2?0:bl;
+  /* 'f' blobs are a soft radial gradient now - the old 26-30px blur they used
+     to need would just re-composite a ~700px layer every frame for nothing.
+     The 1-3px softening on the small outline shapes is cheap, so it stays. */
+  const blur=TIER<2||t=='f'?0:bl;
   e.style.cssText=`left:${l}%;top:${tp}%;width:${sz*k}vw;opacity:${op};`+(blur?`filter:blur(${blur}px);`:'');
   /* the slow rotation is a transform like any other - keep it on the mid tier */
   e.dataset.s=sp;e.dataset.r=sr;e.dataset.b=br;e.setAttribute('aria-hidden','true');
@@ -531,17 +537,22 @@ function frame(){
   const mid=cur+vh/2,lo=cur-vh*.5,hi=cur+vh*1.5;
   for(let i=0;i<ps.length;i++){const p=ps[i];
    if(p.b+p.pad<lo||p.t-p.pad>hi)continue;
-   const o=p.c-mid;
-   p.e.style.transform=`translate3d(${p.d?o*p.s*-.25:0}px,${o*p.s}px,0)`;
-   if(p.d&&p.r)p.e.style.rotate=`${p.b2+o*p.r}deg`}
+   const o=p.c-mid,tx=p.d?o*p.s*-.25:0,ty=o*p.s;
+   /* folded into one transform: two style properties on the same element are
+      two separate invalidations per frame */
+   p.e.style.transform=p.d&&(p.r||p.b2)
+     ?`translate3d(${tx}px,${ty}px,0) rotate(${p.b2+o*p.r}deg)`
+     :`translate3d(${tx}px,${ty}px,0)`}
   for(let i=0;i<xs.length;i++){const p=xs[i];
    if(p.b+p.pad<lo||p.t-p.pad>hi)continue;
    p.e.style.transform=`translate3d(${(p.c-mid)*p.s}px,0,0)`}
  }
 
- /* nav tone + logo: written only when the value actually changes */
- const s=secs.find(s=>cur+40>=s.t&&cur+40<s.t+s.h);
- if(s&&!menu.classList.contains('on')&&lastDk!==!s.d){lastDk=!s.d;nav.classList.toggle('dk',lastDk)}
+ /* nav tone + logo: written only when the value actually changes. Plain loop
+    rather than .find() so we are not allocating a closure every frame. */
+ let sec=null;const probe=cur+40;
+ for(let i=0;i<secs.length;i++){const q=secs[i];if(probe>=q.t&&probe<q.t+q.h){sec=q;break}}
+ if(sec&&!menu.classList.contains('on')&&lastDk!==!sec.d){lastDk=!sec.d;nav.classList.toggle('dk',lastDk)}
  const showNav=cur>vh*.7;
  if(showNav!==lastShow){lastShow=showNav;nav.classList.toggle('show',showNav);
   const want=showNav?LOGO_B:LOGO_A;if(want!==lastLogo){lastLogo=want;navLogo.src=want}}
