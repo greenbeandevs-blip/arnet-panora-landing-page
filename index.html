@@ -2,7 +2,7 @@
 <html lang="es"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="shortcut icon" href="/style/images/logo/arnet_ico.png" type="image/x-icon">
-<title>arnet panora</title>
+<title>arnet dominicana</title>
 
 <!-- Device tiering runs before first paint so the CSS below can react to it.
      t2 = desktop / high-end, t1 = mid phones & tablets, t0 = low-end, slow
@@ -93,11 +93,18 @@ nav .btn{padding:.95em 1.6em}
 #menu.on{clip-path:inset(0)}
 #menu a{font-family:var(--brand);text-transform:lowercase;font-size:clamp(32px,11vw,14vw);line-height:.95;color:inherit;text-decoration:none}
 #menu .menu-footer{margin-top:auto;display:flex;align-items:center;gap:10px;font-family:var(--brand);font-size:clamp(16px,4vw,24px);text-transform:lowercase;letter-spacing:-.02em;opacity:.5}
-#intro-video{position:fixed;inset:0;z-index:2147483647;background:#000;display:flex;align-items:center;justify-content:center;opacity:1;transition:opacity .9s ease;overflow:hidden}
+#intro-video{--iv:54;position:fixed;inset:0;z-index:2147483647;background:#000;display:flex;align-items:center;justify-content:center;opacity:1;transition:opacity .9s ease;overflow:hidden}
 #intro-video.fade{opacity:0;pointer-events:none}
-#intro-video video{width:100%;height:100%;object-fit:cover;background:#000}
+#intro-video video{width:auto;height:auto;max-width:calc(var(--iv)*1vw);max-height:calc(var(--iv)*1vh);object-fit:contain;background:#000;opacity:0;filter:blur(28px);will-change:opacity,filter;animation:ivintro 10s cubic-bezier(.4,0,.2,1) both;animation-play-state:paused}
+/* The blur rides the real playhead, so buffering cannot drift it out of sync. */
+#intro-video.playing video{animation-play-state:running}
+@keyframes ivintro{0%{opacity:0;filter:blur(28px)}18%{opacity:1;filter:blur(0)}82%{opacity:1;filter:blur(0)}100%{opacity:0;filter:blur(28px)}}
+@keyframes ivintro-soft{0%{opacity:0;filter:blur(12px)}18%{opacity:1;filter:blur(0)}82%{opacity:1;filter:blur(0)}100%{opacity:0;filter:blur(12px)}}
+@media (prefers-reduced-motion:reduce){#intro-video video{filter:blur(12px);animation-name:ivintro-soft}}
+#intro-video .ivsound{position:absolute;right:22px;bottom:58px;background:none;color:#fff;border:0;border-bottom:1px solid rgba(255,255,255,.6);font:300 11px/1 "Norms","Figtree",sans-serif;letter-spacing:.24em;text-transform:uppercase;padding:10px 0;cursor:pointer}
+#intro-video .ivsound[hidden]{display:none}
 #intro-video .ivskip{position:absolute;right:22px;bottom:22px;background:none;color:#fff;border:0;border-bottom:1px solid rgba(255,255,255,.6);font:300 11px/1 "Norms","Figtree",sans-serif;letter-spacing:.24em;text-transform:uppercase;padding:10px 0;cursor:pointer}
-@media (orientation:portrait) and (max-width:900px){#intro-video video{width:100vh;height:100vw;object-fit:cover;transform:rotate(90deg) scale(1.35)}}
+@media (orientation:portrait) and (max-width:900px){#intro-video video{--iv:62;max-width:calc(var(--iv)*1vh);max-height:calc(var(--iv)*1vw);transform:rotate(90deg)}}
 /* hero */
 #hero{height:100vh;min-height:640px;padding:0;background:#2a1a0e;color:var(--wh);overflow:hidden}
 #hero .bg{position:absolute;inset:-6% 0;background:#2a1a0e}
@@ -170,17 +177,21 @@ nav .btn{padding:.95em 1.6em}
 #portfolio .p2{margin-top:clamp(90px,15vw,240px)}
 #portfolio .p3{margin-top:clamp(30px,5vw,80px)}
 #portfolio .p4{margin-top:clamp(60px,10vw,160px)}
-/* airbnb */
-#airbnb{background:var(--bg);padding-top:clamp(100px,16vh,200px);padding-bottom:clamp(100px,16vh,200px)}
-#airbnb h2{font-size:clamp(48px,10vw,160px);max-width:8ch;color:var(--bk)}
-#airbnb .airbnb-copy{align-self:end;padding-bottom:clamp(0px,3vw,48px)}
-#airbnb .airbnb-visual{position:relative;margin-top:clamp(42px,7vw,110px)}
-#airbnb .airbnb-visual .m{aspect-ratio:16/10}
-#airbnb .airbnb-logo{position:absolute;right:clamp(18px,2vw,32px);bottom:clamp(18px,2vw,32px);display:grid;place-items:center;min-width:clamp(120px,18vw,200px);min-height:clamp(54px,8vw,90px);padding:1.1em 1.4em;background:rgba(255,255,255,.86);border:1px solid rgba(103,61,31,.22);box-shadow:0 16px 42px rgba(32,18,8,.08);font-size:clamp(16px,1.5vw,28px);font-weight:700;letter-spacing:.08em;color:var(--br);text-transform:uppercase}
-#airbnb .airbnb-list{display:grid;gap:var(--gap);margin-top:clamp(26px,4vw,60px)}
-#airbnb .airbnb-list .item{display:flex;flex-direction:column;gap:10px;padding-top:16px;border-top:1px solid rgba(103,61,31,.45)}
-#airbnb .airbnb-list .item strong{font-size:11px;letter-spacing:.18em;text-transform:uppercase;opacity:.75}
-#airbnb .airbnb-list .item p{font-size:clamp(15px,1.15vw,18px);line-height:1.6;max-width:26ch}
+/* drone */
+#drone{background:var(--bg);padding-top:clamp(100px,16vh,200px);padding-bottom:clamp(100px,16vh,200px)}
+#drone h2{font-size:clamp(48px,10vw,160px);max-width:11ch;color:var(--bk)}
+#drone .drone-copy{align-self:end;padding-bottom:clamp(0px,3vw,48px)}
+#drone .drone-visual{position:relative;margin-top:clamp(42px,7vw,110px)}
+#drone .drone-visual .m{aspect-ratio:16/9}
+/* Placeholder styling for the empty slot; drop a <video class="im"> in and it
+   simply sits on top of it. */
+#drone .drone-slot{position:absolute;inset:0;display:grid;place-items:center;gap:10px;text-align:center;padding:1.4em;color:var(--br)}
+#drone .drone-slot span{font-size:11px;letter-spacing:.22em;text-transform:uppercase;opacity:.75}
+#drone .drone-badge{position:absolute;right:clamp(18px,2vw,32px);bottom:clamp(18px,2vw,32px);display:grid;place-items:center;min-width:clamp(120px,18vw,200px);min-height:clamp(54px,8vw,90px);padding:1.1em 1.4em;background:rgba(255,255,255,.86);border:1px solid rgba(103,61,31,.22);box-shadow:0 16px 42px rgba(32,18,8,.08);font-size:clamp(16px,1.5vw,28px);font-weight:700;letter-spacing:.08em;color:var(--br);text-transform:uppercase}
+#drone .drone-list{display:grid;gap:var(--gap);margin-top:clamp(26px,4vw,60px)}
+#drone .drone-list .item{display:flex;flex-direction:column;gap:10px;padding-top:16px;border-top:1px solid rgba(103,61,31,.45)}
+#drone .drone-list .item strong{font-size:11px;letter-spacing:.18em;text-transform:uppercase;opacity:.75}
+#drone .drone-list .item p{font-size:clamp(15px,1.15vw,18px);line-height:1.6;max-width:26ch}
 /* tour */
 #tour{min-height:min(100vh,900px);padding-top:clamp(100px,16vh,200px);padding-bottom:clamp(70px,10vh,130px);color:var(--wh);overflow:hidden;isolation:isolate}
 /* was a 3840px wide remote jpeg; 1600 (900 on phones) is indistinguishable under the dark gradient */
@@ -253,11 +264,12 @@ section{overflow-x:clip}
 }
 @media(prefers-reduced-motion:reduce){.m,.m .im,.sc:after{transition:none;animation:none}}
 </style></head><body>
-<nav><div class="nav-pill"><a href="#hero" class="brand"><img src="/style/images/logo/arnet_logo.png" style="height: 20px; margin-right: 20px;" alt="" fetchpriority="high">arnet panora</a><div><a href="#pano">Recorridos</a><a href="#render">Renders</a><a href="#plans">Planos</a><a href="#portfolio">Portfolio</a><a href="#end" class="btn o">Contacto</a><button id="mb" aria-expanded="false">Menú</button></div></div></nav>
-<div id="menu"><a href="#pano">recorridos</a><a href="#render">renders</a><a href="#plans">planos</a><a href="#portfolio">portfolio</a><a href="#tour">tour</a><a href="#end">contacto</a><div class="menu-footer"><img src="/style/images/logo/arnet_logo.png" alt="" loading="lazy" decoding="async" style="height:18px;width:auto">arnet panora</div></div>
+<nav><div class="nav-pill"><a href="#hero" class="brand"><img src="/style/images/logo/arnet_logo.png" style="height: 20px; margin-right: 20px;" alt="" fetchpriority="high">arnet dominicana</a><div><a href="#pano">Recorridos</a><a href="#render">Renders</a><a href="#plans">Planos</a><a href="#portfolio">Portfolio</a><a href="#end" class="btn o">Contacto</a><button id="mb" aria-expanded="false">Menú</button></div></div></nav>
+<div id="menu"><a href="#pano">recorridos</a><a href="#render">renders</a><a href="#plans">planos</a><a href="#portfolio">portfolio</a><a href="#tour">tour</a><a href="#end">contacto</a><div class="menu-footer"><img src="/style/images/logo/arnet_logo.png" alt="" loading="lazy" decoding="async" style="height:18px;width:auto">arnet dominicana</div></div>
 
 <div id="intro-video" aria-hidden="false">
- <video id="intro-video-player" src="style/video/PANORA_CANVA.mp4" autoplay muted playsinline preload="auto"></video>
+ <video id="intro-video-player" src="style/video/arnet_intro.mp4" autoplay playsinline preload="auto"></video>
+ <button type="button" class="ivsound" hidden>Activar sonido</button>
  <button type="button" class="ivskip">Saltar</button>
 </div>
 
@@ -267,7 +279,7 @@ section{overflow-x:clip}
  <div class="bg" data-s=".18"><img src="style/images/opt/Gemini_Generated_Image_2d40cc2d40cc2d40-960.webp" srcset="style/images/opt/Gemini_Generated_Image_2d40cc2d40cc2d40-480.webp 480w, style/images/opt/Gemini_Generated_Image_2d40cc2d40cc2d40-960.webp 960w, style/images/opt/Gemini_Generated_Image_2d40cc2d40cc2d40-1440.webp 1440w, style/images/opt/Gemini_Generated_Image_2d40cc2d40cc2d40-1920.webp 1920w, style/images/opt/Gemini_Generated_Image_2d40cc2d40cc2d40-2816.webp 2816w" sizes="100vw" alt="" fetchpriority="high" decoding="async"></div>
  <h1 class="brand" data-s="-.05"><span>arnet</span><span><img class="title-mark" src="style/images/opt/Panora_logo-960.webp" srcset="style/images/opt/Panora_logo-480.webp 480w, style/images/opt/Panora_logo-960.webp 960w, style/images/opt/Panora_logo-1440.webp 1440w, style/images/opt/Panora_logo-1818.webp 1818w" sizes="(max-width:900px) 70vw, 45vw" alt="Panora" fetchpriority="high" decoding="async"></span></h1>
  <div class="hi" data-s=".12"><div class="fr"><div class="m" data-s=".04"></div></div></div>
- <div class="ft"><p class="cap">Recorridos virtuales, renders, planos de planta y diseño de interiores.<br>Edición 01</p><p class="cap sc">Desplázate despacio</p></div>
+ <div class="ft"><p class="cap">Recorridos virtuales,Convertimos planos en experiencias 360°.<br></p><p class="cap sc"></p></div>
 </section>
 
 <!-- INTRO -->
@@ -275,18 +287,18 @@ section{overflow-x:clip}
  <div class="g">
   <p class="eb" style="--d:1/5">01 — Estudio</p>
   <h2 class="q z" style="--d:2/13;--m:1/-1;margin-top:clamp(24px,4vw,60px)" data-s="-.03">Fotografiamos lo que aún no existe, <i>y te dejamos recorrerlo.</i></h2>
-  <div style="--d:1/6;--r:3"><div class="fr"><div class="m a" data-s=".08"><img class="im" src="style/images/opt/f1094b20-b8b5-42fb-be5c-75fc19d97c40-960.webp" srcset="style/images/opt/f1094b20-b8b5-42fb-be5c-75fc19d97c40-480.webp 480w, style/images/opt/f1094b20-b8b5-42fb-be5c-75fc19d97c40-960.webp 960w, style/images/opt/f1094b20-b8b5-42fb-be5c-75fc19d97c40-1440.webp 1440w, style/images/opt/f1094b20-b8b5-42fb-be5c-75fc19d97c40-1678.webp 1678w" sizes="(max-width:900px) 100vw, 40vw" alt="" loading="lazy" decoding="async"></div></div><p class="cap" style="margin-top:22px">Fig. 1a — Concepto de montaña</p></div>
+  <div style="--d:1/6;--r:3"><div class="fr"><div class="m a" data-s=".08"><img class="im" src="style/images/opt/f1094b20-b8b5-42fb-be5c-75fc19d97c40-960.webp" srcset="style/images/opt/f1094b20-b8b5-42fb-be5c-75fc19d97c40-480.webp 480w, style/images/opt/f1094b20-b8b5-42fb-be5c-75fc19d97c40-960.webp 960w, style/images/opt/f1094b20-b8b5-42fb-be5c-75fc19d97c40-1440.webp 1440w, style/images/opt/f1094b20-b8b5-42fb-be5c-75fc19d97c40-1678.webp 1678w" sizes="(max-width:900px) 100vw, 40vw" alt="" loading="lazy" decoding="async"></div></div><p class="cap" style="margin-top:22px">Sala de estar con luz natural</p></div>
   <div class="t" style="--d:8/12;--r:3">
    <div class="m ts" data-s=".1"><img class="im" src="style/images/opt/92fd26bb-d47a-46cb-a61b-e2fb87583d86-960.webp" srcset="style/images/opt/92fd26bb-d47a-46cb-a61b-e2fb87583d86-480.webp 480w, style/images/opt/92fd26bb-d47a-46cb-a61b-e2fb87583d86-960.webp 960w, style/images/opt/92fd26bb-d47a-46cb-a61b-e2fb87583d86-1024.webp 1024w" sizes="(max-width:900px) 100vw, 40vw" alt="" loading="lazy" decoding="async"></div>
-   <p class="cap" style="margin:18px 0 clamp(28px,4vw,56px)">Fig. 1b — Concepto de habitación natural</p>
-   <p class="b" style="text-align:justify;">En Arnet Panora, nuestro estudio de visualización especializado, transformamos cualquier espacio —real o en proyecto— en una experiencia inmersiva interactiva. A partir de una selección estratégica de imágenes 360º, construimos un recorrido virtual que permite al espectador navegar libremente de un punto a otro de la propiedad, explorando cada rincón, desde las áreas comunes hasta los detalles más íntimos. Es una exploración 'punto a punto' que eleva la presentación arquitectónica a una verdadera inmersión sensorial.</p><a class="btn" href="#pano">Ver recorridos</a>
+   <p class="cap" style="margin:18px 0 clamp(28px,4vw,56px)"> Concepto de habitación natural</p>
+   <p class="b" style="text-align:justify;">En Arnet Dominicana, nuestro estudio de visualización especializado, transformamos cualquier espacio —real o en proyecto— en una experiencia inmersiva interactiva. A partir de una selección estratégica de imágenes 360º, construimos un recorrido virtual que permite al espectador navegar libremente de un punto a otro de la propiedad, explorando cada rincón, desde las áreas comunes hasta los detalles más íntimos. Es una exploración 'punto a punto' que eleva la presentación arquitectónica a una verdadera inmersión sensorial.</p><a class="btn" href="#pano">Ver recorridos</a>
   </div>
  </div>
 </section>
 
 <!-- PANORAMICO -->
 <section id="pano" data-t="d">
- <div class="g" style="padding-top:clamp(50px,9vh,110px)"><p class="eb" style="--d:1/5">02 — Recorridos</p><p class="cap" style="--d:8/13;text-align:right">Recorrido 04 — Casa Lomas, sala de estar</p></div>
+ <div class="g" style="padding-top:clamp(50px,9vh,110px)"><p class="eb" style="--d:1/5">02 — Recorridos</p><p class="cap" style="--d:8/13;text-align:right"></p></div>
  <div class="full m" style="margin-top:28px"><img class="im" src="style/images/opt/8f20f23c-0244-4701-a409-3e39ce8644ea-960.webp" srcset="style/images/opt/8f20f23c-0244-4701-a409-3e39ce8644ea-480.webp 480w, style/images/opt/8f20f23c-0244-4701-a409-3e39ce8644ea-960.webp 960w, style/images/opt/8f20f23c-0244-4701-a409-3e39ce8644ea-1440.webp 1440w, style/images/opt/8f20f23c-0244-4701-a409-3e39ce8644ea-1774.webp 1774w" sizes="100vw" alt="" loading="lazy" decoding="async" data-s=".1"><div class="ring">360°</div></div>
  <h2 class="brand big" data-x="-.12">Panoramico</h2>
  <div class="g pr">
@@ -335,9 +347,9 @@ section{overflow-x:clip}
   <div class="m B" style="--d:9/13;--r:2;--m:4/-1" data-s=".16"><img class="im" src="style/images/opt/84d0484a-255b-4645-afac-983a84fad752-765.webp" srcset="style/images/opt/84d0484a-255b-4645-afac-983a84fad752-480.webp 480w, style/images/opt/84d0484a-255b-4645-afac-983a84fad752-765.webp 765w" sizes="(max-width:900px) 100vw, 40vw" alt="" loading="lazy" decoding="async"></div>
   <h2 class="brand big" style="--d:1/-1;--r:3;margin-left:-.03em" data-x=".1">interiores</h2>
   <p class="b" style="--d:2/6;--r:4;margin-top:clamp(30px,5vw,80px)">Mobiliario, paleta e iluminación compuestos juntos, para que el espacio que apruebas sea el que recibes.</p>
-  <div style="--d:8/11;--r:4;--m:4/-1"><div class="m C" data-s=".08"><img class="im" src="style/images/opt/c228eabc-615e-4810-b1b4-f57e542d8842-960.webp" srcset="style/images/opt/c228eabc-615e-4810-b1b4-f57e542d8842-480.webp 480w, style/images/opt/c228eabc-615e-4810-b1b4-f57e542d8842-960.webp 960w, style/images/opt/c228eabc-615e-4810-b1b4-f57e542d8842-1024.webp 1024w" sizes="(max-width:900px) 100vw, 40vw" alt="" loading="lazy" decoding="async"></div><p class="cap" style="margin-top:18px">Fig. 4 — Arco mediterráneo, pasillo</p></div>
+  <div style="--d:8/11;--r:4;--m:4/-1"><div class="m C" data-s=".08"><img class="im" src="style/images/opt/c228eabc-615e-4810-b1b4-f57e542d8842-960.webp" srcset="style/images/opt/c228eabc-615e-4810-b1b4-f57e542d8842-480.webp 480w, style/images/opt/c228eabc-615e-4810-b1b4-f57e542d8842-960.webp 960w, style/images/opt/c228eabc-615e-4810-b1b4-f57e542d8842-1024.webp 1024w" sizes="(max-width:900px) 100vw, 40vw" alt="" loading="lazy" decoding="async"></div><p class="cap" style="margin-top:18px"> Arco mediterráneo, pasillo</p></div>
   <div class="m T" style="--d:1/5;--r:5;--m:1/8" data-s=".1"><img class="im" src="style/images/opt/dbdb29fbbefa76be7ce22e3d4b2555b6-960.webp" srcset="style/images/opt/dbdb29fbbefa76be7ce22e3d4b2555b6-480.webp 480w, style/images/opt/dbdb29fbbefa76be7ce22e3d4b2555b6-960.webp 960w, style/images/opt/dbdb29fbbefa76be7ce22e3d4b2555b6-1024.webp 1024w" sizes="(max-width:900px) 100vw, 40vw" alt="" loading="lazy" decoding="async"></div>
-  <div style="--d:6/13;--r:5;--m:1/-1"><div class="m W" data-s=".05"><img class="im" src="style/images/opt/aa26f0f1-9091-4fbf-bc0a-fb36ad464313-960.webp" srcset="style/images/opt/aa26f0f1-9091-4fbf-bc0a-fb36ad464313-480.webp 480w, style/images/opt/aa26f0f1-9091-4fbf-bc0a-fb36ad464313-960.webp 960w, style/images/opt/aa26f0f1-9091-4fbf-bc0a-fb36ad464313-1024.webp 1024w" sizes="(max-width:900px) 100vw, 60vw" alt="" loading="lazy" decoding="async"></div><p class="cap" style="margin-top:18px">Fig. 5 — Oficina moderna verde</p></div>
+  <div style="--d:6/13;--r:5;--m:1/-1"><div class="m W" data-s=".05"><img class="im" src="style/images/opt/aa26f0f1-9091-4fbf-bc0a-fb36ad464313-960.webp" srcset="style/images/opt/aa26f0f1-9091-4fbf-bc0a-fb36ad464313-480.webp 480w, style/images/opt/aa26f0f1-9091-4fbf-bc0a-fb36ad464313-960.webp 960w, style/images/opt/aa26f0f1-9091-4fbf-bc0a-fb36ad464313-1024.webp 1024w" sizes="(max-width:900px) 100vw, 60vw" alt="" loading="lazy" decoding="async"></div><p class="cap" style="margin-top:18px">Oficina moderna verde</p></div>
  </div>
 </section>
 
@@ -345,30 +357,35 @@ section{overflow-x:clip}
 <section id="portfolio" data-t="l">
  <div class="g">
   <div style="--d:1/8;--r:1;--m:1/-1"><p class="eb">06 — Portafolio</p><h2 style="margin-top:clamp(28px,4vw,64px)" data-s="-.04">Nuestro portafolio</h2></div>
-  <div class="portfolio-copy" style="--d:9/13;--r:1;--m:1/-1"><p class="b">Un viaje a través de espacios, materias y silencios creados antes de encontrar su lugar en el mundo.</p><a class="btn" href="about.html">Explora nuestro trabajo</a></div>
+  <div class="portfolio-copy" style="--d:9/13;--r:1;--m:1/-1"><p class="b">Un viaje a través de espacios, que convertimos en un recorrido de su proxima propiedad.</p><a class="btn" href="about.html">Explora nuestro trabajo</a></div>
   <a class="portfolio-link pj p1" target="_blank" rel="noopener noreferrer" style="--d:1/8;--r:2;--ar:16/11">
    <div class="m" data-s=".07"><img class="im" src="style/images/opt/93449727-2147-4bfc-8788-320a93927cd7-960.webp" srcset="style/images/opt/93449727-2147-4bfc-8788-320a93927cd7-480.webp 480w, style/images/opt/93449727-2147-4bfc-8788-320a93927cd7-960.webp 960w, style/images/opt/93449727-2147-4bfc-8788-320a93927cd7-1440.webp 1440w, style/images/opt/93449727-2147-4bfc-8788-320a93927cd7-1586.webp 1586w" sizes="(max-width:900px) 100vw, 60vw" alt="" loading="lazy" decoding="async"></div>
-   <div class="portfolio-overlay"><span class="eyebrow">01 — Casa Lomas, residencial</span></div>
+   <div class="portfolio-overlay"><span class="eyebrow"></span></div>
    <p class="cap"></p>
   </a>
-  <div class="pj p2" style="--d:9/13;--r:2;--ar:3/4"><div class="m" data-s=".12"><img class="im" src="style/images/opt/656b6533-ab62-4530-9322-0afd58665113-631.webp" srcset="style/images/opt/656b6533-ab62-4530-9322-0afd58665113-480.webp 480w, style/images/opt/656b6533-ab62-4530-9322-0afd58665113-631.webp 631w" sizes="(max-width:900px) 100vw, 40vw" alt="" loading="lazy" decoding="async"></div><p class="cap">02 — Villa Ámbar, hospitalidad</p></div>
-  <div class="pj p3" style="--d:2/6;--r:3;--ar:1"><div class="m" data-s=".06"><img class="im" src="style/images/opt/db07e761-3956-4ea3-a09a-be192f594c32-960.webp" srcset="style/images/opt/db07e761-3956-4ea3-a09a-be192f594c32-480.webp 480w, style/images/opt/db07e761-3956-4ea3-a09a-be192f594c32-960.webp 960w, style/images/opt/db07e761-3956-4ea3-a09a-be192f594c32-1024.webp 1024w" sizes="(max-width:900px) 100vw, 40vw" alt="" loading="lazy" decoding="async"></div><p class="cap">03 — Loft Reforma, interiorismo</p></div>
-  <div class="pj p4" style="--d:7/13;--r:3;--ar:16/10"><div class="m" data-s=".09"><img class="im" src="style/images/opt/f24ace01-48fa-4ebe-8b01-23c6790928c7-960.webp" srcset="style/images/opt/f24ace01-48fa-4ebe-8b01-23c6790928c7-480.webp 480w, style/images/opt/f24ace01-48fa-4ebe-8b01-23c6790928c7-960.webp 960w, style/images/opt/f24ace01-48fa-4ebe-8b01-23c6790928c7-1024.webp 1024w" sizes="(max-width:900px) 100vw, 60vw" alt="" loading="lazy" decoding="async"></div><p class="cap">04 — Torre Sol, comercial</p></div>
+  <div class="pj p2" style="--d:9/13;--r:2;--ar:3/4"><div class="m" data-s=".12"><img class="im" src="style/images/opt/656b6533-ab62-4530-9322-0afd58665113-631.webp" srcset="style/images/opt/656b6533-ab62-4530-9322-0afd58665113-480.webp 480w, style/images/opt/656b6533-ab62-4530-9322-0afd58665113-631.webp 631w" sizes="(max-width:900px) 100vw, 40vw" alt="" loading="lazy" decoding="async"></div><p class="cap"> Villa Ámbar, hospitalidad</p></div>
+  <div class="pj p3" style="--d:2/6;--r:3;--ar:1"><div class="m" data-s=".06"><img class="im" src="style/images/opt/db07e761-3956-4ea3-a09a-be192f594c32-960.webp" srcset="style/images/opt/db07e761-3956-4ea3-a09a-be192f594c32-480.webp 480w, style/images/opt/db07e761-3956-4ea3-a09a-be192f594c32-960.webp 960w, style/images/opt/db07e761-3956-4ea3-a09a-be192f594c32-1024.webp 1024w" sizes="(max-width:900px) 100vw, 40vw" alt="" loading="lazy" decoding="async"></div><p class="cap">Habitacion minimalista</p></div>
+  <div class="pj p4" style="--d:7/13;--r:3;--ar:16/10"><div class="m" data-s=".09"><img class="im" src="style/images/opt/f24ace01-48fa-4ebe-8b01-23c6790928c7-960.webp" srcset="style/images/opt/f24ace01-48fa-4ebe-8b01-23c6790928c7-480.webp 480w, style/images/opt/f24ace01-48fa-4ebe-8b01-23c6790928c7-960.webp 960w, style/images/opt/f24ace01-48fa-4ebe-8b01-23c6790928c7-1024.webp 1024w" sizes="(max-width:900px) 100vw, 60vw" alt="" loading="lazy" decoding="async"></div><p class="cap">Patio trasero con piscina</p></div>
  </div>
 </section>
 
-<!-- AIRBNB -->
-<section id="airbnb" data-t="l">
+<!-- DRONE -->
+<section id="drone" data-t="l">
  <div class="g">
-  <div style="--d:1/8;--r:1;--m:1/-1"><p class="eb">07 — Airbnb</p><h2 style="margin-top:clamp(28px,4vw,64px)" data-s="-.04">Prepara tu vivienda para <img src="/style/images/Airbnb_Logo_Bélo.svg" alt="Airbnb" loading="lazy" decoding="async" style="height: clamp(60px, 12vw, 120px); margin-left: 10px; margin-top: clamp(12px, 3vw, 30px);"></h2></div>
-  <div class="airbnb-copy" style="--d:9/13;--r:1;--m:1/-1"><p class="b">Arquitectura visual, staging y contenido que convierten cada propiedad en una experiencia memorable, lista para ser reservada.</p><a class="btn" href="#end">Solicitar propuesta</a></div>
-  <div class="airbnb-visual" style="--d:1/7;--r:2;--m:1/-1">
-   <div class="m" data-s=".08"><img class="im" src="style/images/opt/dbdb29fbbefa76be7ce22e3d4b2555g1-960.webp" srcset="style/images/opt/dbdb29fbbefa76be7ce22e3d4b2555g1-480.webp 480w, style/images/opt/dbdb29fbbefa76be7ce22e3d4b2555g1-960.webp 960w, style/images/opt/dbdb29fbbefa76be7ce22e3d4b2555g1-1440.webp 1440w, style/images/opt/dbdb29fbbefa76be7ce22e3d4b2555g1-1585.webp 1585w" sizes="(max-width:900px) 100vw, 60vw" alt="" loading="lazy" decoding="async"></div>
+  <div style="--d:1/8;--r:1;--m:1/-1"><p class="eb">07 — Drone</p><h2 style="margin-top:clamp(28px,4vw,64px)" data-s="-.04">Hacemos videos con drone de tu proyecto</h2></div>
+  <div class="drone-copy" style="--d:9/13;--r:1;--m:1/-1"><p class="b">Volamos sobre la obra para mostrar lo que ninguna foto a nivel de calle alcanza: la escala real, el terreno y cómo el proyecto se asienta en su entorno.</p><a class="btn" href="#end">Solicitar un vuelo</a></div>
+  <div class="drone-visual" style="--d:1/7;--r:2;--m:1/-1">
+   <div class="m" data-s=".08">
+    <!-- VIDEO SLOT: replace the .drone-slot div below with your clip, e.g.
+         <video class="im" src="style/video/TU_VIDEO.mp4" autoplay muted loop playsinline preload="none" poster="style/images/opt/TU_POSTER-960.webp"></video> -->
+    <div class="drone-slot"><span>Video aéreo — próximamente</span></div>
+   </div>
+   <div class="drone-badge">4K</div>
   </div>
-  <div class="airbnb-list" style="--d:8/13;--r:2;--m:1/-1">
-   <div class="item"><strong>01 — Staging</strong><p>Espacios cuidadosos, materiales y composición visual para que cada detalle comunique calma y valor.</p></div>
-   <div class="item"><strong>02 — Fotografía</strong><p>Imágenes de alta intención que acompañan la narrativa de la propiedad y potencian las reservas.</p></div>
-   <div class="item"><strong>03 — Estrategia</strong><p>Una propuesta coherente entre identidad, recorrido visual y presentación para cada tipo de huésped.</p></div>
+  <div class="drone-list" style="--d:8/13;--r:2;--m:1/-1">
+   <div class="item"><strong>01 — Vuelo</strong><p>Planificamos la ruta y la hora de luz para que cada pasada cuente algo del proyecto, no solo lo sobrevuele.</p></div>
+   <div class="item"><strong>02 — Edición</strong><p>Montaje y color en el mismo lenguaje visual del resto del material, listo para redes o para presentar al cliente.</p></div>
+   <div class="item"><strong>03 — Entrega</strong><p>Master en 4K más versiones verticales y recortes cortos, con el audio y los rótulos que necesites.</p></div>
   </div>
  </div>
 </section>
@@ -380,7 +397,7 @@ section{overflow-x:clip}
   <a class="tour-card-link tour-card" href="about.html" target="_blank" rel="noopener noreferrer" style="--d:9/13;--r:1;--m:1/-1">
    <div class="fr"><div class="m" data-s=".06"><img class="im" src="style/images/opt/69e16a7b-616b-4942-bece-47f59a5b79c4-825.webp" srcset="style/images/opt/69e16a7b-616b-4942-bece-47f59a5b79c4-480.webp 480w, style/images/opt/69e16a7b-616b-4942-bece-47f59a5b79c4-825.webp 825w" sizes="(max-width:900px) 100vw, 40vw" alt="" loading="lazy" decoding="async"><div class="ring">360°</div></div></div>
    <div class="tour-overlay"><span class="eyebrow">01 — Modelo 360</span><span class="title">Casa Lomas</span></div>
-   <p class="cap">Vista previa — Casa Lomas, sala</p>
+   <p class="cap">Casa Lomas, sala</p>
   </a>
   <div class="rooms" style="--d:1/8;--r:2;--m:1/-1">
    <div><div class="m" data-s=".04"><img class="im" src="style/images/opt/bfa32f6f-edec-4836-87f3-0a1694e2865d-960.webp" srcset="style/images/opt/bfa32f6f-edec-4836-87f3-0a1694e2865d-480.webp 480w, style/images/opt/bfa32f6f-edec-4836-87f3-0a1694e2865d-960.webp 960w, style/images/opt/bfa32f6f-edec-4836-87f3-0a1694e2865d-1440.webp 1440w, style/images/opt/bfa32f6f-edec-4836-87f3-0a1694e2865d-1586.webp 1586w" sizes="(max-width:900px) 32vw, 17vw" alt="" loading="lazy" decoding="async"></div><p class="cap">Sala</p></div>
@@ -394,8 +411,8 @@ section{overflow-x:clip}
 <section id="end" data-t="d">
  <div><p class="eb">09 — Contacto</p><h2 class="z" style="margin-top:clamp(30px,5vw,70px)" data-s="-.04">Recórrelo<span>antes.</span></h2>
  <div class="endimg m" data-s=".08"><img class="im" src="https://picsum.photos/seed/arnet-end-arch/700/1030" alt="" loading="lazy" decoding="async"></div>
- <div class="mw"><a class="btn o" href="mailto:panora@arnet.com">panora@arnet.com</a></div></div>
- <div class="ft"><p class="cap">© Arnet panora</p><p class="brand">arnet panora</p></div>
+ <div class="mw"><a class="btn o" href="mailto:contacto@arnet.com">contacto@arnet.com</a></div></div>
+ <div class="ft"><p class="cap">© Arnet Dominicana</p><p class="brand">arnet dominicana</p></div>
 </section>
 </div>
 
@@ -573,9 +590,9 @@ schedule();
   var w=document.getElementById('intro-video');
   if(!w)return;
 
-  /* 5MB of video is not worth it on a metered or slow connection, and the low
-     tier skips it outright so the page is interactive immediately. */
-  if(window.__slow||window.__tier===0){w.remove();return;}
+  /* Deliberately no tier gate: tier 0 covers reduced-motion and modest
+     hardware, which should still get the intro. Reduced motion is handled in
+     CSS with the softer ivintro-soft variant. */
 
   function getStoredTime(){
     try{return Number(localStorage.getItem(KEY))||0;}catch(e){
@@ -592,7 +609,8 @@ schedule();
 
   var v=w.querySelector('video');
   var sk=w.querySelector('.ivskip');
-  if(!v||!sk)return;
+  var sb=w.querySelector('.ivsound');
+  if(!v||!sk||!sb)return;
 
   var locked=false;
   function lock(){if(locked)return;locked=true;document.documentElement.style.overflow='hidden';document.body.style.overflow='hidden';document.body.style.position='fixed';document.body.style.top='0';document.body.style.left='0';document.body.style.right='0';document.body.style.width='100%';try{scrollTo(0,0)}catch(e){}}
@@ -600,22 +618,85 @@ schedule();
 
   lock();
   var done_called=false;
-  function done(){if(done_called)return;done_called=true;setStoredTime(Date.now());w.classList.add('fade');setTimeout(function(){unlock();w.remove();},900);}
+  function done(){if(done_called)return;done_called=true;try{cancelAnimationFrame(raf);}catch(e){}duckOut(900);setStoredTime(Date.now());w.classList.add('fade');setTimeout(function(){unlock();w.remove();},900);}
+
+  /* Run the blur/fade only while the video is actually advancing. */
+  function resume(){w.classList.add('playing');}
+  function hold(){w.classList.remove('playing');}
+  v.addEventListener('playing',resume);
+  v.addEventListener('play',resume);
+  v.addEventListener('waiting',hold);
+  v.addEventListener('pause',hold);
+  v.addEventListener('stalled',hold);
 
   v.addEventListener('ended',done);
   v.addEventListener('error',done);
   v.addEventListener('abort',done);
   sk.addEventListener('click',done);
 
-  var loadTimer=setTimeout(done,5000);
+  /* Autoplay with sound is only allowed once the visitor has interacted with
+     the site, so fall back to a muted run plus an unmute control. */
+  function playMuted(){
+    v.muted=true;
+    sb.hidden=false;
+    var p;
+    try{p=v.play();}catch(e){return done();}
+    if(p&&p.catch)p.catch(function(){done();});
+  }
+  sb.addEventListener('click',function(e){
+    e.stopPropagation();
+    v.muted=false;
+    sb.hidden=true;
+    var p;
+    try{p=v.play();}catch(e){}
+    if(p&&p.catch)p.catch(function(){});
+  });
+
+  /* Ride the volume down over the last couple of seconds so the audio lands
+     with the blur-out instead of being cut off when the clip ends. Driven off
+     currentTime, so buffering cannot desync it. Equal-power (cosine) curve:
+     it stays near full for a moment, then drops smoothly to silence. */
+  var FADE_FROM=8, raf=0;
+  function applyVol(){
+    if(done_called)return;
+    var end=v.duration||10, t=v.currentTime;
+    if(!(end>FADE_FROM))return;
+    var k=Math.min(1,Math.max(0,(t-FADE_FROM)/(end-FADE_FROM)));
+    try{v.volume=Math.cos(k*Math.PI/2);}catch(e){}
+  }
+  function volLoop(){
+    if(done_called){cancelAnimationFrame(raf);return;}
+    applyVol();
+    raf=requestAnimationFrame(volLoop);
+  }
+  /* Skipping early (or any other exit) gets the same treatment, matched to the
+     900ms overlay fade, so the audio never stops dead. */
+  function duckOut(ms){
+    var v0=v.volume, now=function(){return window.performance&&performance.now?performance.now():Date.now();}, t0=now();
+    (function step(){
+      var k=Math.min(1,(now()-t0)/ms);
+      try{v.volume=v0*Math.cos(k*Math.PI/2);}catch(e){}
+      if(k<1)requestAnimationFrame(step);
+      else{try{v.pause();}catch(e){}}
+    })();
+  }
+  /* timeupdate keeps the ramp going in a background tab, where rAF is parked. */
+  v.addEventListener('timeupdate',applyVol);
+  v.addEventListener('playing',function(){cancelAnimationFrame(raf);raf=requestAnimationFrame(volLoop);});
+
+  v.muted=false;
+  v.volume=1;
+  (function(){
+    var p;
+    try{p=v.play();}catch(e){return playMuted();}
+    if(p&&p.catch)p.catch(playMuted);
+  })();
+
+  var loadTimer=setTimeout(done,6000);
   v.addEventListener('loadstart',function(){clearTimeout(loadTimer);});
   v.addEventListener('canplay',function(){clearTimeout(loadTimer);});
 
-  setTimeout(done,15000);
-
-  try{
-    var pr=v.play();
-    if(pr&&pr.catch)pr.catch(function(){done();});
-  }catch(e){done();}
+  /* Backstop: 10s of video plus room for buffering. */
+  setTimeout(done,16000);
 })();
 </script></body></html>
