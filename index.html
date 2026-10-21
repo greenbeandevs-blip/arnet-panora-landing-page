@@ -2,7 +2,7 @@
 <html lang="es"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="shortcut icon" href="/style/images/logo/arnet_ico.png" type="image/x-icon">
-<title>arnet dominicana</title>
+<title>Arnet Dominicana | Página principal</title>
 
 <!-- Device tiering runs before first paint so the CSS below can react to it.
      t2 = desktop / high-end, t1 = mid phones & tablets, t0 = low-end, slow
@@ -183,10 +183,6 @@ nav .btn{padding:.95em 1.6em}
 #drone .drone-copy{align-self:end;padding-bottom:clamp(0px,3vw,48px)}
 #drone .drone-visual{position:relative;margin-top:clamp(42px,7vw,110px)}
 #drone .drone-visual .m{aspect-ratio:16/9}
-/* Placeholder styling for the empty slot; drop a <video class="im"> in and it
-   simply sits on top of it. */
-#drone .drone-slot{position:absolute;inset:0;display:grid;place-items:center;gap:10px;text-align:center;padding:1.4em;color:var(--br)}
-#drone .drone-slot span{font-size:11px;letter-spacing:.22em;text-transform:uppercase;opacity:.75}
 #drone .drone-badge{position:absolute;right:clamp(18px,2vw,32px);bottom:clamp(18px,2vw,32px);display:grid;place-items:center;min-width:clamp(120px,18vw,200px);min-height:clamp(54px,8vw,90px);padding:1.1em 1.4em;background:rgba(255,255,255,.86);border:1px solid rgba(103,61,31,.22);box-shadow:0 16px 42px rgba(32,18,8,.08);font-size:clamp(16px,1.5vw,28px);font-weight:700;letter-spacing:.08em;color:var(--br);text-transform:uppercase}
 #drone .drone-list{display:grid;gap:var(--gap);margin-top:clamp(26px,4vw,60px)}
 #drone .drone-list .item{display:flex;flex-direction:column;gap:10px;padding-top:16px;border-top:1px solid rgba(103,61,31,.45)}
@@ -372,13 +368,11 @@ section{overflow-x:clip}
 <!-- DRONE -->
 <section id="drone" data-t="l">
  <div class="g">
-  <div style="--d:1/8;--r:1;--m:1/-1"><p class="eb">07 — Drone</p><h2 style="margin-top:clamp(28px,4vw,64px)" data-s="-.04">Hacemos videos con drone de tu proyecto</h2></div>
-  <div class="drone-copy" style="--d:9/13;--r:1;--m:1/-1"><p class="b">Volamos sobre la obra para mostrar lo que ninguna foto a nivel de calle alcanza: la escala real, el terreno y cómo el proyecto se asienta en su entorno.</p><a class="btn" href="#end">Solicitar un vuelo</a></div>
+  <div style="--d:1/8;--r:1;--m:1/-1"><p class="eb">07 — Drone</p><h2 style="margin-top:clamp(28px,4vw,64px)" data-s="-.04">¿Videos 4K? Claro que sí</h2></div>
+  <div class="drone-copy" style="--d:9/13;--r:1;--m:1/-1"><p class="b">Grabamos dentro y fuera de la obra para mostrar lo que ninguna foto a nivel de calle alcanza: la escala real, el terreno y cómo el proyecto se asienta en su entorno.</p><a class="btn" href="#end">Solicitar un vuelo</a></div>
   <div class="drone-visual" style="--d:1/7;--r:2;--m:1/-1">
    <div class="m" data-s=".08">
-    <!-- VIDEO SLOT: replace the .drone-slot div below with your clip, e.g.
-         <video class="im" src="style/video/TU_VIDEO.mp4" autoplay muted loop playsinline preload="none" poster="style/images/opt/TU_POSTER-960.webp"></video> -->
-    <div class="drone-slot"><span>Video aéreo — próximamente</span></div>
+    <video class="im drone-clip" src="style/video/exploration.mp4" autoplay muted loop playsinline preload="metadata" disablepictureinpicture aria-hidden="true"></video>
    </div>
    <div class="drone-badge">4K</div>
   </div>
@@ -393,17 +387,12 @@ section{overflow-x:clip}
 <!-- TOUR -->
 <section id="tour" data-t="d">
  <div class="g">
-  <div class="tour-copy" style="--d:1/8;--r:1;--m:1/-1"><p class="eb">08 — Tour experience</p><h2 style="margin-top:clamp(28px,4vw,64px)" data-s="-.05">Prueba nuestro Tour 360°</h2><a class="btn" href="#pano">Enter the tour</a></div>
-  <a class="tour-card-link tour-card" href="about.html" target="_blank" rel="noopener noreferrer" style="--d:9/13;--r:1;--m:1/-1">
+  <div class="tour-copy" style="--d:1/8;--r:1;--m:1/-1"><p class="eb">08 — Tour experience</p><h2 style="margin-top:clamp(28px,4vw,64px)" data-s="-.05">Prueba nuestro Tour 360°</h2></div>
+  <a class="tour-card-link tour-card" href="https://app.arnet.do/p/iCK6MiU6j2YhU5a9qC7Hv4wj" target="_blank" rel="noopener noreferrer" style="--d:9/13;--r:1;--m:1/-1">
    <div class="fr"><div class="m" data-s=".06"><img class="im" src="style/images/opt/69e16a7b-616b-4942-bece-47f59a5b79c4-825.webp" srcset="style/images/opt/69e16a7b-616b-4942-bece-47f59a5b79c4-480.webp 480w, style/images/opt/69e16a7b-616b-4942-bece-47f59a5b79c4-825.webp 825w" sizes="(max-width:900px) 100vw, 40vw" alt="" loading="lazy" decoding="async"><div class="ring">360°</div></div></div>
-   <div class="tour-overlay"><span class="eyebrow">01 — Modelo 360</span><span class="title">Casa Lomas</span></div>
-   <p class="cap">Casa Lomas, sala</p>
+   <div class="tour-overlay"><span class="eyebrow">01 — Modelo 360</span><span class="title">Casa en las Montañas</span></div>
+   <p class="cap">Casa en la Montaña, sala</p>
   </a>
-  <div class="rooms" style="--d:1/8;--r:2;--m:1/-1">
-   <div><div class="m" data-s=".04"><img class="im" src="style/images/opt/bfa32f6f-edec-4836-87f3-0a1694e2865d-960.webp" srcset="style/images/opt/bfa32f6f-edec-4836-87f3-0a1694e2865d-480.webp 480w, style/images/opt/bfa32f6f-edec-4836-87f3-0a1694e2865d-960.webp 960w, style/images/opt/bfa32f6f-edec-4836-87f3-0a1694e2865d-1440.webp 1440w, style/images/opt/bfa32f6f-edec-4836-87f3-0a1694e2865d-1586.webp 1586w" sizes="(max-width:900px) 32vw, 17vw" alt="" loading="lazy" decoding="async"></div><p class="cap">Sala</p></div>
-   <div><div class="m" data-s=".07"><img class="im" src="style/images/opt/d4236b57-3f10-43d8-ac8d-50a5dda07646-960.webp" srcset="style/images/opt/d4236b57-3f10-43d8-ac8d-50a5dda07646-480.webp 480w, style/images/opt/d4236b57-3f10-43d8-ac8d-50a5dda07646-960.webp 960w, style/images/opt/d4236b57-3f10-43d8-ac8d-50a5dda07646-1024.webp 1024w" sizes="(max-width:900px) 32vw, 17vw" alt="" loading="lazy" decoding="async"></div><p class="cap">Comedor</p></div>
-   <div><div class="m" data-s=".10"><img class="im" src="style/images/opt/fd136790-f17b-4362-931f-072914e99d6e-960.webp" srcset="style/images/opt/fd136790-f17b-4362-931f-072914e99d6e-480.webp 480w, style/images/opt/fd136790-f17b-4362-931f-072914e99d6e-960.webp 960w, style/images/opt/fd136790-f17b-4362-931f-072914e99d6e-1024.webp 1024w" sizes="(max-width:900px) 32vw, 17vw" alt="" loading="lazy" decoding="async"></div><p class="cap">Baño</p></div>
-  </div>
  </div>
 </section>
 
@@ -583,6 +572,21 @@ function frame(){
 }
 addEventListener('scroll',schedule,{passive:true});
 schedule();
+</script>
+<script>
+/* The drone clip is decorative and weighs ~4MB, so it only runs while it is on
+   screen: no wasted decode or battery while the visitor is elsewhere on the
+   page. The autoplay attribute still covers the no-JS case. */
+(function(){
+  var v=document.querySelector('.drone-clip');
+  if(!v||!('IntersectionObserver' in window))return;
+  new IntersectionObserver(function(es){
+    for(var i=0;i<es.length;i++){
+      if(es[i].isIntersecting){var p=v.play();if(p&&p.catch)p.catch(function(){});}
+      else v.pause();
+    }
+  },{rootMargin:'200px 0px'}).observe(v);
+})();
 </script>
 <script>
 (function(){
