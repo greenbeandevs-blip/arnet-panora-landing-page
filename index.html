@@ -234,10 +234,44 @@ nav .btn{padding:.95em 1.6em}
 #end{background:var(--br);color:var(--bg);min-height:100vh;display:flex;flex-direction:column;justify-content:space-between;padding-top:clamp(100px,16vh,200px);padding-bottom:clamp(24px,4vh,48px)}
 #end h2{font-size:clamp(56px,14vw,240px)}
 #end h2 span{display:block;padding-left:1.1em}
-#end .ft{display:flex;justify-content:space-between;align-items:flex-end;margin-top:clamp(50px,9vh,110px);padding-top:26px;border-top:1px solid rgba(232,220,196,.4)}
-#end .ft .brand{font-size:clamp(28px,5vw,80px)}
 #end .mw{margin-top:clamp(40px,7vh,90px)}
 #end .endimg{position:absolute;z-index:1;right:0;top:clamp(0px,3vh,40px);width:clamp(150px,21vw,370px);aspect-ratio:3/4.4;border-radius:999px 999px 0 0}
+.site-footer{background:#4f2e19;color:var(--bg);padding:clamp(38px,6vw,76px) var(--g) clamp(20px,3vw,30px)}
+.site-footer__inner{max-width:1440px;margin:0 auto}
+.site-footer__main{display:flex;justify-content:space-between;align-items:flex-start;gap:clamp(28px,6vw,90px);padding-bottom:clamp(36px,5vw,64px)}
+.site-footer__brand{font-size:clamp(32px,5vw,58px)}
+.site-footer__note{max-width:30ch;margin-top:14px;font-size:14px;line-height:1.65;opacity:.7}
+.site-footer__legal{position:static;inset:auto;z-index:auto;width:auto;padding:0;pointer-events:auto;display:flex;flex-wrap:wrap;gap:12px clamp(20px,3vw,42px)}
+.site-footer__legal a{color:inherit;text-decoration:none;font-size:14px;line-height:1.5;transition:opacity .2s ease}
+.site-footer__legal a:hover{opacity:.7}
+.site-footer__legal a:focus-visible{outline:2px solid currentColor;outline-offset:5px}
+.site-footer__bottom{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-top:18px;border-top:1px solid rgba(232,220,196,.25)}
+.site-footer__bottom p{font-size:11px;letter-spacing:.06em;line-height:1.6;opacity:.65}
+.site-footer__bottom-links{display:flex;align-items:center;gap:clamp(16px,3vw,32px)}
+#cookie-notice{
+ position:fixed;z-index:40;right:clamp(16px,3vw,40px);bottom:clamp(16px,3vw,36px);
+ display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;
+ gap:clamp(14px,2vw,24px);width:min(920px,calc(100% - 32px));margin-left:auto;
+ padding:clamp(18px,2.4vw,28px);border:1px solid rgba(232,220,196,.22);
+ border-radius:18px;background:rgba(79,46,25,.97);color:var(--bg);
+ box-shadow:0 20px 60px rgba(48,27,15,.28);
+}
+#cookie-notice[hidden]{display:none}
+.cookie-notice__icon{display:grid;place-items:center;width:44px;height:44px;border:1px solid rgba(232,220,196,.28);border-radius:50%;color:#dfb98c}
+.cookie-notice__icon svg{width:21px;height:21px}
+.cookie-notice__copy h2{font-family:var(--brand);font-size:clamp(22px,2.4vw,29px);font-weight:300;line-height:1.1}
+.cookie-notice__copy p{max-width:54ch;margin-top:7px;font-size:13px;line-height:1.55;opacity:.76}
+.cookie-notice__copy a{color:inherit;text-underline-offset:3px}
+.cookie-notice__actions{display:flex;flex-direction:column;align-items:stretch;gap:8px;min-width:145px}
+.cookie-notice__actions button{min-height:40px;padding:9px 14px;border:1px solid rgba(232,220,196,.46);background:transparent;color:inherit;font:500 11px/1.3 var(--ui);letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:background .2s,color .2s,border-color .2s}
+.cookie-notice__actions button:first-child{background:var(--bg);color:var(--br);border-color:var(--bg)}
+.cookie-notice__actions button:hover{background:#d6c3a2;color:var(--br);border-color:#d6c3a2}
+.cookie-notice__actions button:active{transform:translateY(1px)}
+.cookie-notice__actions button:focus-visible{outline:2px solid #dfb98c;outline-offset:3px}
+.cookie-notice__status{grid-column:2/-1;margin-top:-6px;color:#f0b5a2;font-size:12px;line-height:1.45}
+.site-footer__cookie-settings{appearance:none;padding:0;border:0;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer}
+.site-footer__cookie-settings:hover{text-decoration:underline;text-underline-offset:4px}
+.site-footer__cookie-settings:focus-visible{outline:2px solid currentColor;outline-offset:5px}
 section{overflow-x:clip}
 .g,#pano .full,#pano .big,#end>div:not(.d),#car .row{position:relative;z-index:1}
 .d{position:absolute;pointer-events:none;aspect-ratio:1;z-index:0}
@@ -269,6 +303,15 @@ section{overflow-x:clip}
  #int .big{font-size:24vw}#int .B{margin-top:-12vw}#int .C{margin-top:40px}#int .T{margin-top:36px}#int .W{margin-top:28px}#int .g>*{margin-bottom:0}
  #end h2{font-size:22vw}.row div{height:26vh}
  #end .endimg{position:relative;top:auto;right:auto;width:62vw;margin:44px 0 0 auto}
+ .site-footer__main{flex-direction:column;gap:30px}
+ .site-footer__legal{gap:10px 24px}
+ .site-footer__bottom{align-items:flex-start;flex-direction:column;gap:6px}
+ .site-footer__bottom-links{flex-wrap:wrap;gap:8px 20px}
+ #cookie-notice{grid-template-columns:auto minmax(0,1fr);right:12px;bottom:12px;width:calc(100% - 24px);gap:12px;padding:16px;border-radius:15px}
+ .cookie-notice__icon{width:38px;height:38px}
+ .cookie-notice__actions{grid-column:1/-1;flex-direction:row;min-width:0}
+ .cookie-notice__actions button{flex:1;padding:10px 8px;font-size:10px}
+ .cookie-notice__status{grid-column:1/-1;margin:0}
  #portfolio h2{font-size:16vw}
  #portfolio .portfolio-copy{margin-top:34px}
  #portfolio .p1,#portfolio .p2,#portfolio .p3,#portfolio .p4{margin-top:36px}
@@ -306,7 +349,7 @@ section{overflow-x:clip}
   <div class="t" style="--d:8/12;--r:3">
    <div class="m ts" data-s=".1"><img class="im" src="style/images/opt/92fd26bb-d47a-46cb-a61b-e2fb87583d86-960.webp" srcset="style/images/opt/92fd26bb-d47a-46cb-a61b-e2fb87583d86-480.webp 480w, style/images/opt/92fd26bb-d47a-46cb-a61b-e2fb87583d86-960.webp 960w, style/images/opt/92fd26bb-d47a-46cb-a61b-e2fb87583d86-1024.webp 1024w" sizes="(max-width:900px) 100vw, 40vw" alt="" loading="lazy" decoding="async"></div>
    <p class="cap" style="margin:18px 0 clamp(28px,4vw,56px)"> Concepto de habitación natural</p>
-   <p class="b" style="text-align:justify;">En Arnet Dominicana, nuestro estudio de visualización especializado, transformamos cualquier espacio —real o en proyecto— en una experiencia inmersiva interactiva. A partir de una selección estratégica de imágenes 360º, construimos un recorrido virtual que permite al espectador navegar libremente de un punto a otro de la propiedad, explorando cada rincón, desde las áreas comunes hasta los detalles más íntimos. Es una exploración 'punto a punto' que eleva la presentación arquitectónica a una verdadera inmersión sensorial.</p><a class="btn" href="#pano">Ver recorridos</a>
+   <p class="b" style="text-align:justify;">En Arnet Dominicana, nuestro estudio de visualización especializado, transformamos cualquier espacio —real o en proyecto— en una experiencia inmersiva interactiva. A partir de una selección estratégica de imágenes 360º, construimos un recorrido virtual que permite al espectador navegar libremente de un punto a otro de la propiedad, explorando cada rincón, desde las áreas comunes hasta los detalles más íntimos. Es una exploración 'punto a punto' que eleva la presentación arquitectónica a una verdadera inmersión sensorial.</p><a class="btn" href="/recorridos.html">¡Quiero mi recorrido!</a>
   </div>
  </div>
 </section>
@@ -388,7 +431,7 @@ section{overflow-x:clip}
 <section id="drone" data-t="l">
  <div class="g">
   <div style="--d:1/8;--r:1;--m:1/-1"><p class="eb">07 — Drone</p><h2 style="margin-top:clamp(28px,4vw,64px)" data-s="-.04">¿Videos 4K? Claro que sí</h2></div>
-  <div class="drone-copy" style="--d:9/13;--r:1;--m:1/-1"><p class="b">Grabamos dentro y fuera de la obra para mostrar lo que ninguna foto a nivel de calle alcanza: la escala real, el terreno y cómo el proyecto se asienta en su entorno.</p><a class="btn" href="#end">Solicitar un vuelo</a></div>
+  <div class="drone-copy" style="--d:9/13;--r:1;--m:1/-1"><p class="b">Grabamos dentro y fuera de la obra para mostrar lo que ninguna foto a nivel de calle alcanza: la escala real, el terreno y cómo el proyecto se asienta en su entorno.</p><a class="btn" href="videos.html">Cotizar un vuelo</a></div>
   <div class="drone-visual" style="--d:1/7;--r:2;--m:1/-1">
    <div class="m" data-s=".08">
     <video class="im drone-clip" src="style/video/exploration.mp4" autoplay muted loop playsinline preload="metadata" disablepictureinpicture aria-hidden="true"></video>
@@ -420,12 +463,82 @@ section{overflow-x:clip}
  <div><p class="eb">09 — Contacto</p><h2 class="z" style="margin-top:clamp(30px,5vw,70px)" data-s="-.04">Recórrelo<span>antes.</span></h2>
  <div class="endimg m" data-s=".08"><img class="im" src="https://picsum.photos/seed/arnet-end-arch/700/1030" alt="" loading="lazy" decoding="async"></div>
  <div class="mw"><a class="btn o" href="mailto:contacto@arnet.com">contacto@arnet.com</a></div></div>
- <div class="ft"><p class="cap">© Arnet Dominicana</p><p class="brand">arnet dominicana</p></div>
 </section>
+<footer class="site-footer">
+ <div class="site-footer__inner">
+  <div class="site-footer__main">
+   <div>
+    <p class="brand site-footer__brand">arnet dominicana</p>
+    <p class="site-footer__note">Recorridos virtuales 360° y visualización arquitectónica para conocer cada espacio desde antes.</p>
+   </div>
+   <nav class="site-footer__legal" aria-label="Información legal">
+    <a href="politicas-de-privacidad.html">Políticas de privacidad</a>
+    <a href="terminos-y-condiciones.html">Términos y condiciones</a>
+   </nav>
+  </div>
+  <div class="site-footer__bottom">
+   <p>© <span id="footer-year">2026</span> Arnet Dominicana</p>
+   <div class="site-footer__bottom-links">
+    <button class="site-footer__cookie-settings" type="button" id="cookie-settings">Preferencias de cookies</button>
+    <p>República Dominicana</p>
+   </div>
+  </div>
+ </div>
+</footer>
 </div>
+<aside id="cookie-notice" aria-labelledby="cookie-title" aria-describedby="cookie-description" aria-live="polite" hidden>
+ <div class="cookie-notice__icon" aria-hidden="true">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 13.2A8.5 8.5 0 0 1 10.8 3.5a8.6 8.6 0 1 0 9.7 9.7Z"/><path d="M15.5 3.5a5 5 0 0 0 5 5"/><circle cx="8.5" cy="12.5" r=".8" fill="currentColor" stroke="none"/><circle cx="12" cy="16" r=".8" fill="currentColor" stroke="none"/><circle cx="7.5" cy="8.5" r=".8" fill="currentColor" stroke="none"/></svg>
+ </div>
+ <div class="cookie-notice__copy">
+  <h2 id="cookie-title">Tu privacidad, a tu manera</h2>
+  <p id="cookie-description">Este sitio guarda una preferencia en tu dispositivo para recordar tu elección. Actualmente no activamos cookies de analítica ni publicidad. Puedes cambiar tu decisión desde el pie de página. <a href="politicas-de-privacidad.html">Más información</a></p>
+ </div>
+ <div class="cookie-notice__actions" aria-label="Preferencias de cookies">
+  <button type="button" data-cookie-choice="all">Aceptar</button>
+  <button type="button" data-cookie-choice="essential">Solo necesarias</button>
+ </div>
+ <p class="cookie-notice__status" id="cookie-status" role="status" hidden></p>
+</aside>
 
 <script>
 const TIER=window.__tier,REDUCE=window.__reduce,MOTION=TIER>0;
+document.getElementById('footer-year').textContent=new Date().getFullYear();
+
+/* Cookie preference notice */
+(function(){
+ const KEY='arnet_cookie_preference';
+ const notice=document.getElementById('cookie-notice');
+ const status=document.getElementById('cookie-status');
+ const settings=document.getElementById('cookie-settings');
+ function showNotice(){
+  notice.hidden=false;
+  notice.querySelector('[data-cookie-choice="all"]').focus();
+ }
+ function saveChoice(choice){
+  try{
+   localStorage.setItem(KEY,choice);
+   notice.hidden=true;
+   status.hidden=true;
+   status.textContent='';
+  }catch(error){
+   console.error('Could not save cookie preference.',error);
+   status.textContent='No pudimos guardar tu preferencia. Revisa la configuración de almacenamiento de tu navegador e inténtalo de nuevo.';
+   status.hidden=false;
+  }
+ }
+ let savedChoice=null;
+ try{savedChoice=localStorage.getItem(KEY)}catch(error){
+  console.error('Could not read cookie preference.',error);
+  status.textContent='No pudimos leer tu preferencia guardada. Puedes elegir una opción para continuar.';
+  status.hidden=false;
+ }
+ if(savedChoice!=='all'&&savedChoice!=='essential')notice.hidden=false;
+ notice.querySelectorAll('[data-cookie-choice]').forEach(button=>{
+  button.addEventListener('click',()=>saveChoice(button.dataset.cookieChoice));
+ });
+ settings.addEventListener('click',showNotice);
+})();
 
 /* ── carousel ─────────────────────────────────────────────────────────
    Native loading="lazy" keeps these 8 remote photos off the initial load;
