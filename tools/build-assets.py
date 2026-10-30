@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-Regenerates the optimized assets that index.html and about.html reference.
+Regenerates the optimized assets that / and about.html reference.
 
 Originals are never modified - everything is written into sibling "opt"
 folders, plus style/font/woff2. Run from the project root:
@@ -18,7 +18,7 @@ Outputs
   asset-manifest.json                           widths that exist per source
 
 If you add an image, re-run this, then update the matching srcset in
-index.html (or, for about.html, paste the new asset-manifest entries into the
+/ (or, for about.html, paste the new asset-manifest entries into the
 IMG_OPT / PANO_OPT maps inlined in that file).
 """
 
