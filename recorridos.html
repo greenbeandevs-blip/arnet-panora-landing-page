@@ -138,12 +138,13 @@ section[id]{scroll-margin-top:72px}
   font-size:clamp(24px,2.3vw,34px);text-transform:lowercase;letter-spacing:-.02em;
   line-height:1;color:inherit;text-decoration:none;
 }
-.site-nav .brand img{height:20px;margin-right:20px}
+.site-nav .brand img{height:20px;margin-right:20px;transition:filter .4s ease}
+.brand-name{display:inline}
 .site-nav__links{display:flex;align-items:center;gap:clamp(18px,2.6vw,42px)}
 .site-nav__links a{color:inherit;text-decoration:none;font-size:11px;letter-spacing:.2em;text-transform:uppercase}
 .site-nav__links a.site-nav__cta{display:inline-flex;align-items:center;letter-spacing:.24em;border:1px solid currentColor;padding:.95em 1.6em;transition:background .4s,color .4s}
 .site-nav__cta:hover{background:var(--nav-sand);color:var(--nav-brown)}
-#mb{display:none;background:none;border:0;color:inherit;font:inherit;font-size:11px;letter-spacing:.22em;text-transform:uppercase;padding:10px 0;cursor:pointer}
+#mb{display:none;background:none;border:0;color:inherit;font:inherit;font-size:11px;letter-spacing:.22em;text-transform:uppercase;padding:10px 0;cursor:pointer;transition:color .4s ease}
 #menu{
   position:fixed;inset:0;z-index:55;background:var(--nav-brown);color:var(--nav-sand);
   display:flex;flex-direction:column;justify-content:center;
@@ -158,6 +159,9 @@ section[id]{scroll-margin-top:72px}
   .site-nav__links a,.site-nav__cta{display:none !important}
   .site-nav__links{gap:0}
   #mb{display:block}
+  .brand-name{display:none}
+  .site-nav.menu-open:not(.show) .brand img{filter:brightness(0) saturate(100%) invert(89%) sepia(15%) saturate(553%) hue-rotate(354deg) brightness(102%) contrast(91%)}
+  .site-nav.menu-open:not(.show) #mb{color:var(--sand)}
   .site-nav .nav-pill{padding:10px 20px;border-radius:40px;width:auto;max-width:none}
 }
 
@@ -432,7 +436,7 @@ svg.i{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke
 <nav class="site-nav" id="siteNav">
   <div class="nav-pill">
     <a class="brand" href="/">
-      <img src="/style/images/logo/arnet_logo_alt.png" style="height:20px;margin-right:20px" alt="">arnet
+      <img src="/style/images/logo/arnet_logo_alt.png" style="height:20px;margin-right:20px" alt=""><span class="brand-name">arnet</span>
     </a>
     <div class="site-nav__links">
       <a href="#que-son">¿Qué son?</a>
@@ -854,6 +858,7 @@ window.pannellum.viewer(whatViewer, {
   mb.addEventListener('click',()=>{
     menuOpen = !menuOpen;
     menu.classList.toggle('on', menuOpen);
+    nav.classList.toggle('menu-open', menuOpen);
     mb.setAttribute('aria-expanded', menuOpen);
     document.documentElement.classList.toggle('is-locked', menuOpen);
   });
@@ -870,6 +875,7 @@ window.pannellum.viewer(whatViewer, {
   menu.querySelectorAll('a').forEach(a=>{
     a.addEventListener('click',()=>{
       menuOpen=false;menu.classList.remove('on');
+      nav.classList.remove('menu-open');
       mb.setAttribute('aria-expanded','false');
       document.documentElement.classList.remove('is-locked');
     });
